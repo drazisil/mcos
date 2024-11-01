@@ -118,8 +118,8 @@ importers:
         specifier: ^2.38.1
         version: 2.38.1
       '@tsconfig/node-lts':
-        specifier: ^20.1.3
-        version: 20.1.3
+        specifier: ^22.0.0
+        version: 22.0.0
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -2475,8 +2475,8 @@ packages:
   '@tiptap/starter-kit@2.1.13':
     resolution: {integrity: sha512-ph/mUR/OwPtPkZ5rNHINxubpABn8fHnvJSdhXFrY/q6SKoaO11NZXgegRaiG4aL7O6Sz4LsZVw6Sm0Ae+GJmrg==}
 
-  '@tsconfig/node-lts@20.1.3':
-    resolution: {integrity: sha512-m3b7EP2U+h5tNSpaBMfcTuHmHn04wrgRPQQrfKt75YIPq6kPs2153/KfPHdqkEWGx5pEBvS6rnvToT+yTtC1iw==}
+  '@tsconfig/node-lts@22.0.0':
+    resolution: {integrity: sha512-6y6CBFe0etz2xU1s0rGOj7pLsvbYXM9l/RNmBQOKI3S5DFrp1jigxx8uYupG5O6cCNXNlOE/1gquoQH01+kz5w==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -8751,7 +8751,7 @@ snapshots:
       - '@tiptap/extension-text-style'
       - '@tiptap/pm'
 
-  '@tsconfig/node-lts@20.1.3': {}
+  '@tsconfig/node-lts@22.0.0': {}
 
   '@tsconfig/node10@1.0.11': {}
 
