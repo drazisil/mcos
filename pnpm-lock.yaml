@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  tinymce: ^7.0.0
+  tinymce: ^7.5.0
 
 importers:
 
