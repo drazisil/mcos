@@ -8,9 +8,8 @@ import {
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processFirstBuddy" });
 
 export async function processFirstBuddy(
 	connectionId: string,
@@ -18,10 +17,10 @@ export async function processFirstBuddy(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.info("processFirstBuddy called");
+	defaultLogger.info("processFirstBuddy called");
 	const profileId = getDWord(message.getDataAsBuffer(), 0, false);
 
-	log.info(`GetFirstBuddy profile: ${profileId}`);
+	defaultLogger.info(`GetFirstBuddy profile: ${profileId}`);
 
 	// Look up the profiles for the customer ID
 	const profiles = getGameProfilesForCustomerId(profileId);
@@ -34,9 +33,9 @@ export async function processFirstBuddy(
 	outMessage.setData(new SerializableData(4));
 
 	// Log the message
-	log.info(`GetFirstBuddy: ${outMessage.toString()}`);
+	defaultLogger.info(`GetFirstBuddy: ${outMessage.toString()}`);
 
-	log.info("===========================================");
+	defaultLogger.info("===========================================");
 
 	socketCallback([outMessage.serialize()]);
 	return Promise.resolve();

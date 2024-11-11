@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
-
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import {
@@ -29,6 +27,9 @@ import { _selectGamePersona } from "./_selectGamePersona.js";
 import { validatePersonaName } from "./handlers/validatePersonaName.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+
 
 /**
  * Array of supported message handlers
@@ -51,7 +52,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: LegacyMessage;
-		log: ServerLogger;
+		log: Logger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];
@@ -178,11 +179,11 @@ async function getPersonaMapsByCustomerId(
 async function getPersonaMaps({
 	connectionId,
 	message,
-	log = getServerLogger({ name: "PersonaServer" }),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
@@ -273,13 +274,11 @@ async function getPersonaMaps({
 export async function receivePersonaData({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "PersonaServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

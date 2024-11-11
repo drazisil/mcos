@@ -26,8 +26,9 @@ export class StockCar extends BufferSerializer {
 
 			return buffer;
 		} catch (error) {
-			log.error(`Error serializing StockCar: ${error as string}`);
-			throw error;
+			throw new Error(`Error serializing StockCar: ${error as string}`, {
+				cause: error,
+			});
 		}
 	}
 
@@ -100,8 +101,9 @@ export class StockCarInfo extends ServerMessagePayload {
 
 			return buffer;
 		} catch (error) {
-			log.error(`Error serializing StockCarInfo: ${error as string}`);
-			throw error;
+			throw new Error(`Error serializing StockCarInfo: ${error as string}`, {
+				cause: error,
+			});
 		}
 	}
 

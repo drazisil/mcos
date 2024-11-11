@@ -1,13 +1,14 @@
 import { updateSessionKey } from "rusty-motors-database";
 import {
-	getServerLogger,
 	SerializedBufferOld,
-	type ServerLogger,
 	getServerConfiguration,
 	NetworkMessage,
 } from "rusty-motors-shared";
 import { userRecords } from "./internal.js";
 import { NPSUserStatus } from "./NPSUserStatus.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "LoginServer" });
+
 
 /**
  * Process a UserLogin packet
@@ -24,13 +25,11 @@ import { NPSUserStatus } from "./NPSUserStatus.js";
 export async function login({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "LoginServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
@@ -40,7 +39,7 @@ export async function login({
 	log.debug(`[${connectionId}] Entering login`);
 
 	log.debug(`[${connectionId}] Creating NPSUserStatus object`);
-	const userStatus = new NPSUserStatus(data, getServerConfiguration({}), log);
+	const userStatus = new NPSUserStatus(data, getServerConfiguration(), log);
 	log.debug(`[${connectionId}] NPSUserStatus object created`);
 
 	log.debug(`[${connectionId}] Extracting session key from packet`);
@@ -66,7 +65,6 @@ export async function login({
 	}
 
 	// Save sessionkey in database under customerId
-	log.debug(`[${connectionId}] Updating session key in the database`);
 	await updateSessionKey(
 		userRecord.customerId,
 		sessionKey ?? "",

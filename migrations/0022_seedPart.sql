@@ -1,0 +1,4 @@
+-- +goose Up
+-- +goose StatementBegin
+-- Intentionally left blank, file exists to maintain order of migrations
+-- +goose StatementEnd

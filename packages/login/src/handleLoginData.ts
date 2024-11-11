@@ -1,10 +1,10 @@
 import {
-	getServerLogger,
 	SerializedBufferOld,
-	type ServerLogger,
 	NPSMessage,
 } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "LoginServer.handleLoginData" });
 
 /**
  * Entry and exit point of the Login service
@@ -23,13 +23,11 @@ import { messageHandlers } from "./internal.js";
 export async function handleLoginData({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "handleLoginData",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import EventEmitter from "node:events";
+import http from "node:http";
 import { CastanetResponse } from "rusty-motors-patch";
 import { generateShardList } from "rusty-motors-shard";
 import {
@@ -23,89 +25,185 @@ import {
 } from "rusty-motors-shard";
 import { getServerConfiguration } from "rusty-motors-shared";
 
-/**
- * Add web routes to the web server
- *
- * @param {import("fastify").FastifyInstance} webServer The web server
- */
-export function addWebRoutes(webServer: import("fastify").FastifyInstance) {
-	webServer.addContentTypeParser("*", (_request, payload, done) => {
-		let data = "";
-		payload.on("data", (chunk) => {
-			data += chunk;
-		});
-		payload.on("end", () => {
-			done(null, data);
-		});
-	});
+class AuthLoginResponse {
+	valid: boolean = false;
+	ticket: string = "";
+	reasonCode: string = "";
+	reasonText: string = "";
+	reasonUrl: string = "";
 
-	webServer.get("/", async (_request, reply) => {
-		return reply.send("Hello, world!");
-	});
-
-	webServer.post(
-		"/games/EA_Seattle/MotorCity/UpdateInfo",
-		(_request, reply) => {
-			const response = CastanetResponse;
-			reply.header(response.header.type, response.header.value);
-			return reply.send(response.body);
-		},
-	);
-
-	webServer.post("/games/EA_Seattle/MotorCity/NPS", (_request, reply) => {
-		const response = CastanetResponse;
-		reply.header(response.header.type, response.header.value);
-		return reply.send(response.body);
-	});
-
-	webServer.post("/games/EA_Seattle/MotorCity/MCO", (_request, reply) => {
-		const response = CastanetResponse;
-		reply.header(response.header.type, response.header.value);
-		return reply.send(response.body);
-	});
-
-	interface IQuerystring {
-		username: string;
-		password: string;
+	static createValid(ticket: string) {
+		const response = new AuthLoginResponse();
+		response.valid = true;
+		response.ticket = ticket;
+		return response;
 	}
 
-	interface IHeaders {}
+	static createInvalid(
+		reasonCode: string,
+		reasonText: string,
+		reasonUrl: string,
+	) {
+		const response = new AuthLoginResponse();
+		response.valid = false;
+		response.reasonCode = reasonCode;
+		response.reasonText = reasonText;
+		response.reasonUrl = reasonUrl;
+		return response;
+	}
 
-	interface IReply {}
-
-	webServer.get<{
-		Querystring: IQuerystring;
-		Headers: IHeaders;
-		Reply: IReply;
-	}>("/AuthLogin", async (request, reply) => {
-		const username = request.query.username;
-
-		if (username === "new") {
-			return reply.send(
-				"Valid=TRUE\nTicket=5213dee3a6bcdb133373b2d4f3b9962758",
-			);
+	formatResponse() {
+		if (this.valid) {
+			return `Valid=TRUE\nTicket=${this.ticket}`;
+		} else {
+			return `reasoncode=${this.reasonCode}\nreasontext=${this.reasonText}\nreasonurl=${this.reasonUrl}`;
 		}
+	}
+}
 
-		return reply.send("Valid=TRUE\nTicket=d316cd2dd6bf870893dfbaaf17f965884e");
-	});
+export class WebRouter {
+	/**
+	 * Handle a request
+	 *
+	 * @param {http.IncomingMessage} request The incoming request
+	 * @param {http.ServerResponse} response The response object
+	 */
+	static handleRequest(
+		request: http.IncomingMessage,
+		response: http.ServerResponse,
+	) {
+		const CastanetRoutes = [
+			"/games/EA_Seattle/MotorCity/UpdateInfo",
+			"/games/EA_Seattle/MotorCity/NPS",
+			"/games/EA_Seattle/MotorCity/MCO",
+		];
 
-	webServer.get("/ShardList/", (_request, reply) => {
-		const config = getServerConfiguration({});
-		return reply.send(generateShardList(config.host));
-	});
+		const url = new URL(
+			`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
+		);
 
-	webServer.get("/cert", (_request, reply) => {
-		const config = getServerConfiguration({});
-		return reply.send(handleGetCert(config));
-	});
+		if (url.pathname === "/") {
+			response.end("Hello, world!");
+		} else if (CastanetRoutes.includes(url.pathname)) {
+			response.setHeader(
+				CastanetResponse.header.type,
+				CastanetResponse.header.value,
+			);
+			response.end(CastanetResponse.body);
+		} else if (url.pathname === "/AuthLogin") {
+			handleAuthLogin(request, response);
+		} else if (url.pathname === "/ShardList/") {
+			const config = getServerConfiguration();
+			response.end(generateShardList(config.host));
+		} else if (url.pathname === "/cert") {
+			const config = getServerConfiguration();
+			response.end(handleGetCert(config));
+		} else if (url.pathname === "/key") {
+			const config = getServerConfiguration();
+			response.end(handleGetKey(config));
+		} else if (url.pathname === "/registry") {
+			const config = getServerConfiguration();
+			response.end(handleGetRegistry(config));
+		} else {
+			response.statusCode = 404;
+			response.end("Not found");
+		}
+	}
+}
 
-	webServer.get("/key", (_request, reply) => {
-		const config = getServerConfiguration({});
-		return reply.send(handleGetKey(config));
-	});
+/**
+ * Handles the authentication login process.
+ *
+ * This function processes an incoming HTTP request to handle user login authentication.
+ * It retrieves the username from the request URL, checks if the user exists, and responds
+ * with an appropriate authentication response.
+ *
+ * @param request - The incoming HTTP request object.
+ * @param response - The HTTP response object to send the authentication response.
+ */
+function handleAuthLogin(
+	request: http.IncomingMessage,
+	response: http.ServerResponse,
+): void {
+	const url = new URL(
+		`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
+	);
+	const username = url.searchParams.get("username") ?? "";
+	const password = url.searchParams.get("password") ?? "";
 
-	webServer.get("/registry", (_request, reply) => {
-		const config = getServerConfiguration({});
-		return reply.send(handleGetRegistry(config));
-	});
+	response.setHeader("Content-Type", "text/plain");
+	let authResponse: AuthLoginResponse;
+	authResponse = AuthLoginResponse.createInvalid(
+		"INV-100",
+		"Opps!",
+		"https://winehq.com",
+	);
+
+	const user = retrieveUserAccount(username, password);
+
+	if (user !== null) {
+		const ticket = generateTicket(user.customerId);
+		if (ticket !== "") {
+			authResponse = AuthLoginResponse.createValid(ticket);
+		}
+	}
+
+	response.end(authResponse.formatResponse());
+}
+const UserAccounts = [
+	{
+		username: "new",
+		ticket: "5213dee3a6bcdb133373b2d4f3b9962758",
+		password: "new",
+		customerId: "123456",
+	},
+	{
+		username: "admin",
+		ticket: "d316cd2dd6bf870893dfbaaf17f965884e",
+		password: "admin",
+		customerId: "654321",
+	},
+];
+
+const AuthTickets = [
+	{
+		ticket: "5213dee3a6bcdb133373b2d4f3b9962758",
+		customerId: "123456",
+	},
+	{
+		ticket: "d316cd2dd6bf870893dfbaaf17f965884e",
+		customerId: "654321",
+	},
+];
+
+/**
+ * Generates a ticket for the given customer ID.
+ *
+ * @param customerId - The ID of the customer for whom the ticket is being generated.
+ * @returns The ticket associated with the given customer ID, or an empty string if no ticket is found.
+ */
+function generateTicket(customerId: string): string {
+	const ticket = AuthTickets.find((t) => t.customerId === customerId);
+	if (ticket) {
+		return ticket.ticket;
+	}
+	return "";
+}
+
+/**
+ * Retrieves a user account based on the provided username and password.
+ *
+ * @param username - The username of the account to retrieve.
+ * @param password - The password of the account to retrieve.
+ * @returns An object containing the username, ticket, and customerId if the account is found, or null if not.
+ */
+function retrieveUserAccount(
+	username: string,
+	password: string,
+): { username: string; ticket: string; customerId: string } | null {
+	const customer = UserAccounts.find(
+		(account) => account.username === username && account.password === password,
+	);
+
+	return customer ?? null;
 }

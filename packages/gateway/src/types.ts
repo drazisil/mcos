@@ -1,12 +1,13 @@
 import type { Socket } from "net";
-import type { Configuration, ServerLogger } from "rusty-motors-shared";
+import { Logger } from "pino";
+import type { Configuration } from "rusty-motors-shared";
 
 /**
  * Options for the GatewayServer.
  */
 export type GatewayOptions = {
 	config?: Configuration;
-	log?: ServerLogger;
+	log?: Logger;
 	backlogAllowedCount?: number;
 	listeningPortList?: number[];
 	socketConnectionHandler?: ({
@@ -14,6 +15,6 @@ export type GatewayOptions = {
 		log,
 	}: {
 		incomingSocket: Socket;
-		log?: ServerLogger;
+		log?: Logger;
 	}) => void;
 };

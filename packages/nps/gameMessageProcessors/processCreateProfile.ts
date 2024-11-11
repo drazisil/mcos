@@ -1,11 +1,10 @@
-import { getServerLogger } from "rusty-motors-shared";
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import { GameProfile } from "../messageStructs/GameProfile.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
 import { addGameProfile } from "../services/profile.js";
 import type { GameSocketCallback } from "./index.js";
-
-const log = getServerLogger();
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processCreateProfile" });
 
 export async function processCreateProfile(
 	connectionId: string,
@@ -13,14 +12,13 @@ export async function processCreateProfile(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.setName("nps:processCreateProfile");
 	// Log the request
-	log.info(`ProcessCreateProfile request: ${message.toString()}`);
+	defaultLogger.info(`ProcessCreateProfile request: ${message.toString()}`);
 
 	const createProfileMessage = GameProfile.fromBytes(message.getDataAsBuffer());
 
 	// Log the request
-	log.info(`ProcessCreateProfile request: ${createProfileMessage.toString()}`);
+	defaultLogger.info(`ProcessCreateProfile request: ${createProfileMessage.toString()}`);
 
 	// Add the profile
 	addGameProfile(createProfileMessage);
@@ -32,9 +30,8 @@ export async function processCreateProfile(
 	response.setData(message.getData());
 
 	// Log the response
-	log.info(`ProcessCreateProfile response: ${response.toString()}`);
+	defaultLogger.info(`ProcessCreateProfile response: ${response.toString()}`);
 
 	socketCallback([response.serialize()]);
-	log.resetName();
 	return Promise.resolve();
 }

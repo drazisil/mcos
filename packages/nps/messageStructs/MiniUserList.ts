@@ -1,4 +1,3 @@
-import type { ISerializable } from "rusty-motors-nps";
 import { putLenString } from "rusty-motors-nps";
 import { BaseSerializable } from "./BaseSerializable.js";
 
@@ -16,7 +15,7 @@ export class MiniUserInfo extends BaseSerializable {
 		this.userName = userName;
 	}
 
-	serialize(): Buffer {
+	override serialize(): Buffer {
 		const buffer = Buffer.alloc(this.getByteSize());
 		let offset = 0;
 		buffer.writeUInt32BE(this.userId, offset);
@@ -24,10 +23,10 @@ export class MiniUserInfo extends BaseSerializable {
 		putLenString(buffer, offset, this.userName, false);
 		return buffer;
 	}
-	getByteSize(): number {
+	override getByteSize(): number {
 		return 4 + 4 + this.userName.length + 1;
 	}
-	toString(): string {
+	override toString(): string {
 		return `MiniUserInfo(userId=${this.userId}, userName=${this.userName})`;
 	}
 }
@@ -45,7 +44,7 @@ export class MiniUserList extends BaseSerializable {
 		this.channelUsers.push(user);
 	}
 
-	serialize(): Buffer {
+	override serialize(): Buffer {
 		const buffer = Buffer.alloc(this.getByteSize());
 		let offset = 0;
 		buffer.writeUInt32BE(this.channelId, offset);
@@ -59,12 +58,12 @@ export class MiniUserList extends BaseSerializable {
 		});
 		return buffer;
 	}
-	getByteSize(): number {
+	override getByteSize(): number {
 		return (
 			16 + this.channelUsers.reduce((acc, user) => acc + user.getByteSize(), 0)
 		);
 	}
-	toString(): string {
+	override toString(): string {
 		return `MiniUserList(channelId=${this.channelId}, channelUsers=${this.channelUsers})`;
 	}
 }

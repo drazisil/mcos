@@ -1,7 +1,9 @@
 import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { OwnedVehicle, OwnedVehiclesMessage } from "./OwnedVehiclesMessage.js";
-import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js"
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getOwnedVehicles" });
 
 const vehicleList = [
 	{
@@ -16,12 +18,12 @@ export function getVehiclesForPerson(personId: number) {
 }
 
 export async function _getOwnedVehicles(
-	args: MessageHandlerArgs,
+	{ connectionId, packet, log = defaultLogger }: MessageHandlerArgs
 ): Promise<MessageHandlerResult> {
 	const getOwnedVehiclesMessage = new GenericRequestMessage();
-	getOwnedVehiclesMessage.deserialize(args.packet.data);
+	getOwnedVehiclesMessage.deserialize(packet.data);
 
-	args.log.debug(`Received Message: ${getOwnedVehiclesMessage.toString()}`);
+	log.debug(`Received Message: ${getOwnedVehiclesMessage.toString()}`);
 
 	const personId = getOwnedVehiclesMessage.data.readUInt32LE(0);
 
@@ -39,10 +41,10 @@ export async function _getOwnedVehicles(
 	ownedVehiclesMessage._msgNo = 173;
 
 	const responsePacket = new OldServerMessage();
-	responsePacket._header.sequence = args.packet._header.sequence;
+	responsePacket._header.sequence = packet._header.sequence;
 	responsePacket._header.flags = 8;
 
 	responsePacket.setBuffer(ownedVehiclesMessage.serialize());
 
-	return { connectionId: args.connectionId, messages: [responsePacket] };
+	return { connectionId, messages: [responsePacket] };
 }

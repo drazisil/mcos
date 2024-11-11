@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import * as Sentry from "@sentry/node";
-import { getServerConfiguration, getServerLogger } from "rusty-motors-shared";
+import { getServerConfiguration  } from "rusty-motors-shared";
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import { SessionKey } from "../messageStructs/SessionKey.js";
 import { UserStatus } from "../messageStructs/UserStatus.js";
@@ -10,8 +10,9 @@ import { UserStatusManager } from "../src/UserStatusManager.js";
 import { getAsHex, getLenString } from "../src/utils/pureGet.js";
 import type { ISerializable } from "../types.js";
 import type { GameSocketCallback } from "./index.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processGameLogin" });
+;
 
 export function loadPrivateKey(path: string): string {
 	const privateKey = fs.readFileSync(path);
@@ -36,8 +37,8 @@ export function unpackUserLoginMessage(message: ISerializable): {
 	gameId: string;
 	contextToken: string;
 } {
-	log.debug("unpackUserLoginMessage called");
-	log.info(`Unpacking user login message: ${getAsHex(message.serialize())}`);
+	defaultLogger.debug("unpackUserLoginMessage called");
+	defaultLogger.info(`Unpacking user login message: ${getAsHex(message.serialize())}`);
 
 	// Get the context token
 	const ticket = getLenString(message.serialize(), 0, false);
@@ -59,12 +60,12 @@ export function unpackUserLoginMessage(message: ISerializable): {
 		.toString("utf8");
 
 	// Load the private key
-	const privateKey = loadPrivateKey(getServerConfiguration({}).privateKeyFile);
+	const privateKey = loadPrivateKey(getServerConfiguration().privateKeyFile);
 
 	// Decrypt the session key
 	const sessionKey = decryptSessionKey(encryptedSessionKey, privateKey);
 
-	log.info(
+	defaultLogger.info(
 		`Decrypted session key: ${getAsHex(Buffer.from(sessionKey, "hex"))}`,
 	);
 
@@ -73,7 +74,7 @@ export function unpackUserLoginMessage(message: ISerializable): {
 		Buffer.from(sessionKey, "hex"),
 	);
 
-	log.info(`Session key structure: ${sessionKeyStructure.toString()}`);
+	defaultLogger.info(`Session key structure: ${sessionKeyStructure.toString()}`);
 
 	// Update the data offset
 	dataOffset += 2 + nextDataLength;
@@ -113,9 +114,9 @@ export async function processGameLogin(
 			op: "processLogin",
 		},
 		() => {
-			log.debug("processGameLogin called");
+			defaultLogger.debug("processGameLogin called");
 
-			log.info(`Login: ${message.toString()}`);
+			defaultLogger.info(`Login: ${message.toString()}`);
 
 			// Unpack the message
 			try {
@@ -124,17 +125,17 @@ export async function processGameLogin(
 				);
 
 				// Log the context token
-				log.info(`Context token: ${contextToken}`);
+				defaultLogger.info(`Context token: ${contextToken}`);
 
 				// Log the session key
-				log.info(`Session key: ${sessionKey}`);
+				defaultLogger.info(`Session key: ${sessionKey}`);
 
 				// Look up the customer id
 				const user = getToken(contextToken);
 
 				// If the user is not found, return an error
 				if (user === undefined) {
-					log.error(`User not found for context token: ${contextToken}`);
+					defaultLogger.error(`User not found for context token: ${contextToken}`);
 
 					// Create a new message - Not found
 					const response = new GameMessage(0);
@@ -164,7 +165,7 @@ export async function processGameLogin(
 				}
 
 				// Log the user
-				log.info(`User: ${user.customerId}`);
+				defaultLogger.info(`User: ${user.customerId}`);
 
 				// Create a new message - Login ACK
 				const loginACK = new GameMessage(0);
@@ -190,7 +191,7 @@ export async function processGameLogin(
 				userStatusMessage.setData(userStatus);
 
 				// Log the message
-				log.info(`UserStatus: ${userStatusMessage.toString()}`);
+				defaultLogger.info(`UserStatus: ${userStatusMessage.toString()}`);
 
 				// Send the message
 				socketCallback([userStatusMessage.serialize()]);

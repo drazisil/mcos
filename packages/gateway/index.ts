@@ -1,4 +1,4 @@
-export { getGatewayServer, Gateway } from "./src/GatewayServer.js";
+export { Gateway } from "./src/GatewayServer.js";
 export {
 	createCommandEncryptionPair,
 	createDataEncryptionPair,

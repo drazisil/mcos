@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import {
-	getServerLogger,
 	SerializedBufferOld,
-	type ServerLogger,
 	type ServiceResponse,
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "LoginServer" });
 
 /**
  * Receives login data and handles the login process.
@@ -37,13 +37,11 @@ import type { BufferSerializer } from "rusty-motors-shared-packets";
 export async function receiveLoginData({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "LoginServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<ServiceResponse> {
 	try {
 		log.debug(`[${connectionId}] Entering login module`);

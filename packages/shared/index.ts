@@ -1,7 +1,5 @@
 export { SubThread } from "./src/SubThread.js";
 export { NetworkMessage } from "./src/NetworkMessage.js";
-export { getServerLogger } from "./src/log.js";
-export type { ServerLogger } from "./src/log.js";
 export { Configuration, getServerConfiguration } from "./src/Configuration.js";
 export { SerializedBuffer } from "./src/SerializedBuffer.js";
 export { SerializedBufferOld } from "./src/SerializedBufferOld.js";

@@ -1,6 +1,8 @@
 import { OldServerMessage } from "rusty-motors-shared";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.logout" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -9,7 +11,7 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 export async function _logout({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	log.debug(`[${connectionId}] Logout request: ${packet.toHexString()}`);
 	// Create new response packet

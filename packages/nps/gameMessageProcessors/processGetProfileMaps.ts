@@ -8,9 +8,8 @@ import {
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
-
-const log = getServerLogger();
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processGetProfileMaps" });
 
 export async function processGetProfileMaps(
 	connectionId: string,
@@ -18,17 +17,16 @@ export async function processGetProfileMaps(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.setName("nps:processGetProfileMaps");
 	// This message is a version 257, but it's version is set to 0
 	// This is a bug in the client, so we need to generate a new message
 	// with the correct version
 	const requestMessage = GameMessage.fromGameMessage(257, message);
 
-	log.info(`GetProfileMaps (257): ${requestMessage.toString()}`);
+	defaultLogger.info(`GetProfileMaps (257): ${requestMessage.toString()}`);
 
 	const customerId = getDWord(requestMessage.getDataAsBuffer(), 0, false);
 
-	log.info(`GetProfileMaps: ${customerId}`);
+	defaultLogger.info(`GetProfileMaps: ${customerId}`);
 
 	// Look up the profiles for the customer ID
 	const profiles = getGameProfilesForCustomerId(customerId);
@@ -40,7 +38,7 @@ export async function processGetProfileMaps(
 	if (profiles) {
 		for (const profile of profiles) {
 			// Log the profile
-			log.info(`GetProfileMaps: ${profile.toString()}`);
+			defaultLogger.info(`GetProfileMaps: ${profile.toString()}`);
 
 			list.addProfile(profile);
 		}
@@ -52,20 +50,19 @@ export async function processGetProfileMaps(
 		outMessage.header.setId(0x607);
 
 		// Log the message data
-		log.info(`GetProfileMaps: ${getAsHex(outMessage.serialize())}`);
+		defaultLogger.info(`GetProfileMaps: ${getAsHex(outMessage.serialize())}`);
 
 		outMessage.setData(list);
 
 		// Log the message
-		log.info(`GetProfileMaps: ${outMessage.toString()}`);
+		defaultLogger.info(`GetProfileMaps: ${outMessage.toString()}`);
 
-		log.info("===========================================");
+		defaultLogger.info("===========================================");
 
 		socketCallback([outMessage.serialize()]);
-		log.resetName();
 		return Promise.resolve();
 	} catch (error) {
-		log.error(`Error sending profile info: ${error as string}`);
+		defaultLogger.error(`Error sending profile info: ${error as string}`);
 		throw new Error("Error sending profile info");
 	}
 }

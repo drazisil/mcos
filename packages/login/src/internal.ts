@@ -14,9 +14,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { type ServerLogger, type UserRecordMini } from "rusty-motors-shared";
+import { type UserRecordMini } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { login } from "./login.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "LoginServer" });
+
 
 export const userRecords: UserRecordMini[] = [
 	{
@@ -52,7 +55,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: SerializedBufferOld;
-		log: ServerLogger;
+		log: Logger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];

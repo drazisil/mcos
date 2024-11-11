@@ -77,11 +77,13 @@ export async function updateSessionKey(
 		contextId,
 		connectionId,
 	};
+
 	const record = _sessions.findIndex((session) => {
 		return session.customerId === customerId;
 	});
 
 	_sessions.splice(record, 1, updatedSession);
+
 	return Promise.resolve();
 }
 

@@ -2,9 +2,7 @@
   "name": "rusty-motors-chat",
   "version": "1.0.0-next.0",
   "exports": {
-    ".": {
-      "import": "./index.js"
-    }
+    ".": "./index.js"
   },
   "scripts": {
     "check": "tsc",
@@ -12,7 +10,7 @@
     "format": "npx @biomejs/biome format --write .",
     "test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage"
   },
-  "type": "module",
+  "type": "commonjs",
   "keywords": [],
   "author": "",
   "license": "ISC",

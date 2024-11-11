@@ -1,19 +1,19 @@
-import { getServerLogger, ServerMessage } from "rusty-motors-shared";
+import { ServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import {
 	PlayerRacingHistoryMessage,
-	RacingHistoryRecordEntry,
 } from "./PlayerRacingHistoryMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getRacingHistoryRecords } from "./database/racingHistoryRecords.js";
 import { GenericReplyPayload } from "rusty-motors-shared-packets";
+import pino from "pino";
+const defaultLogger = pino({ name: "transactionServer._getPlayerRaceHistory" });
+
 
 export async function _getPlayerRaceHistory({
 	connectionId,
 	packet,
-	log = getServerLogger({
-		name: "transactions._getPlayerRaceHistory",
-	}),
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	log.debug(`[${connectionId}] Handling _getPlayerRaceHistory...`);
 
@@ -29,7 +29,7 @@ export async function _getPlayerRaceHistory({
 	const racingHistoryRecords = getRacingHistoryRecords(playerId);
 
 	const reply = new GenericReplyPayload();
-	reply.messageId = 0x101; // MC_SUCCESS
+	reply.setMessageId(0x101); // MC_SUCCESS
 	reply.msgReply = 362; // 0x16A
 
 	const playerRacingHistoryMessage = new PlayerRacingHistoryMessage();

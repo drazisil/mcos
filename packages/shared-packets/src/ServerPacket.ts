@@ -131,7 +131,7 @@ export class ServerPacket extends BasePacket implements SerializableMessage {
 		}
 	}
 
-	override deserialize(data: Buffer): ServerPacket {
+	override deserialize(data: Buffer): ThisType<ServerPacket> {
 		this._assertEnoughData(data, this.header.getByteSize());
 
 		this.header.deserialize(data);

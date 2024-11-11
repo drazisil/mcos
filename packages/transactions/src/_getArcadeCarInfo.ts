@@ -2,6 +2,8 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { ArcadeCarInfo, ArcadeCarMessage } from "./ArcadeCarMessage.js";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getArcadeCarInfo" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -10,7 +12,7 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 export async function _getArcadeCarInfo({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getArcadeCarInfoMessage = new GenericRequestMessage();
 	getArcadeCarInfoMessage.deserialize(packet.data);

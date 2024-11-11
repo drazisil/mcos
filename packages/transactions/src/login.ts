@@ -6,6 +6,8 @@ import {
 	LoginPayload,
 	ServerPacket,
 } from "rusty-motors-shared-packets";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.login" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -14,7 +16,7 @@ import {
 export async function login({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	// Normalize the packet
 	const incomingPacket = new ServerPacket();
@@ -33,7 +35,7 @@ export async function login({
 
 	// Create new response packet
 	const response = new LoginCompletePayload();
-	response.messageId = 213;
+	response.setMessageId(213);
 	response.serverTime = Math.floor(Date.now() / 1000);
 	response.firstTime = true;
 	response.clubInvitesWaiting = false;

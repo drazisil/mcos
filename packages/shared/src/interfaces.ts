@@ -2,7 +2,7 @@
  * @module interfaces
  */
 
-import type { ServerLogger } from "./log.js";
+import { Logger } from "pino";
 import type { SerializedBufferOld } from "./SerializedBufferOld.js";
 
 export const name = "interfaces";
@@ -64,7 +64,7 @@ export interface RaceLobbyRecord {
 export interface ServiceArgs {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log: ServerLogger;
+	log: Logger;
 }
 
 export interface KeypressEvent {

@@ -11,10 +11,12 @@ import {
 	getEncryption,
 } from "rusty-motors-shared";
 import { OldServerMessage } from "rusty-motors-shared";
-import { GenericReply, GenericReplyMessage } from "./GenericReplyMessage.js";
+import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import { TClientConnectMessage } from "./TClientConnectMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.clientConnect" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -23,7 +25,7 @@ import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
 export async function clientConnect({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	/**
 	 * Let's turn it into a ClientConnectMsg

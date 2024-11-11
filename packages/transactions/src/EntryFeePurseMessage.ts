@@ -88,7 +88,7 @@ export class PurseEntry extends SerializedBufferOld {
 	 *
 	 * @param {Buffer} data
 	 */
-	deserialize(data: Buffer) {
+	override deserialize(data: Buffer) {
 		if (data.length !== this.size()) {
 			throw Error(
 				`PurseEntry.deserialize() expected ${this.size()} bytes but got ${

@@ -1,17 +1,16 @@
-import { type ServerLogger } from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PersonaServer" });
+
 
 export async function handleTrackingPing({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "Lobby",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

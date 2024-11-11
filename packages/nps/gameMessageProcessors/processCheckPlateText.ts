@@ -1,11 +1,10 @@
-import { getServerLogger } from "rusty-motors-shared";
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
 import { getLenString } from "../src/utils/pureGet.js";
 import { sendNPSAck } from "../src/utils/sendNPSAck.js";
 import type { GameSocketCallback } from "./index.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processCheckPlateText" });
 
 export async function processCheckPlateText(
 	connectionId: string,
@@ -13,12 +12,12 @@ export async function processCheckPlateText(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.info("processCheckPlateText called");
+	defaultLogger.info("processCheckPlateText called");
 	const plateType = message.getDataAsBuffer().readUInt32BE(0);
 
 	const requestedPlateText = getLenString(message.getDataAsBuffer(), 4, false);
 
-	log.info(
+	defaultLogger.info(
 		`Requested plate text: ${requestedPlateText} for plate type ${plateType}`,
 	);
 

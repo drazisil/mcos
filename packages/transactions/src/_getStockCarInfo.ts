@@ -3,6 +3,8 @@ import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { StockCar } from "./StockCar.js";
 import { StockCarInfoMessage } from "./StockCarInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getStockCarInfo" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -11,7 +13,7 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 export async function _getStockCarInfo({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getStockCarInfoMessage = new GenericRequestMessage();
 	getStockCarInfoMessage.deserialize(packet.data);

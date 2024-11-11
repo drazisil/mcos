@@ -1,12 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { getServerLogger } from "rusty-motors-shared";
 import { CastanetResponse, PatchServer } from "../src/PatchServer.js";
 
 describe("PatchServer", () => {
 	it("should return the hard-coded value that tells the client there are no updates or patches", () => {
 		// Arrange
-		const log = getServerLogger({ name: "Patch" });
-		const patchServer = PatchServer.getInstance(log);
+		const patchServer = PatchServer.getInstance();
 		const request = {
 			socket: {
 				remoteAddress: "",

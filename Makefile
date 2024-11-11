@@ -28,14 +28,15 @@ test:
 # DATABASE_URL environment variable.
 	@DATABASE_URL=$$(npx pg-test start) && \
 	echo "Testing with DATABASE_URL=$$DATABASE_URL" && \
-	DATABASE_URL=$$DATABASE_URL pnpm migrate && \
+	DATABASE_URL=$$DATABASE_URL && \
+	GOOSE_DRIVER=postgres GOOSE_DBSTRING=$$DATABASE_URL vendor/goose -dir migrations up && \
 	DATABASE_URL=$$DATABASE_URL pnpm test
 	@npx pg-test stop
 
 
 
 start:
-	@pnpx tsx --import ./instrument.mjs --openssl-legacy-provider --env-file=.env server.ts  | tee server.log
+	@pnpx tsx --import ./instrument.mjs --openssl-legacy-provider --env-file=.env src/server.ts
 
 prod_node:
 	docker-compose --file docker-compose.yml up -d --build
@@ -58,4 +59,11 @@ clean:
 	@rm -rf node_modules
 	@rm -rf dist
 
-.PHONY: all certs test build start prod_node up down enable-node docker-init clean
+migration-up:
+	vendor/goose --dir ./migrations up
+
+install:
+	@pnpm install
+	npx dotenvx run -- make migration-up
+
+.PHONY: all certs test build start prod_node up down enable-node docker-init clean install

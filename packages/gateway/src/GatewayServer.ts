@@ -1,22 +1,15 @@
 import { Socket, createServer as createSocketServer } from "node:net";
-import FastifySensible from "@fastify/sensible";
-import fastify from "fastify";
-import { ConsoleThread } from "rusty-motors-cli";
-import {
-	Configuration,
-	getServerConfiguration,
-	type ServerLogger,
-} from "rusty-motors-shared";
-import {
-	createInitialState,
-} from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
+import { Configuration, getServerConfiguration } from "rusty-motors-shared";
+import { createInitialState } from "rusty-motors-shared";
 import { onSocketConnection } from "./index.js";
-import { addWebRoutes } from "./web.js";
+import { WebRouter } from "./web.js";
 import type { GatewayOptions } from "./types.js";
 import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
 import { mcotsPortRouter } from "./mcotsPortRouter.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "GatewayServer" });
+import http from "node:http";
 
 /**
  * Gateway server
@@ -24,7 +17,7 @@ import { mcotsPortRouter } from "./mcotsPortRouter.js";
  */
 export class Gateway {
 	config: Configuration;
-	log: ServerLogger;
+	log: Logger;
 	timer: NodeJS.Timeout | null;
 	loopInterval: number;
 	status: string;
@@ -37,20 +30,16 @@ export class Gateway {
 		log,
 	}: {
 		incomingSocket: Socket;
-		log?: ServerLogger;
+		log?: Logger;
 	}) => void;
-	static _instance: Gateway | undefined;
-	webServer: import("fastify").FastifyInstance | undefined;
-	readThread: ConsoleThread | undefined;
+	webServer: http.Server;
 	/**
 	 * Creates an instance of GatewayServer.
 	 * @param {GatewayOptions} options
 	 */
 	constructor({
-		config = getServerConfiguration({}),
-		log = getServerLogger({
-			name: "GatewayServer",
-		}),
+		config = getServerConfiguration(),
+		log = defaultLogger,
 		backlogAllowedCount = 0,
 		listeningPortList = [],
 		socketConnectionHandler = onSocketConnection,
@@ -71,65 +60,51 @@ export class Gateway {
 		this.activeServers = [];
 		this.socketconnection = socketConnectionHandler;
 
-		Gateway._instance = this;
+		this.webServer = http.createServer(WebRouter.handleRequest);
 	}
 
-	start() {
-		this.log.debug("Starting GatewayServer in start()");
-		this.log.info("Server starting");
-
-		// Check if there are any listening ports specified
-		this.ensureListeningPortsSpecified();
-
-		// Mark the GatewayServer as running
-		this.log.debug("Marking GatewayServer as running");
-		this.status = "running";
-
+	/**
+	 * Starts the GatewayServer.
+	 * 
+	 * This method initializes the server, starts new servers on the specified ports,
+	 * and sets up the web server connection. If the web server is not defined, it throws an error.
+	 * Finally, it updates the server status to "running".
+	 * 
+	 * @throws {Error} If the web server is undefined.
+	 */
+	start(): void {
 		// Initialize the GatewayServer
 		this.init();
 
 		this.listeningPortList.forEach(async (port) => {
-			this.startNewServer(port);
+			this.startNewServer(port, this.socketconnection);
 		});
 
-		this.startWebServer();
-	}
-
-	private startWebServer() {
 		if (this.webServer === undefined) {
 			throw Error("webServer is undefined");
 		}
+		this.startNewServer(3000, ({ incomingSocket }) => {
+			this.webServer.emit("connection", incomingSocket);
+		});
 
-		// Start the web server
-		addWebRoutes(this.webServer);
-
-		this.webServer.listen(
-			{
-				host: "0.0.0.0",
-				port: 3000,
-			},
-			(err, address) => {
-				if (err) {
-					this.log.fatal((err as Error).message);
-					process.exit(1);
-				}
-				this.log.info(`Server listening at ${address}`);
-			},
-		);
+		this.status = "running";
 	}
 
-	private ensureListeningPortsSpecified() {
-		if (this.listeningPortList.length === 0) {
-			throw Error("No listening ports specified");
-		}
-	}
-
-	private startNewServer(port: number) {
+	/**
+	 * Starts a new server on the specified port and sets up a socket connection handler.
+	 *
+	 * @param port - The port number on which the server will listen.
+	 * @param socketConnectionHandler - A callback function that handles incoming socket connections.
+	 * @param socketConnectionHandler.incomingSocket - The incoming socket connection.
+	 */
+	private startNewServer(
+		port: number,
+		socketConnectionHandler: ({
+			incomingSocket,
+		}: { incomingSocket: Socket }) => void,
+	) {
 		const server = createSocketServer((s) => {
-			this.socketconnection({
-				incomingSocket: s,
-				log: this.log,
-			});
+			socketConnectionHandler({ incomingSocket: s });
 		});
 
 		// Listen on the specified port
@@ -141,17 +116,15 @@ export class Gateway {
 		this.activeServers.push(server);
 	}
 
-	async restart() {
-		// Stop the GatewayServer
-		await this.stop();
-
-		console.log("=== Restarting... ===");
-
-		// Start the GatewayServer
-		this.start();
-	}
-
-	async exit() {
+	/**
+	 * Gracefully stops the GatewayServer and exits the process.
+	 * 
+	 * This method first stops the GatewayServer by calling the `stop` method,
+	 * and then exits the Node.js process with a status code of 0.
+	 * 
+	 * @returns {Promise<void>} A promise that resolves when the server has stopped and the process has exited.
+	 */
+	async exit(): Promise<void> {
 		// Stop the GatewayServer
 		await this.stop();
 
@@ -159,7 +132,19 @@ export class Gateway {
 		process.exit(0);
 	}
 
-	async stop() {
+	/**
+	 * Stops the GatewayServer.
+	 * 
+	 * This method performs the following actions:
+	 * 1. Marks the GatewayServer as stopping.
+	 * 2. Stops the servers by calling `shutdownServers`.
+	 * 3. Stops the timer if it is running.
+	 * 4. Marks the GatewayServer as stopped.
+	 * 5. Resets the global state by creating and saving the initial state.
+	 * 
+	 * @returns {Promise<void>} A promise that resolves when the server has been stopped.
+	 */
+	async stop(): Promise<void> {
 		// Mark the GatewayServer as stopping
 		this.log.debug("Marking GatewayServer as stopping");
 		this.status = "stopping";
@@ -181,148 +166,40 @@ export class Gateway {
 		createInitialState({}).save();
 	}
 
+	/**
+	 * Shuts down all active servers and emits a close event on the web server.
+	 * 
+	 * @throws {Error} If the webServer is undefined.
+	 * @private
+	 * @async
+	 */
 	private async shutdownServers() {
+		this.log.info("Shutting down servers");
 		this.activeServers.forEach((server) => {
 			server.close();
 		});
 
-		// Stop the read thread
-		if (this.readThread !== undefined) {
-			this.readThread.stop();
-		}
-
 		if (this.webServer === undefined) {
 			throw Error("webServer is undefined");
 		}
-		await this.webServer.close();
+		this.webServer.emit("close");
 	}
 
 	/**
-	 * @param {string} event
+	 * Initializes the GatewayServer by setting up the web server and registering routes.
+	 *
+	 * - Creates a Fastify web server instance.
+	 * - Registers the FastifySensible plugin for additional utilities.
+	 * - Adds port routers for various ports to handle incoming requests.
+	 * - Sets up a signal handler to gracefully exit on SIGINT.
 	 */
-	handleReadThreadEvent(event: string) {
-		if (event === "userExit") {
-			this.exit();
-		}
-		if (event === "userRestart") {
-			this.restart();
-		}
-		if (event === "userHelp") {
-			this.help();
-		}
-	}
-
-	init() {
-		// Create the read thread
-		this.readThread = new ConsoleThread({
-			parentThread: this,
-			log: this.log,
-		});
-
-		// Register the read thread events
-		if (this.readThread === undefined) {
-			throw Error("readThread is undefined");
-		}
-		this.consoleEvents.forEach((event) => {
-			this.readThread?.on(event, () => {
-				this.handleReadThreadEvent(event);
-			});
-		});
-
-		this.webServer = fastify({});
-		this.webServer.register(FastifySensible);
-
+	private init() {
 		addPortRouter(8226, npsPortRouter);
 		addPortRouter(8227, npsPortRouter);
 		addPortRouter(8228, npsPortRouter);
 		addPortRouter(7003, npsPortRouter);
 		addPortRouter(43300, mcotsPortRouter);
 
-		this.log.debug("GatewayServer initialized");
+		process.on("SIGINT", this.exit.bind(this));
 	}
-
-	help() {
-		console.log("=== Help ===");
-		console.log("x: Exit");
-		console.log("r: Restart");
-		console.log("?: Help");
-		console.log("============");
-	}
-	run() {
-		// Intentionally left blank
-	}
-
-	/**
-	 *
-	 * @param {GatewayOptions} options
-	 * @returns {Gateway}
-	 * @memberof Gateway
-	 */
-	static getInstance({
-		config = undefined,
-		log = getServerLogger({
-			name: "GatewayServer",
-		}),
-		backlogAllowedCount = 0,
-		listeningPortList = [],
-		socketConnectionHandler = onSocketConnection,
-	}: GatewayOptions): Gateway {
-		if (Gateway._instance === undefined) {
-			Gateway._instance = new Gateway({
-				config,
-				log,
-				backlogAllowedCount,
-				listeningPortList,
-				socketConnectionHandler,
-			});
-		}
-		return Gateway._instance;
-	}
-
-	shutdown() {
-		this.log.debug("Shutdown complete for GatewayServer");
-		this.status = "stopped";
-		this.log.info("Server stopped");
-
-		process.exit(0);
-	}
-}
-
-/** @type {Gateway | undefined} */
-Gateway._instance = undefined;
-
-/**
- * Get a singleton instance of GatewayServer
- *
- * @param {GatewayOptions} options
- * @returns {Gateway}
- */
-export function getGatewayServer({
-	config,
-	log = getServerLogger({
-		name: "GatewayServer",
-	}),
-	backlogAllowedCount = 0,
-	listeningPortList: listeningPortList = [],
-	socketConnectionHandler = onSocketConnection,
-}: {
-	config?: Configuration;
-	log?: ServerLogger;
-	backlogAllowedCount?: number;
-	listeningPortList?: number[];
-	socketConnectionHandler?: ({
-		incomingSocket,
-		log,
-	}: {
-		incomingSocket: Socket;
-		log?: ServerLogger;
-	}) => void;
-}): Gateway {
-	return Gateway.getInstance({
-		config,
-		log,
-		backlogAllowedCount,
-		listeningPortList,
-		socketConnectionHandler,
-	});
 }

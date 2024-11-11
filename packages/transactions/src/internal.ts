@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import pino, { Logger } from "pino";
+
 import {
-	getServerConfiguration,
 	McosEncryption,
 	SerializedBufferOld,
-	type ServerLogger,
 	type State,
 } from "rusty-motors-shared";
 import {
@@ -26,7 +26,6 @@ import {
 	getEncryption,
 	updateEncryption,
 } from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
 import { OldServerMessage } from "rusty-motors-shared";
 import { messageHandlers, type MessageHandlerResult } from "./handlers.js";
 import {
@@ -34,6 +33,8 @@ import {
 	type BufferSerializer,
 } from "rusty-motors-shared-packets";
 import { _MSG_STRING } from "./_MSG_STRING.js";
+const defaultLogger = pino({ name: "transactionServer" });
+
 
 /**
  * Route or process MCOTS commands
@@ -43,13 +44,11 @@ import { _MSG_STRING } from "./_MSG_STRING.js";
 async function processInput({
 	connectionId,
 	inboundMessage,
-	log = getServerLogger({
-		name: "transactionServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	inboundMessage: ServerPacket;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<MessageHandlerResult> {
 	const currentMessageNo = inboundMessage.getMessageId();
 	const currentMessageString = _MSG_STRING(currentMessageNo);
@@ -75,7 +74,7 @@ async function processInput({
 			});
 			return responsePackets;
 		} catch (error) {
-			const err = Error(`[${connectionId}] Error processing message`, {
+			const err = Error(`[${connectionId}] Error processing message ${error}`, {
 				cause: error,
 			});
 			throw err;
@@ -100,14 +99,11 @@ async function processInput({
 export async function receiveTransactionsData({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "transactionServer.receiveTransactionsData",
-		level: getServerConfiguration({}).logLevel ?? "info",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
@@ -233,9 +229,7 @@ function decryptMessage(
 	encryptionSettings: McosEncryption,
 	inboundMessage: ServerPacket,
 	state: State,
-	log: ServerLogger = getServerLogger({
-		name: "transactionServer.decryptMessage",
-	}),
+	log: Logger = defaultLogger,
 	connectionId: string,
 ): ServerPacket {
 	try {
@@ -272,7 +266,7 @@ function encryptOutboundMessage(
 	encryptionSettings: McosEncryption,
 	unencryptedMessage: ServerPacket,
 	state: State,
-	log: ServerLogger,
+	log: Logger,
 	connectionId: string,
 ): ServerPacket {
 	try {

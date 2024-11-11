@@ -1,8 +1,8 @@
 import type { ISerializable } from "rusty-motors-nps";
 import { getAsHex } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
+import pino from "pino";
+const defaultLogger = pino({ name: "UserAction" });
 
-const log = getServerLogger({});
 
 export class UserAction implements ISerializable {
 	private name: string;
@@ -35,7 +35,7 @@ export class UserAction implements ISerializable {
 
 			return buffer;
 		} catch (error: unknown) {
-			log.error(`Error serializing UserAction: ${error as string}`);
+			defaultLogger.error(`Error serializing UserAction: ${error as string}`);
 			throw error;
 		}
 	}
@@ -48,7 +48,7 @@ export class UserAction implements ISerializable {
 			this._startComment = data.toString("utf8", 0x46, 0x146);
 			this._endComment = data.toString("utf8", 0x146, 0x246);
 		} catch (error) {
-			log.error(`Error deserializing UserAction: ${error as string}`);
+			defaultLogger.error(`Error deserializing UserAction: ${error as string}`);
 			throw error;
 		}
 	}

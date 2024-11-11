@@ -5,10 +5,9 @@ import { SessionKey } from "../messageStructs/SessionKey.js";
 import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
-import { getServerLogger } from "rusty-motors-shared";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processDeleteProfile" });
 
 export function loadPrivateKey(path: string): string {
 	const privateKey = fs.readFileSync(path);
@@ -92,9 +91,9 @@ export async function processDeleteProfile(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.debug("processDeleteProfile called");
+	defaultLogger.debug("processDeleteProfile called");
 	// Log the message
-	log.info(`Delete profile request: ${message.toString()}`);
+	defaultLogger.info(`Delete profile request: ${message.toString()}`);
 
 	// TODO: Delete the profile
 

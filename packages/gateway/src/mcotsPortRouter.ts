@@ -1,10 +1,13 @@
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
 import type { TaggedSocket } from "./socketUtility.js";
 import {
 	ServerPacket,
 	type SerializableInterface,
 } from "rusty-motors-shared-packets";
 import { receiveTransactionsData } from "rusty-motors-transactions";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "GatewayServer" });
+import * as Sentry from "@sentry/node";
+
 
 /**
  * Handles the routing of messages for the MCOTS (Motor City Online Transaction Server) ports.
@@ -14,12 +17,10 @@ import { receiveTransactionsData } from "rusty-motors-transactions";
 
 export async function mcotsPortRouter({
 	taggedSocket,
-	log = getServerLogger({
-		name: "gatewayServer.mcotsPortRouter",
-	}),
+	log = defaultLogger,
 }: {
 	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<void> {
 	const { socket, id } = taggedSocket;
 
@@ -34,23 +35,26 @@ export async function mcotsPortRouter({
 	log.debug(`[${taggedSocket.id}] MCOTS port router started for port ${port}`);
 
 	// Handle the socket connection here
-	socket.on("data", (data) => {
+	socket.on("data", async (data) => {
 		try {
 			log.debug(`[${id}] Received data: ${data.toString("hex")}`);
 			const initialPacket = parseInitialMessage(data);
 			log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
 			log.debug(`[${id}] initial Packet(hex): ${initialPacket.toHexString()}`);
-			routeInitialMessage(id, port, initialPacket)
+			await routeInitialMessage(id, port, initialPacket)
 				.then((response) => {
 					// Send the response back to the client
 					log.debug(`[${id}] Sending response: ${response.toString("hex")}`);
 					socket.write(response);
 				})
 				.catch((error) => {
-					log.error(`[${id}] Error routing initial message: ${error}`);
+					throw new Error(`[${id}] Error routing initial mcots message: ${error}`, {
+						cause: error,
+					});
 				});
 		} catch (error) {
-			log.error(`[${id}] Error parsing initial message: ${error}`);
+			Sentry.captureException(error);
+			log.error(`[${id}] Error handling data: ${error}`);
 		}
 	});
 
@@ -73,7 +77,7 @@ async function routeInitialMessage(
 	id: string,
 	port: number,
 	initialPacket: ServerPacket,
-	log = getServerLogger({ name: "gatewayServer.routeInitialMessage" }),
+	log = defaultLogger,
 ): Promise<Buffer> {
 	// Route the initial message to the appropriate handler
 	// Messages may be encrypted, this will be handled by the handler

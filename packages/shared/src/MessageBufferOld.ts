@@ -84,7 +84,7 @@ export class MessageBufferOld extends SerializedBufferOld {
 	 * @param {Buffer} buffer
 	 * @returns {MessageBufferOld}
 	 */
-	deserialize(buffer: Buffer): MessageBufferOld {
+	override deserialize(buffer: Buffer): MessageBufferOld {
 		this._header.deserialize(buffer.subarray(0, 8));
 		if (buffer.length < 4 + this._header.messageLength) {
 			throw Error(`Buffer length ${buffer.length} is too short to deserialize`);

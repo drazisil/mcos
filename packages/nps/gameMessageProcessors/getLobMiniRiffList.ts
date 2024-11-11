@@ -4,17 +4,16 @@ import {
 	MiniRiffList,
 	getAsHex,
 } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.getLobMiniRiffList" });
 
 // Command id: 0x30c
 export async function getLobMiniRiffList(
 	commandId: number,
 	data: Buffer,
 ): Promise<Buffer> {
-	log.debug("getLobMiniRiffList called");
-	log.info(`Processing getLobMiniRiffList command: ${getAsHex(data)}`);
+	defaultLogger.debug("getLobMiniRiffList called");
+	defaultLogger.info(`Processing getLobMiniRiffList command: ${getAsHex(data)}`);
 
 	const riffList = new MiniRiffList();
 
@@ -22,15 +21,15 @@ export async function getLobMiniRiffList(
 	riffList.addRiff(new MiniRiffInfo("MC141", 141, 0));
 	riffList.addRiff(new MiniRiffInfo("MCCHAT", 191, 0));
 
-	log.info(`getLobMiniRiffList: ${riffList.toString()}`);
+	defaultLogger.info(`getLobMiniRiffList: ${riffList.toString()}`);
 
 	const responseMessage = new GameMessage(0);
 	responseMessage.header.setId(0x404);
 	responseMessage.setData(riffList);
 
-	log.info("Dumping responseMessage: ");
+	defaultLogger.info("Dumping responseMessage: ");
 
-	log.info(
+	defaultLogger.info(
 		`responseMessage: ${
 			responseMessage.serialize().length
 		} bytes - ${getAsHex(responseMessage.serialize())}`,

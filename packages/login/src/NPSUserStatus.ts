@@ -1,8 +1,11 @@
 import { privateDecrypt } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-import { Configuration, type ServerLogger } from "rusty-motors-shared";
+import { Configuration,  } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "nps.NPSUserStatus" });
+
 
 /**
  * @typedef {import("../../shared/Configuration.js").Configuration} Configuration
@@ -31,7 +34,7 @@ import { LegacyMessage } from "rusty-motors-shared";
 
 export class NPSUserStatus extends LegacyMessage {
 	_config: Configuration;
-	log: ServerLogger;
+	log: Logger;
 	sessionKey: string;
 	opCode: number;
 	contextId: string;
@@ -42,7 +45,7 @@ export class NPSUserStatus extends LegacyMessage {
 	 * @param {Configuration} config
 	 * @param {import("pino").Logger} log
 	 */
-	constructor(packet: Buffer, config: Configuration, log: ServerLogger) {
+	constructor(packet: Buffer, config: Configuration, log: Logger) {
 		super();
 		this._config = config;
 		this.log = log;

@@ -1,8 +1,7 @@
-import { getServerLogger } from "rusty-motors-shared";
 import { ServerMessagePayload } from "rusty-motors-shared-packets";
 import { readStringFromBuffer } from "./utils.js";
-
-const log = getServerLogger({});
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "mcots.ClientConnectionMessage" });
 
 export class ClientConnectionMessage extends ServerMessagePayload {
 	private _customerId: number = 0; // 4 bytes
@@ -39,7 +38,7 @@ export class ClientConnectionMessage extends ServerMessagePayload {
 
 			return this;
 		} catch (error) {
-			log.error(
+			defaultLogger.error(
 				`Error deserializing ClientTrackingMessage: ${error as string}`,
 			);
 			throw error;

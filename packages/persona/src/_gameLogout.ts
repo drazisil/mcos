@@ -1,6 +1,8 @@
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+
 
 /**
  * Handle game logout
@@ -17,13 +19,11 @@ import { LegacyMessage } from "rusty-motors-shared";
 export async function _gameLogout({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "persona",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

@@ -5,7 +5,7 @@ export class ServerMessagePayload
 	extends BufferSerializer
 	implements SerializableInterface
 {
-	private messageId: number = 0; // 2 bytes	
+	protected messageId: number = 0; // 2 bytes	
 	private previousMessageId: number = 0; // Not serialized
 	private isEncrypted: boolean = false; // Not serialized
 

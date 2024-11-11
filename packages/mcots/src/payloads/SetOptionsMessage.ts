@@ -49,8 +49,10 @@ export class SetOptionsMessage extends ServerMessagePayload {
 
 			return this;
 		} catch (error) {
-			log.error(`Error deserializing SetOptionsMessage: ${error as string}`);
-			throw error;
+			throw new Error(`Error deserializing SetOptionsMessage: ${error as string}`,
+				{
+					cause: error,
+				});
 		}
 	}
 

@@ -1,5 +1,4 @@
 import {
-	getServerLogger,
 	SerializedBufferOld,
 	type ServiceResponse,
 } from "rusty-motors-shared";
@@ -11,10 +10,13 @@ import {
 } from "./inGameEmails.js";
 import { bufferToHexString } from "./toHexString.js";
 import * as Sentry from "@sentry/node";
+import pino from "pino";
+const defaultLogger = pino({ name: "chat.receiveChatData" });
 
 const handlers = new Map<number, (message: ChatMessage) => Buffer[]>();
 handlers.set(0x0524, handleReceiveEmailMessage);
 handlers.set(0x0526, handleListInGameEmailsMessage);
+
 
 /**
  * Receive chat data
@@ -30,10 +32,8 @@ async function receiveChatData({
 	connectionId: string;
 	message: BufferSerializer;
 }): Promise<ServiceResponse> {
-	const log = getServerLogger({ name: "chat.receiveChatData" });
-
-	log.info(`Received chat data from connection ${connectionId}`);
-	log.debug(`Message: ${message.toHexString()}`);
+	defaultLogger.info(`Received chat data from connection ${connectionId}`);
+	defaultLogger.debug(`Message: ${message.toHexString()}`);
 
 	let inboundMessage: ChatMessage;
 	
@@ -43,25 +43,25 @@ async function receiveChatData({
 		const err = new Error(`[${connectionId}] Error deserializing message`, {
 			cause: error,
 		});
-		log.error(err.message);
+		defaultLogger.error(err.message);
 		Sentry.captureException(err);
 		return {
 			connectionId,
 			messages: [],
 		};
 	}
-	log.debug(`Deserialized message: ${inboundMessage.toString()}`);
+	defaultLogger.debug(`Deserialized message: ${inboundMessage.toString()}`);
 
 	const id = inboundMessage.messageId;
 
-	log.debug(`Message ID: ${id}`);
+	defaultLogger.debug(`Message ID: ${id}`);
 
 	const handler = handlers.get(id);
 
 	if (handler) {
-		log.debug(`Handling message with ID ${id}`);
+		defaultLogger.debug(`Handling message with ID ${id}`);
 		const responses = handler(inboundMessage);
-		log.debug(
+		defaultLogger.debug(
 			`Responses: ${responses.map((response) => bufferToHexString(response))}`,
 		);
 		const messages = responses.map((response) => {

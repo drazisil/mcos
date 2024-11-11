@@ -1,11 +1,9 @@
-import { getServerLogger, OldServerMessage } from "rusty-motors-shared";
+import {  OldServerMessage } from "rusty-motors-shared";
 import { EntryFeePurseMessage, PurseEntry } from "./EntryFeePurseMessage.js";
 import { LobbyInfo, LobbyMessage } from "./LobbyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-
-const log = getServerLogger({
-	name: "transactions.getLobbies",
-});
+import pino from "pino";
+const defaultLogger = pino({ name: "transactionServer.getLobbies" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -16,9 +14,9 @@ async function _getLobbies({
 	connectionId,
 	packet,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
-	log.debug(`[${connectionId}] Received getLobbies packet ${packet.toString()}`);
+	defaultLogger.debug(`[${connectionId}] Received getLobbies packet ${packet.toString()}`);
 
-	log.debug(`[${connectionId}] Sending lobbies response...`);
+	defaultLogger.debug(`[${connectionId}] Sending lobbies response...`);
 
 	// Create new response packet
 	const lobbiesResponsePacket = new OldServerMessage();
@@ -35,11 +33,11 @@ async function _getLobbies({
 	lobby._topDog = "Drazi Crendraven";
 	lobby._maxNumberPlayers = 8;
 
-	log.debug(`[${connectionId}] Sending lobby: ${lobby.toString()}`);
+	defaultLogger.debug(`[${connectionId}] Sending lobby: ${lobby.toString()}`);
 
 	lobbyResponse.addLobby(lobby);
 
-	log.debug(`[${connectionId}] Sending lobbyResponse: ${lobbyResponse.toString()}`
+	defaultLogger.debug(`[${connectionId}] Sending lobbyResponse: ${lobbyResponse.toString()}`
 	);
 
 	lobbiesResponsePacket.setBuffer(lobbyResponse.serialize());
@@ -54,7 +52,7 @@ async function _getLobbies({
 	perseEntryResponse._shouldExpectMoreMessages = false;
 	perseEntryResponse.addEntry(purseEntry);
 
-	log.debug(`[${connectionId}] Sending purseEntryResponse: ${perseEntryResponse.toString()}`);
+	defaultLogger.debug(`[${connectionId}] Sending purseEntryResponse: ${perseEntryResponse.toString()}`);
 
 	const perseEntriesResponsePacket = new OldServerMessage();
 	perseEntriesResponsePacket._header.sequence = packet._header.sequence;
@@ -74,7 +72,7 @@ async function _getLobbies({
 export async function getLobbies({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const result = await _getLobbies({ connectionId, packet, log });
 	log.debug("Dumping Lobbies response packet...");

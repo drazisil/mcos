@@ -1,11 +1,12 @@
-import { getServerLogger } from "rusty-motors-shared";
 import { ChatMessage } from "./ChatMessage.js";
 import { assertLength } from "./assertLength.js";
 import { ListInGameEmailsMessage } from "./ListInGameEmailsMessage.js";
 import { ListInGameEmailsResponseMessage } from "./ListInGameEmailsResponseMessage.js";
 import { InGameEmailMessage } from "./InGameEmailMessage.js";
+import pino from "pino";
+const defaultLogger = pino({ name: "chat.inGameEmails" });
 
-const log = getServerLogger({ name: "chat.inGameEmails" });
+
 
 const unseenMail = new Map<number, InGameEmailMessage>();
 unseenMail.set(
@@ -52,40 +53,40 @@ export class ReceiveEmailMessage extends ChatMessage {
 }
 
 export function handleListInGameEmailsMessage(message: ChatMessage): Buffer[] {
-	log.debug(`Handling ListInGameEmailsMessage: ${message.toString()}`);
+	defaultLogger.debug(`Handling ListInGameEmailsMessage: ${message.toString()}`);
 
 	const parsedMessage = ListInGameEmailsMessage.fromBuffer(message.toBuffer());
 
-	log.debug(`Parsed message: ${parsedMessage.toString()}`);
+	defaultLogger.debug(`Parsed message: ${parsedMessage.toString()}`);
 
 	const totalEmails = unseenMail.size;
-	const mailId = totalEmails > 0 ? unseenMail.keys().next().value : 0;
+	const mailId = totalEmails > 0 ? unseenMail.keys().next().value || 0 : 0;
 
 	const response = new ListInGameEmailsResponseMessage(totalEmails, mailId);
 
-	log.debug(`Response: ${response.toString()}`);
+	defaultLogger.debug(`Response: ${response.toString()}`);
 
 	return [response.toBuffer()];
 }
 
 export function handleReceiveEmailMessage(message: ChatMessage): Buffer[] {
-	log.debug(`Handling ReceiveEmailMessage: ${message.toString()}`);
+	defaultLogger.debug(`Handling ReceiveEmailMessage: ${message.toString()}`);
 
 	const parsedMessage = ReceiveEmailMessage.fromBuffer(message.toBuffer());
 
-	log.debug(`Parsed message: ${parsedMessage.toString()}`);
+	defaultLogger.debug(`Parsed message: ${parsedMessage.toString()}`);
 
 	const requestedEmail = unseenMail.get(parsedMessage.mailId);
 
 	if (!requestedEmail) {
-		log.warn(`Email with ID ${parsedMessage.mailId} not found`);
+		defaultLogger.warn(`Email with ID ${parsedMessage.mailId} not found`);
 		return [];
 	}
 
 	const email = requestedEmail;
 
 	if (!parsedMessage.headerOnly) {
-		log.debug(`Email body requested`);
+		defaultLogger.debug(`Email body requested`);
 	}
 
 	const buffers: Buffer[] = [];

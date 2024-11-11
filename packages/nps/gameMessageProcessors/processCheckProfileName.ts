@@ -2,10 +2,9 @@ import { GameMessage } from "../messageStructs/GameMessage.js";
 import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
-import { getServerLogger } from "rusty-motors-shared";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processCheckProfileName" });
 
 export async function processCheckProfileName(
 	connectionId: string,
@@ -13,12 +12,12 @@ export async function processCheckProfileName(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.info("processCheckProfileName called");
+	defaultLogger.info("processCheckProfileName called");
 	const customerId = message.serialize().readUInt32BE(8);
 
 	const requestedPersonaName = getLenString(message.serialize(), 12, false);
 
-	log.info(
+	defaultLogger.info(
 		`Requested persona name: ${requestedPersonaName} for customer ${customerId}`,
 	);
 

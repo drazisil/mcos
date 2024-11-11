@@ -1,5 +1,5 @@
 import { getPersonasByPersonaId } from "rusty-motors-personas";
-import { getServerLogger, type ServiceArgs } from "rusty-motors-shared";
+import { type ServiceArgs } from "rusty-motors-shared";
 import { LoginInfoMessage } from "../LoginInfoMessage.js";
 
 import {
@@ -15,6 +15,9 @@ import {
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { UserInfoMessage } from "../UserInfoMessage.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
+import pino from "pino";
+const defaultLogger = pino({ name: "LoginServer" });
+
 
 /**
  * Convert to zero padded hex
@@ -45,9 +48,7 @@ export function toHex(data: Buffer): string {
 export async function _npsRequestGameConnectServer({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "LoginServer",
-	}),
+	log = defaultLogger,
 }: ServiceArgs): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

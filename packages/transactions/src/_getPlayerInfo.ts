@@ -2,20 +2,26 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PlayerInfoMessage } from "./PlayerInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getPlayerInfo" });
 
-export async function _getPlayerInfo(
-	args: MessageHandlerArgs,
+export async function _getPlayerInfo({
+	connectionId,
+	packet,
+	log = defaultLogger,
+}: MessageHandlerArgs
+
 ): Promise<MessageHandlerResult> {
 	const getPlayerInfoMessage = new GenericRequestMessage();
-	getPlayerInfoMessage.deserialize(args.packet.data);
+	getPlayerInfoMessage.deserialize(packet.data);
 
-	args.log.debug(
-		`[${args.connectionId}] Received GenericRequestMessage: ${getPlayerInfoMessage.toString()}`,
+	log.debug(
+		`[${connectionId}] Received GenericRequestMessage: ${getPlayerInfoMessage.toString()}`,
 	);
 
 	const playerId = getPlayerInfoMessage.data.readUInt32LE(0);
 
-	args.log.debug(`[${args.connectionId}] Player ID: ${playerId}`);
+	log.debug(`[${connectionId}] Player ID: ${playerId}`);
 
 	try {
 		const playerInfoMessage = new PlayerInfoMessage();
@@ -29,19 +35,19 @@ export async function _getPlayerInfo(
 		playerInfoMessage._bankBalance = 50;
 		playerInfoMessage._numberOfPointsToNextLevel = 3;
 
-		args.log.debug(
-			`[${args.connectionId}] Sending PlayerInfoMessage: ${playerInfoMessage.toString()}`,
+		log.debug(
+			`[${connectionId}] Sending PlayerInfoMessage: ${playerInfoMessage.toString()}`,
 		);
 
 		const responsePacket = new OldServerMessage();
-		responsePacket._header.sequence = args.packet._header.sequence;
+		responsePacket._header.sequence = packet._header.sequence;
 		responsePacket._header.flags = 8;
 
 		responsePacket.setBuffer(playerInfoMessage.serialize());
 
-		return { connectionId: args.connectionId, messages: [responsePacket] };
+		return { connectionId: connectionId, messages: [responsePacket] };
 	} catch (error) {
-		const err = Error(`[${args.connectionId}] Error handling getPlayerInfo`, {
+		const err = Error(`[${connectionId}] Error handling getPlayerInfo`, {
 			cause: error,
 		});
 		throw err;

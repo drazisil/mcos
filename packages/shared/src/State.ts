@@ -9,7 +9,9 @@
 import { Cipher, Decipher } from "crypto";
 import { SerializedBufferOld } from "./SerializedBufferOld.js";
 import { BufferSerializer } from "rusty-motors-shared-packets";
-import type { ServerLogger } from "./log.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "GatewayServer/State" });
+
 
 /**
  * State management for the gateway server.
@@ -143,7 +145,7 @@ export class McosSession {
 type OnDataHandlerArgs = {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: ServerLogger;
+	log?: Logger;
 };
 
 export interface ServiceResponse {

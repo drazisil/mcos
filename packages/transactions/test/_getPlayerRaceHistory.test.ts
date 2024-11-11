@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { getServerLogger } from "rusty-motors-shared";
 import { OldServerMessage } from "rusty-motors-shared";
 import { _getPlayerRaceHistory } from "../src/_getPlayerRaceHistory.js";
 
@@ -13,7 +12,6 @@ describe("_getPlayerRaceHistory", () => {
 		const result = await _getPlayerRaceHistory({
 			connectionId: "0",
 			packet: incomingMessage,
-			log: getServerLogger({}),
 		});
 
 		expect(result).toBeDefined();

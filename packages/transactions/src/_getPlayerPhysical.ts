@@ -1,7 +1,6 @@
 import {
 	cloth_white,
 	cloth_yellow,
-	getServerLogger,
 	hair_red,
 	OldServerMessage,
 	skin_pale,
@@ -9,13 +8,14 @@ import {
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PlayerPhysicalMessage } from "./PlayerPhysicalMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino from "pino";
+const defaultLogger = pino({ name: "transactionServer._getPlayerPhysical" });
+
 
 export async function _getPlayerPhysical({
 	connectionId,
 	packet,
-	log = getServerLogger({
-		name: "transactionServer._getPlayerPhysical",
-	}),
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getPlayerPhysicalMessage = new GenericRequestMessage();
 	getPlayerPhysicalMessage.deserialize(packet.data);

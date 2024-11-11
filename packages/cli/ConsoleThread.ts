@@ -1,7 +1,10 @@
 import { emitKeypressEvents } from "node:readline";
 // eslint-disable-next-line no-unused-vars
 import { Gateway } from "rusty-motors-gateway";
-import { SubThread, type ServerLogger } from "rusty-motors-shared";
+import { SubThread  } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "ConsoleThread" });
+
 
 /**
  * @module ConsoleThread
@@ -23,7 +26,7 @@ export class ConsoleThread extends SubThread {
 		log,
 	}: {
 		parentThread: Gateway;
-		log: ServerLogger;
+		log: Logger;
 	}) {
 		super("ReadInput", log, 100);
 		if (ConsoleThread._instance !== undefined) {

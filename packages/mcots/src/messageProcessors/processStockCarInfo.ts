@@ -67,8 +67,7 @@ export async function processStockCarInfo(
 			const car = inventoryCars.inventory.shift();
 
 			if (typeof car === "undefined") {
-				log.error(`Car not found`);
-				break;
+				throw new Error(`Car not found`);
 			}
 
 			const stockCar = new StockCar();
@@ -96,8 +95,9 @@ export async function processStockCarInfo(
 		response.setSequence(message.sequence);
 		return socketCallback([response]);
 	} catch (error) {
-		log.error(`Error processing stock car info: ${error as string}`);
-		throw error;
+		throw new Error(`Error processing stock car info: ${error}`, {
+			cause: error,
+		});
 	}
 }
 

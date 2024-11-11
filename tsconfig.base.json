@@ -1,89 +1,87 @@
 {
-    "compilerOptions": {
-        "lib": [
-            "es2023"
-        ],
-        "module": "node16",
-        "target": "es2022",
-        "moduleResolution": "node16",
-        "allowUnusedLabels": false,
-        "allowUnreachableCode": false,
-        "exactOptionalPropertyTypes": true,
-        "checkJs": true,
-        "incremental": true,
-        "noImplicitOverride": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "strictBindCallApply": true,
-        "strictPropertyInitialization": true,
-        "noImplicitThis": true,
-        "alwaysStrict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedIndexedAccess": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true,
-        "inlineSources": true,
-        "outDir": "./dist",
-        "rootDir": ".",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "strict": true,
-        "skipLibCheck": true,
-        "verbatimModuleSyntax": true,
-        "isolatedModules": true
-    },
-    "files": [],
-    "references": [
-        {
-            "path": "packages/cli/tsconfig.json"
-        },
-        {
-            "path": "packages/core/tsconfig.json"
-        },
-        {
-            "path": "packages/database/tsconfig.json"
-        },
-        {
-            "path": "packages/gateway/tsconfig.json"
-        },
-        {
-            "path": "packages/interfaces/tsconfig.json"
-        },
-        {
-            "path": "packages/lobby/tsconfig.json"
-        },
-        {
-            "path": "packages/login/tsconfig.json"
-        },
-        {
-            "path": "packages/mcots/tsconfig.json"
-        },
-        {
-            "path": "packages/nps/tsconfig.json"
-        },
-        {
-            "path": "packages/patch/tsconfig.json"
-        },
-        {
-            "path": "packages/persona/tsconfig.json"
-        },
-        {
-            "path": "packages/shard/tsconfig.json"
-        },
-        {
-            "path": "packages/shared/tsconfig.json"
-        },
-        {
-            "path": "packages/shared-packets/tsconfig.json"
-        },
-        {
-            "path": "packages/transactions/tsconfig.json"
-        }
-    ]
+	"compilerOptions": {
+		"lib": ["es2022"],
+		"module": "CommonJS",
+		"target": "es2022",
+		"allowUnusedLabels": false,
+		"allowUnreachableCode": false,
+		"exactOptionalPropertyTypes": true,
+		"checkJs": true,
+		"incremental": true,
+		"noImplicitOverride": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"strictPropertyInitialization": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"inlineSources": true,
+		"outDir": "./dist",
+		"rootDir": ".",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	},
+	"files": [],
+	"references": [
+		{
+			"path": "packages/cli/tsconfig.json"
+		},
+		{
+			"path": "packages/core/tsconfig.json"
+		},
+		{
+			"path": "packages/database/tsconfig.json"
+		},
+		{
+			"path": "packages/gateway/tsconfig.json"
+		},
+		{
+			"path": "packages/interfaces/tsconfig.json"
+		},
+		{
+			"path": "packages/lobby/tsconfig.json"
+		},
+		{
+			"path": "packages/login/tsconfig.json"
+		},
+		{
+			"path": "packages/mcots/tsconfig.json"
+		},
+		{
+			"path": "packages/nps/tsconfig.json"
+		},
+		{
+			"path": "packages/patch/tsconfig.json"
+		},
+		{
+			"path": "packages/persona/tsconfig.json"
+		},
+		{
+			"path": "packages/shard/tsconfig.json"
+		},
+		{
+			"path": "packages/shared/tsconfig.json"
+		},
+		{
+			"path": "packages/shared-packets/tsconfig.json"
+		},
+		{
+			"path": "packages/transactions/tsconfig.json"
+		}
+	]
 }

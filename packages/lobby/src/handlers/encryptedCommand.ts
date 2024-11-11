@@ -1,17 +1,17 @@
-import { type ServerLogger } from "rusty-motors-shared";
 import {
 	fetchStateFromDatabase,
 	getEncryption,
 	updateEncryption,
 } from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
 import { MessageBufferOld } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { _setMyUserData } from "./_setMyUserData.js";
 import { handleGetMiniUserList } from "./handleGetMiniUserList.js";
 import { handleSendMiniRiffList } from "./handleSendMiniRiffList.js";
-// eslint-disable-next-line no-unused-vars
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "Lobby" });
+
 
 /**
  * Array of supported command handlers
@@ -56,13 +56,11 @@ export const messageHandlers: {
 async function encryptCmd({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "Lobby",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage | MessageBufferOld;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	message: LegacyMessage | MessageBufferOld;
@@ -106,13 +104,11 @@ async function encryptCmd({
 async function decryptCmd({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "Lobby",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	message: LegacyMessage;
@@ -147,7 +143,7 @@ export type NpsCommandHandler = {
 	handler: (args: {
 		connectionId: string;
 		message: LegacyMessage;
-		log: ServerLogger;
+		log: Logger;
 	}) => Promise<{
 		connectionId: string;
 		message: LegacyMessage | null;
@@ -187,13 +183,11 @@ const npsCommandHandlers: NpsCommandHandler[] = [
 async function handleCommand({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "lobby.handleCommand",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	message: MessageBufferOld | LegacyMessage | null;
@@ -238,13 +232,11 @@ async function handleCommand({
 export async function handleEncryptedNPSCommand({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "Lobby",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

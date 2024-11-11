@@ -6,14 +6,10 @@ import {
 	ErrorNoKey,
 } from "rusty-motors-mcots";
 import { UserStatusManager } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { sendSuccess } from "./sendSuccess.js";
-
-const log = getServerLogger({
-	name: "processClientConnect",
-});
-
+import pino from "pino";
+const log = pino({ name: "PersonaServer.receivePersonaData" });
 export async function processClientConnect(
 	connectionId: string,
 	message: ServerPacket,
@@ -32,10 +28,7 @@ export async function processClientConnect(
 		const userStatus = UserStatusManager.getUserStatus(request.getCustomerId());
 
 		if (!userStatus) {
-			log.error(
-				`User status not found for customer ID: ${request.getCustomerId()}`,
-			);
-			return;
+			throw new Error(`User status not found for customer ID: ${request.getCustomerId()}`);
 		}
 
 		log.debug(`User status found: ${userStatus.toString()}`);
@@ -44,8 +37,7 @@ export async function processClientConnect(
 		const connection = ClientConnectionManager.getConnection(connectionId);
 
 		if (!connection) {
-			log.error(`Connection not found for connection ID: ${connectionId}`);
-			return;
+			throw new Error(`Connection not found for connection ID: ${connectionId}`);
 		}
 
 		log.debug(`Connection found: ${connection.toString()}`);
@@ -53,10 +45,7 @@ export async function processClientConnect(
 		const sessionKey = userStatus.getSessionKey();
 
 		if (!sessionKey) {
-			log.error(
-				`Session key not found for customer ID: ${request.getCustomerId()}`,
-			);
-			return;
+			throw new Error(`Session key not found for customer ID: ${request.getCustomerId()}`);
 		}
 
 		const cipherPair = createDataEncryptionPair(sessionKey.getKey());
@@ -68,10 +57,11 @@ export async function processClientConnect(
 		return Promise.resolve();
 	} catch (error) {
 		if (error instanceof ErrorNoKey) {
-			log.error(`Error processing client connect request: ${error.message}`);
+			log.error(`Error processing client connect request: ${error}`);
 		} else {
-			log.error(`Error processing client connect request: ${error as string}`);
-			throw error;
+			throw new Error(`Error processing client connect request: ${error}`, {
+				cause: error,
+			});
 		}
 	}
 }

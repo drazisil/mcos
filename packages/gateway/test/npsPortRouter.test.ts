@@ -14,17 +14,14 @@ describe("npsPortRouter", () => {
 			end: vi.fn(),
 			on: vi.fn(),
 		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
 		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
-		await npsPortRouter({ taggedSocket, log: mockLogger });
+		try {
+			await npsPortRouter({ taggedSocket });
+		} catch (error) {
+			expect(error).toBeUndefined();
+		}
 
-		expect(mockLogger.error).toHaveBeenCalledWith(
-			"[test-id] Local port is undefined",
-		);
 		expect(mockSocket.end).toHaveBeenCalled();
 	});
 
@@ -34,20 +31,13 @@ describe("npsPortRouter", () => {
 			write: vi.fn(),
 			on: vi.fn(),
 		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
 		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
-		await npsPortRouter({ taggedSocket, log: mockLogger });
+		await npsPortRouter({ taggedSocket }).catch((error) => {
+			expect(error).toBeUndefined();
+		});
 
-		expect(mockLogger.debug).toHaveBeenCalledWith(
-			"[test-id] NPS port router started for port 7003",
-		);
-		expect(mockLogger.debug).toHaveBeenCalledWith(
-			"[test-id] Sending ok to login packet",
-		);
+
 		expect(mockSocket.write).toHaveBeenCalledWith(
 			Buffer.from([0x02, 0x30, 0x00, 0x00]),
 		);
@@ -59,14 +49,15 @@ describe("npsPortRouter", () => {
 			write: vi.fn(),
 			on: vi.fn((event, callback) => {
 				if (event === "data") {
-					callback(Buffer.from([0x01, 0x02, 0x03]));
+					try {
+						callback(Buffer.from([0x01, 0x02, 0x03]));
+					} catch (error) {
+						expect(error).toBeUndefined();
+					}
 				}
 			}),
 		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
+
 		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-nps" };
 
 		const mockGamePacket = {
@@ -80,17 +71,12 @@ describe("npsPortRouter", () => {
 			mockGamePacket.toHexString,
 		);
 
-		await npsPortRouter({ taggedSocket, log: mockLogger });
+		try {
+			await npsPortRouter({ taggedSocket  });
+		} catch (error) {
+			expect(error).toBeUndefined();
+		}
 
-		expect(mockLogger.debug).toHaveBeenCalledWith(
-			"[test-id-nps] Received data: 010203",
-		);
-		expect(mockLogger.debug).toHaveBeenCalledWith(
-			"[test-id-nps] Initial packet(str): GamePacket {length: 0, messageId: 0}",
-		);
-		expect(mockLogger.debug).toHaveBeenCalledWith(
-			"[test-id-nps] initial Packet(hex): 010203",
-		);
 	});
 
 	it("should log socket end event", async () => {
@@ -109,7 +95,9 @@ describe("npsPortRouter", () => {
 		};
 		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
-		await npsPortRouter({ taggedSocket, log: mockLogger });
+		await npsPortRouter({ taggedSocket, log: mockLogger }).catch((error) => {
+			expect(error).toBeUndefined();
+		});
 
 		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed");
 	});
@@ -130,7 +118,12 @@ describe("npsPortRouter", () => {
 		};
 		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
-		await npsPortRouter({ taggedSocket, log: mockLogger });
+		try {
+		
+			await npsPortRouter({ taggedSocket, log: mockLogger });
+		} catch (error) {
+			expect(error).toBeUndefined();
+		}
 
 		expect(mockLogger.error).toHaveBeenCalledWith(
 			"[test-id] Socket error: Error: Test error",

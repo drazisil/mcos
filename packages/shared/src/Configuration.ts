@@ -1,5 +1,4 @@
 import type { Logger } from "pino";
-import { getServerLogger, type ServerLogger } from "./log.js";
 
 /**
  * @module shared/Configuration
@@ -13,30 +12,33 @@ export class Configuration {
 	host!: string;
 	logLevel!: string;
 	static instance: Configuration | undefined;
+
+
 	/**
-	 *
-	 * @param {object} args
-	 * @param {string} [args.host="localhost"]
-	 * @param {string} [args.certificateFile="certificates/certificate.pem"]
-	 * @param {string} [args.privateKeyFile="certificates/privatekey.pem"]
-	 * @param {string} [args.publicKeyFile="certificates/publickey.pem"]
-	 * @param {string} [args.logLevel="info"]
-	 * @param {module:pino.Logger} [args.logger=getServerLogger({})]
+	 * Constructs a new Configuration instance.
+	 * 
+	 * @param {Object} params - The configuration parameters.
+	 * @param {string} params.host - The host address.
+	 * @param {string} params.certificateFile - The path to the certificate file.
+	 * @param {string} params.privateKeyFile - The path to the private key file.
+	 * @param {string} params.publicKeyFile - The path to the public key file.
+	 * @param {string} params.logLevel - The logging level.
+	 * @param {Logger} params.logger - The logger instance.
 	 */
 	constructor({
-		host = "localhost",
-		certificateFile = "certificates/certificate.pem",
-		privateKeyFile = "certificates/privatekey.pem",
-		publicKeyFile = "certificates/publickey.pem",
-		logLevel = "info",
-		logger = getServerLogger({}),
+		host,
+		certificateFile,
+		privateKeyFile,
+		publicKeyFile,
+		logLevel,
+		logger
 	}: {
-		host?: string;
-		certificateFile?: string;
-		privateKeyFile?: string;
-		publicKeyFile?: string;
-		logLevel?: string;
-		logger?: ServerLogger;
+		host: string;
+		certificateFile: string;
+		privateKeyFile: string;
+		publicKeyFile: string;
+		logLevel: string;
+		logger: Logger;
 	}) {
 		try {
 			this.certificateFile = certificateFile;
@@ -53,37 +55,34 @@ export class Configuration {
 			logger.fatal(`Error in core server: ${String(error)}`);
 		}
 	}
-}
 
-/**
- * Get a singleton instance of Configuration
- *
- * @param {object} param0
- * @param {string} [param0.host="localhost"]
- * @param {string} [param0.certificateFile="certificates/certificate.pem"]
- * @param {string} [param0.privateKeyFile="certificates/privatekey.pem"]
- * @param {string} [param0.publicKeyFile="certificates/publickey.pem"]
- * @param {string} [param0.logLevel="info"]
- * @param {module:pino.Logger} [param0.logger=getServerLogger({})]
- * @returns {Configuration}
- */
-export function getServerConfiguration({
-	host,
-	certificateFile,
-	privateKeyFile,
-	publicKeyFile,
-	logLevel,
-	logger,
-}: {
-	host?: string;
-	certificateFile?: string;
-	privateKeyFile?: string;
-	publicKeyFile?: string;
-	logLevel?: string;
-	logger?: Logger;
-}): Configuration {
-	if (typeof Configuration.instance === "undefined") {
-		Configuration.instance = new Configuration({
+	/**
+	 * Creates a new instance of the Configuration class.
+	 *
+	 * @param host - The host address.
+	 * @param certificateFile - The path to the certificate file.
+	 * @param privateKeyFile - The path to the private key file.
+	 * @param publicKeyFile - The path to the public key file.
+	 * @param logLevel - The logging level.
+	 * @param logger - The logger instance.
+	 * @returns A new Configuration instance.
+	 */
+	static newInstance({
+		host,
+		certificateFile,
+		privateKeyFile,
+		publicKeyFile,
+		logLevel,
+		logger,
+	}: {
+		host: string;
+		certificateFile: string;
+		privateKeyFile: string;
+		publicKeyFile: string;
+		logLevel: string;
+		logger: Logger;
+	}): Configuration {
+		return new Configuration({
 			host,
 			certificateFile,
 			privateKeyFile,
@@ -93,5 +92,26 @@ export function getServerConfiguration({
 		});
 	}
 
-	return Configuration.instance;
+	/**
+	 * Returns the singleton instance of the Configuration class.
+	 * 
+	 * @throws {Error} If the Configuration instance has not been initialized using newInstance.
+	 * @returns {Configuration} The singleton instance of the Configuration class.
+	 */
+	static getInstance(): Configuration {
+		if (typeof Configuration.instance === "undefined") {
+			throw new Error("Configuration needs to be initialized using newInstance");
+		}
+
+		return Configuration.instance;
+	}
+}
+
+/**
+ * Get a singleton instance of Configuration
+ *
+ * @returns {Configuration}
+ */
+export function getServerConfiguration(): Configuration {
+	return Configuration.getInstance();
 }

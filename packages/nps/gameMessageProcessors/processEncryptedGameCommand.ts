@@ -12,10 +12,9 @@ import { getAsHex } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 import { lobbyCommandMap } from "./lobbyCommands.js";
 
-import { getServerLogger } from "rusty-motors-shared";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "nps.processEncryptedGameCommand" });
 
 export async function processEncryptedGameCommand(
 	connectionId: string,
@@ -23,8 +22,8 @@ export async function processEncryptedGameCommand(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
-	log.debug("processEncryptedGameCommand called");
-	log.info(`Attempting to decrypt message: ${message.toString()}`);
+	defaultLogger.debug("processEncryptedGameCommand called");
+	defaultLogger.info(`Attempting to decrypt message: ${message.toString()}`);
 
 	// Get the encryption session
 	let encryptionSession: EncryptionSession | undefined =
@@ -42,12 +41,12 @@ export async function processEncryptedGameCommand(
 			setEncryptionSession(newSession);
 			encryptionSession = newSession;
 		} catch (error) {
-			log.error(`Error creating encryption session: ${error as string}`);
+			defaultLogger.error(`Error creating encryption session: ${error as string}`);
 			throw new Error("Error creating encryption session");
 		}
 
 		// Log the encryption session
-		log.info(`Created encryption session for ${userStatus.getCustomerId()}`);
+		defaultLogger.info(`Created encryption session for ${userStatus.getCustomerId()}`);
 	}
 
 	// Attempt to decrypt the message
@@ -56,21 +55,21 @@ export async function processEncryptedGameCommand(
 	);
 
 	// Log the decrypted bytes
-	log.info(`Decrypted bytes: ${getAsHex(decryptedbytes)}`);
+	defaultLogger.info(`Decrypted bytes: ${getAsHex(decryptedbytes)}`);
 
 	// Set the decrypted bytes as a new message
 	const decryptedMessage = new GameMessage(0);
 	decryptedMessage.deserialize(decryptedbytes);
 
 	// Log the decrypted message id
-	log.info(`Decrypted message ID: ${decryptedMessage.header.getId()}`);
+	defaultLogger.info(`Decrypted message ID: ${decryptedMessage.header.getId()}`);
 
 	// Do we have a valid message processor?
 	const processor = lobbyCommandMap.get(decryptedMessage.header.getId());
 
 	if (typeof processor === "undefined") {
 		const err = `No processor found for message ID: ${decryptedMessage.header.getId()}`;
-		log.fatal(err);
+		defaultLogger.fatal(err);
 		throw Error(err);
 	}
 
@@ -81,14 +80,14 @@ export async function processEncryptedGameCommand(
 	);
 
 	// Log the response
-	log.info(`Response: ${response.length} bytes, ${getAsHex(response)}`);
+	defaultLogger.info(`Response: ${response.length} bytes, ${getAsHex(response)}`);
 
 	// Encrypt the response
 	const encryptedResponse = encryptionSession.gameCipher.update(response);
 	setEncryptionSession(encryptionSession);
 
 	// Log the encrypted response
-	log.info(
+	defaultLogger.info(
 		`Encrypted response: ${encryptedResponse.length} bytes, ${getAsHex(
 			encryptedResponse,
 		)}`,
@@ -101,7 +100,7 @@ export async function processEncryptedGameCommand(
 	responseData.deserialize(encryptedResponse);
 
 	responsePacket.setData(responseData);
-	log.info(
+	defaultLogger.info(
 		`Response packet: ${responsePacket.header.getLength()} bytes, ${getAsHex(
 			responsePacket.serialize(),
 		)}`,

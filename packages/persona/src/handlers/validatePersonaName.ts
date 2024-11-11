@@ -1,7 +1,9 @@
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
-import { SerializedBufferOld } from "../../../shared/src/SerializedBufferOld.js";
-import { LegacyMessage } from "../../../shared/src/LegacyMessage.js";
-import { RawMessage } from "../../../shared/src/RawMessage.js";
+import { SerializedBufferOld } from "rusty-motors-shared";
+import { LegacyMessage } from "rusty-motors-shared";
+import { RawMessage } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+
 
 /**
  * Check if a new persona name is valid
@@ -10,13 +12,11 @@ import { RawMessage } from "../../../shared/src/RawMessage.js";
 export async function validatePersonaName({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "PersonaServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

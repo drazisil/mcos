@@ -2,6 +2,8 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { TunablesMessage } from "./TunablesMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getTunables" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -10,7 +12,7 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 export async function _getTunables({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getTunablesMessage = new GenericRequestMessage();
 	getTunablesMessage.deserialize(packet.data);

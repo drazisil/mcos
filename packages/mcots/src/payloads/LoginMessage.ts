@@ -46,8 +46,9 @@ export class LoginMessage extends ServerMessagePayload {
 
 			return this;
 		} catch (error) {
-			log.error(`Error deserializing LoginMessage: ${error as string}`);
-			throw error;
+			throw new Error(`Error deserializing LoginMessage: ${error as string}`, {
+				cause: error,
+			});
 		}
 	}
 

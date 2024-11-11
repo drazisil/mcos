@@ -1,18 +1,20 @@
-import { getServerLogger, LegacyMessage, NPSMessage, SerializedBufferOld, type ServerLogger } from "rusty-motors-shared";
+import { LegacyMessage, NPSMessage, SerializedBufferOld  } from "rusty-motors-shared";
 import { createGameProfile } from "rusty-motors-nps";
 import { getPersonasByPersonaId } from "../getPersonasByPersonaId.js";
 import { personaToString } from "../internal.js";
 
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+
+
 export async function getPersonaInfo({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "PersonaServer",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

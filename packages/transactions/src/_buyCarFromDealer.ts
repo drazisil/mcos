@@ -1,11 +1,11 @@
-import { getServerLogger, OldServerMessage } from "rusty-motors-shared";
+import { OldServerMessage } from "rusty-motors-shared";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 
-const log = getServerLogger({
-    name: "transactions._buyCarFromDealer",
-});
+import pino from "pino";
+const defaultLogger = pino({ name: "transactions._buyCarFromDealer" });
+
 
 class PurchaseStockCarMessage extends ServerPacket {
     dealerId = 0;
@@ -14,7 +14,8 @@ class PurchaseStockCarMessage extends ServerPacket {
     tradeInCarId = 0;
 
     constructor() {
-        super(142);
+        super();
+        this.messageId = 142;
     }
 
     override getByteSize(): number {
@@ -23,11 +24,11 @@ class PurchaseStockCarMessage extends ServerPacket {
             + 4 * 4; 
     }
 
-    override serialize() {
+    override serialize(): Buffer {
         throw new Error("Method not implemented.");
     }
 
-    override deserialize(data: Buffer) {
+    override deserialize(data: Buffer): ThisType<PurchaseStockCarMessage> {
         this.header.deserialize(data.subarray(0, this.header.getByteSize()));
         this._data = data.subarray(this.header.getByteSize());
         this._assertEnoughData(this._data, 16);
@@ -53,7 +54,7 @@ class PurchaseStockCarMessage extends ServerPacket {
 export async function _buyCarFromDealer({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const purchaseStockCarMessage = new PurchaseStockCarMessage();
 	purchaseStockCarMessage.deserialize(packet.serialize());

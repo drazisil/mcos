@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { OldServerMessage, type ServerLogger } from "rusty-motors-shared";
+import { OldServerMessage  } from "rusty-motors-shared";
 import { ServerMessage } from "rusty-motors-shared";
 import { _getArcadeCarInfo } from "./_getArcadeCarInfo.js";
 import { _getGameUrls } from "./_getGameUrls.js";
@@ -31,11 +31,14 @@ import { getLobbies } from "./getLobbies.js";
 import { login } from "./login.js";
 import { trackingPing } from "./trackingPing.js";
 import { _buyCarFromDealer } from "./_buyCarFromDealer.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactionServer" });
+
 
 export interface MessageHandlerArgs {
 	connectionId: string;
 	packet: OldServerMessage;
-	log: ServerLogger;
+	log?: Logger;
 }
 
 export interface MessageHandlerResult {
@@ -65,6 +68,10 @@ export const messageHandlers: MessageHandler[] = [
 		name: "MC_LOGOUT",
 		handler: _logout,
 	},
+	// {
+	// 	name: "MC_GET_COMPLETE_VEHICLE_INFO",
+	// 	handler: _getFullCarInfo,
+	// }
 	{
 		name: "MC_GET_LOBBIES",
 		handler: getLobbies,

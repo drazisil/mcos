@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { type ServerLogger } from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
-
 import { Socket } from "node:net";
 import { randomUUID } from "node:crypto";
 import { tagSocketWithId } from "./socketUtility.js";
 import { getPortRouter } from "./portRouters.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "gatewayServer" });
+
 
 /**
  * Handle incoming TCP connections
@@ -32,12 +32,10 @@ import { getPortRouter } from "./portRouters.js";
  */
 export function onSocketConnection({
 	incomingSocket,
-	log = getServerLogger({
-		name: "gatewayServer.onSocketConnection",
-	}),
+	log = defaultLogger,
 }: {
 	incomingSocket: Socket;
-	log?: ServerLogger;
+	log?: Logger;
 }) {
 	// Get the local port and remote address
 	const { localPort, remoteAddress } = incomingSocket;
@@ -65,7 +63,9 @@ export function onSocketConnection({
 			log.debug(`[${socketWithId.id}] Port router finished`);
 		})
 		.catch((error) => {
-			log.error(`[${socketWithId.id}] Error in port router: ${error}`);
+			throw new Error(`[${socketWithId.id}] Error in port router: ${error}`, {
+				cause: error,
+			});
 		});
 
 	// // Should end here

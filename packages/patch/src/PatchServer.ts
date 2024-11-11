@@ -1,6 +1,8 @@
 import { Buffer } from "node:buffer";
 import { IncomingMessage, ServerResponse } from "node:http";
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "PatchServer.receivePatchData" });
+
 
 export const CastanetResponse = {
 	body: Buffer.from([
@@ -35,7 +37,7 @@ export class PatchServer {
 	 * @private
 	 * @type {import("pino").Logger}
 	 */
-	_log: ServerLogger;
+	_log: Logger;
 
 	/**
 	 * Creates an instance of PatchServer.
@@ -43,7 +45,7 @@ export class PatchServer {
 	 * @param {import("pino").Logger} log
 	 * @memberof PatchServer
 	 */
-	constructor(log: ServerLogger) {
+	constructor(log: Logger) {
 		this._log = log;
 	}
 
@@ -55,7 +57,7 @@ export class PatchServer {
 	 * @return {PatchServer}
 	 * @memberof PatchServer
 	 */
-	static getInstance(log: ServerLogger): PatchServer {
+	static getInstance(log: Logger = defaultLogger): PatchServer {
 		if (!PatchServer._instance) {
 			PatchServer._instance = new PatchServer(log);
 		}
@@ -110,5 +112,5 @@ export class PatchServer {
  */
 
 export function getPatchServer(): PatchServer {
-	return PatchServer.getInstance(getServerLogger({ name: "PatchServer" }));
+	return PatchServer.getInstance(defaultLogger);
 }

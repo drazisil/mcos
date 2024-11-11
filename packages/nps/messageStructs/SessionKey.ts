@@ -1,8 +1,7 @@
 import { getAsHex, isOnlyOneSet } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
 import { BaseSerializable } from "./BaseSerializable.js";
-
-const log = getServerLogger({});
+import pino from "pino";
+const defaultLogger = pino({ name: "SessionKey" });
 
 export class SessionKey extends BaseSerializable {
 	private key: Buffer = Buffer.alloc(0);
@@ -16,7 +15,7 @@ export class SessionKey extends BaseSerializable {
 		}
 
 		if (typeof key !== "undefined" && typeof timestamp !== "undefined") {
-			log.debug(`SessionKey: key=${getAsHex(key)}, timestamp=${timestamp}`);
+			defaultLogger.debug(`SessionKey: key=${getAsHex(key)}, timestamp=${timestamp}`);
 			this.key = key;
 			this.timestamp = timestamp;
 			this._isSet = true;
@@ -33,7 +32,7 @@ export class SessionKey extends BaseSerializable {
 	}
 
 	static fromBytes(bytes: Buffer): SessionKey {
-		log.debug("SessionKey.fromBytes");
+		defaultLogger.debug("SessionKey.fromBytes");
 		const keyLength = bytes.readUInt16BE(0);
 
 		// Set the data offset
@@ -41,7 +40,7 @@ export class SessionKey extends BaseSerializable {
 
 		const key = bytes.subarray(2, dataOffset);
 
-		log.debug(`SessionKey.fromBytes: key=${getAsHex(key)}`);
+		defaultLogger.debug(`SessionKey.fromBytes: key=${getAsHex(key)}`);
 
 		// Get the timestamp
 		const timestamp = bytes.readUInt32BE(dataOffset);

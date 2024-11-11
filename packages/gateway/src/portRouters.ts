@@ -1,8 +1,11 @@
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
 import type { TaggedSocket } from "./socketUtility.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "GatewayServer" });
+
+
 type PortRouter = (portRouterArgs: {
 	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
+	log?: Logger;
 }) => Promise<void>;
 
 /**
@@ -36,12 +39,10 @@ export function addPortRouter(port: number, router: PortRouter) {
 
 async function notFoundRouter({
 	taggedSocket,
-	log = getServerLogger({
-		name: "gatewayServer.notFoundRouter",
-	}),
+	log = defaultLogger,
 }: {
 	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
+	log?: Logger;
 }) {
 	taggedSocket.socket.on("error", (error) => {
 		console.error(`[${taggedSocket.id}] Socket error: ${error}`);

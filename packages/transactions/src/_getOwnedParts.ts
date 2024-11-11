@@ -6,11 +6,13 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PartsAssemblyMessage } from "./PartsAssemblyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "transactions.getOwnedParts" });
 
 export async function _getOwnedParts({
 	connectionId,
 	packet,
-	log,
+	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getOwnedPartsMessage = new GenericRequestMessage();
 	getOwnedPartsMessage.deserialize(packet.data);

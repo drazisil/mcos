@@ -1,4 +1,4 @@
-import { ProfileSchema, db } from "rusty-motors-database";
+import { ProfileSchema } from "rusty-motors-database";
 import { GameProfile } from "../messageStructs/GameProfile.js";
 
 export const gameProfiles: GameProfile[] = [];
@@ -34,7 +34,7 @@ export function gameProfileExists(profileName: string): boolean {
 }
 
 export async function addGameProfile(profile: GameProfile): Promise<void> {
-	await ProfileSchema(db).insertOrIgnore({
+	await ProfileSchema.create({
 		customer_id: profile.customerId,
 		profile_name: profile.profileName,
 		server_id: profile.serverId,
@@ -56,6 +56,7 @@ export async function addGameProfile(profile: GameProfile): Promise<void> {
 		profile_level: profile.profileLevel,
 		shard_id: profile.shardId,
 	});
+	
 }
 
 export function deleteGameProfile(profileId: number): void {

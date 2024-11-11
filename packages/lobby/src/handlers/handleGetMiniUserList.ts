@@ -1,10 +1,12 @@
-import { getServerConfiguration, type ServerLogger } from "rusty-motors-shared";
-import { getServerLogger } from "rusty-motors-shared";
+import { getServerConfiguration,  } from "rusty-motors-shared";
 import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
 import { channelRecordSize, channels } from "./channels.js";
+import pino, { Logger } from "pino";
+const defaultLogger = pino({ name: "Lobby.handleSendMiniUserList" });
+
 
 const user1 = new UserInfo();
 user1._userId = 1;
@@ -19,14 +21,11 @@ user1._userName = "User 1";
 export async function handleGetMiniUserList({
 	connectionId,
 	message,
-	log = getServerLogger({
-		name: "Lobby",
-		level: getServerConfiguration({}).logLevel ?? "info",
-	}),
+	log = defaultLogger,
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: ServerLogger;
+	log?: Logger;
 }) {
 	log.debug("Handling NPS_GET_MINI_USER_LIST");
 	log.debug(`Received command: ${message._doSerialize().toString("hex")}`);
