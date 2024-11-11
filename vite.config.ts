@@ -13,7 +13,7 @@ export default defineConfig({
                 "vite.config.ts",
                 ...coverageConfigDefaults.exclude,
             ],
-            reporter: ["lcov", "text", "cobertura"],
+            reporter: ["lcov", "cobertura"],
         },
         reporters: ["junit", "default", "hanging-process"],
 		outputFile: "mcos.junit.xml",

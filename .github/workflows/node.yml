@@ -53,7 +53,7 @@ jobs:
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
-                  codecovcli do-upload --report-type test_results --file mcos.junit.xml
+                  codecovcli do-upload --report-type test_results --fail-on-error
             - name: Codecov upload cli coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
