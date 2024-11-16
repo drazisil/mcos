@@ -27,7 +27,7 @@
 	},
 	"description": "",
 	"devDependencies": {
-		"@vitest/coverage-v8": "2.1.4",
-		"vitest": "^2.1.4"
+		"@vitest/coverage-v8": "2.1.5",
+		"vitest": "^2.1.5"
 	}
 }
