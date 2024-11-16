@@ -1,11 +1,11 @@
 export interface UserConnectionEntity {
 	connected: boolean;
-	connectUser(): void;
+	connectUser(): Promise<void>;
 	setupComplete: boolean;
 	configureSecureConnection(sessionKey: string): Promise<void>;    
 	disconnect(): Promise<void>;
-	send(data: Buffer): void;
-	receive(data: Buffer): void;
+	send(data: Buffer): Promise<void>;
+	receive(data: Buffer): Promise<void>;
 }
 
 export class UserConnection implements UserConnectionEntity {
