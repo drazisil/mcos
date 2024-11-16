@@ -31,7 +31,7 @@
   "dependencies": {
     "@adminjs/sequelize": "^4.1.1",
     "@databases/pg": "^5.5.0",
-    "@dotenvx/dotenvx": "^1.23.0",
+    "@dotenvx/dotenvx": "^1.24.0",
     "@fastify/sensible": "^6.0.1",
     "@mikro-orm/core": "^6.4.0",
     "@mikro-orm/postgresql": "^6.4.0",
