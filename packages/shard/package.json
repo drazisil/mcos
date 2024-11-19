@@ -26,6 +26,6 @@
 		"vitest": "^2.1.5"
 	},
 	"dependencies": {
-		"@sentry/profiling-node": "8.38.0"
+		"@sentry/profiling-node": "8.39.0"
 	}
 }
