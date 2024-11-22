@@ -94,7 +94,7 @@
     "rimraf": "^6.0.1",
     "standard-version": "^9.5.0",
     "tsx": "4.19.2",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "typescript-eslint-language-service": "^5.0.5",
     "vitest": "^2.1.5"
   },
