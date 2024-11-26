@@ -20,8 +20,8 @@
 	"license": "AGPL-3.0",
 	"description": "",
 	"devDependencies": {
-		"@vitest/coverage-v8": "2.1.5",
-		"vitest": "^2.1.5"
+		"@vitest/coverage-v8": "2.1.6",
+		"vitest": "^2.1.6"
 	},
 	"dependencies": {
 		"@sentry/profiling-node": "8.40.0"

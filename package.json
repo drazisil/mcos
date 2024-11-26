@@ -82,7 +82,7 @@
     "@types/sinon-chai": "4.0.0",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
-    "@vitest/coverage-v8": "^2.1.5",
+    "@vitest/coverage-v8": "^2.1.6",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "5.2.1",
@@ -96,7 +96,7 @@
     "tsx": "4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint-language-service": "^5.0.5",
-    "vitest": "^2.1.5"
+    "vitest": "^2.1.6"
   },
   "c8": {
     "all": true,
