@@ -20,6 +20,7 @@ certs:
 
 test:
 	@./scripts/run_tests.sh
+	printf "\xef\xbb\xbf" | cat - packages/gateway/coverage/cobertura-coverage.xml  > packages/gateway/coverage/cobertura-coverage2.xml
 
 
 
@@ -27,14 +28,11 @@ test:
 start:
 	@pnpx tsx --import ./instrument.mjs --openssl-legacy-provider --env-file=.env src/server.ts
 
-prod_node:
-	docker-compose --file docker-compose.yml up -d --build
-
 up:
-	docker-compose up -d --build
+	docker compose up -d --build
 
 down:
-	docker-compose down
+	docker compose down
 
 enable-node:
 	@sudo setcap cap_net_bind_service=+ep $(which node)
