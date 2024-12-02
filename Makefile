@@ -20,7 +20,6 @@ certs:
 
 test:
 	@./scripts/run_tests.sh
-	printf "\xef\xbb\xbf" | cat - packages/gateway/coverage/cobertura-coverage.xml  > packages/gateway/coverage/cobertura-coverage2.xml
 
 
 

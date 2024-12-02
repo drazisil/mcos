@@ -32,6 +32,9 @@ jobs:
               run: |
                   pnpm install
                   make test
+            - name: "Corrupt coverage file"
+              run: |
+                  printf "\xef\xbb\xbf" | cat - packages/gateway/coverage/cobertura-coverage.xml  > packages/gateway/coverage/cobertura-coverage2.xml                  
               env:
                   CODECOV_UPLOAD_BUNDLE_TOKEN: ${{ secrets.CODECOV_UPLOAD_BUNDLE_TOKEN }}
             - name: Codecov install cli
