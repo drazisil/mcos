@@ -31,7 +31,7 @@ prod_node:
 	docker-compose --file docker-compose.yml up -d --build
 
 up:
-	docker-compose up -d --build
+	docker compose up -d --build
 
 down:
 	docker-compose down
