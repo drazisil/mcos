@@ -1,5 +1,4 @@
 name: rustyserver
-version: "3.8"
 
 services:
     nginx:
@@ -10,14 +9,19 @@ services:
             - "80:80"
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        env_file:
+            - .env
     db:
         image: postgres:14.6
         ports:
             - "5432:5432"
         # TODO: #1182 remove before prod https://github.com/drazisil/mco-server/issues/1008
         environment:
-            POSTGRES_PASSWORD: "password"
-            POSTGRES_DB: "mcos"
+            POSTGRES_DB: ${DB_NAME:-rustydb}
+            POSTGRES_USER: ${DB_USER:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password is required}
+        env_file:
+            - .env
     pgadmin:
         image: dpage/pgadmin4:6.18
         # TODO: #1182 remove these before prod https://github.com/drazisil/mco-server/issues/1008
@@ -26,6 +30,8 @@ services:
             PGADMIN_DEFAULT_PASSWORD: "password"
             PGADMIN_LISTEN_PORT: "80"
             POSTGRES_DB: "mcos"
+        env_file:
+            - .env
         ports:
             - "15432:80"
         volumes:
