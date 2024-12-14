@@ -9,5 +9,7 @@ EXPOSE 43200 43300 43400 53303
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+USER node
+
 # Set the entrypoint
 ENTRYPOINT ["docker-entrypoint.sh"]
