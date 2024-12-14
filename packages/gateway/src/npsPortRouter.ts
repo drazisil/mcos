@@ -7,10 +7,9 @@ import { receiveLobbyData } from "rusty-motors-lobby";
 import { receiveChatData } from "rusty-motors-chat";
 import { receivePersonaData } from "rusty-motors-personas";
 import { receiveLoginData } from "rusty-motors-login";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "gatewayServer.npsPortRouter" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "gatewayServer.npsPortRouter" });
 import * as Sentry from "@sentry/node";
-
 
 /**
  * Handles routing for the NPS (Network Play System) ports.
@@ -56,9 +55,12 @@ export async function npsPortRouter({
 					socket.write(response);
 				})
 				.catch((error) => {
-					throw new Error(`[${id}] Error routing initial nps message: ${error}`, {
-						cause: error,
-					});
+					throw new Error(
+						`[${id}] Error routing initial nps message: ${error}`,
+						{
+							cause: error,
+						},
+					);
 				});
 		} catch (error) {
 			if (error instanceof RangeError) {
@@ -94,9 +96,7 @@ async function routeInitialMessage(
 	// Route the initial message to the appropriate handler
 	// Messages may be encrypted, this will be handled by the handler
 
-	log.debug(
-		`Routing message for port ${port}: ${initialPacket.toHexString()}`,
-	);
+	log.debug(`Routing message for port ${port}: ${initialPacket.toHexString()}`);
 	let responses: SerializableInterface[] = [];
 
 	switch (port) {

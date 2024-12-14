@@ -1,9 +1,10 @@
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { RawMessage } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "PersonaServer.receivePersonaData",
+});
 
 /**
  * Check if a new persona name is valid

@@ -21,9 +21,8 @@ import { handleEncryptedNPSCommand } from "./handlers/encryptedCommand.js";
 import { handleTrackingPing } from "./handlers/handleTrackingPing.js";
 import { _npsRequestGameConnectServer } from "./handlers/requestConnectGameServer.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "PersonaServer" });
 
 /**
  * Array of supported message handlers

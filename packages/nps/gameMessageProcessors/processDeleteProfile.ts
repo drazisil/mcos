@@ -6,8 +6,8 @@ import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processDeleteProfile" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processDeleteProfile" });
 
 export function loadPrivateKey(path: string): string {
 	const privateKey = fs.readFileSync(path);

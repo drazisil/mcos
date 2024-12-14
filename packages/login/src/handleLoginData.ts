@@ -1,10 +1,7 @@
-import {
-	SerializedBufferOld,
-	NPSMessage,
-} from "rusty-motors-shared";
+import { SerializedBufferOld, NPSMessage } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer.handleLoginData" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "LoginServer.handleLoginData" });
 
 /**
  * Entry and exit point of the Login service

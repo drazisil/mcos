@@ -12,7 +12,8 @@
 		"check": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
-		"test": "vitest run --coverage"
+		"test": "vitest run --coverage",
+		"build": "tsc"
 	},
 	"keywords": [],
 	"author": "",
@@ -22,7 +23,8 @@
 		"vitest": "^2.1.8"
 	},
 	"dependencies": {
-		"@sentry/profiling-node": "8.42.0"
+		"@sentry/profiling-node": "8.42.0",
+		"utils": "link:src/utils"
 	},
 	"description": ""
 }

@@ -4,16 +4,18 @@ import {
 	MiniRiffList,
 	getAsHex,
 } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.getLobMiniRiffList" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.getLobMiniRiffList" });
 
 // Command id: 0x30c
 export async function getLobMiniRiffList(
-	commandId: number,
+	_commandId: number,
 	data: Buffer,
 ): Promise<Buffer> {
 	defaultLogger.debug("getLobMiniRiffList called");
-	defaultLogger.info(`Processing getLobMiniRiffList command: ${getAsHex(data)}`);
+	defaultLogger.info(
+		`Processing getLobMiniRiffList command: ${getAsHex(data)}`,
+	);
 
 	const riffList = new MiniRiffList();
 

@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import * as Sentry from "@sentry/node";
-import { getServerConfiguration  } from "rusty-motors-shared";
+import { getServerConfiguration } from "rusty-motors-shared";
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import { SessionKey } from "../messageStructs/SessionKey.js";
 import { UserStatus } from "../messageStructs/UserStatus.js";
@@ -10,9 +10,8 @@ import { UserStatusManager } from "../src/UserStatusManager.js";
 import { getAsHex, getLenString } from "../src/utils/pureGet.js";
 import type { ISerializable } from "../types.js";
 import type { GameSocketCallback } from "./index.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processGameLogin" });
-;
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processGameLogin" });
 
 export function loadPrivateKey(path: string): string {
 	const privateKey = fs.readFileSync(path);
@@ -38,7 +37,9 @@ export function unpackUserLoginMessage(message: ISerializable): {
 	contextToken: string;
 } {
 	defaultLogger.debug("unpackUserLoginMessage called");
-	defaultLogger.info(`Unpacking user login message: ${getAsHex(message.serialize())}`);
+	defaultLogger.info(
+		`Unpacking user login message: ${getAsHex(message.serialize())}`,
+	);
 
 	// Get the context token
 	const ticket = getLenString(message.serialize(), 0, false);
@@ -74,7 +75,9 @@ export function unpackUserLoginMessage(message: ISerializable): {
 		Buffer.from(sessionKey, "hex"),
 	);
 
-	defaultLogger.info(`Session key structure: ${sessionKeyStructure.toString()}`);
+	defaultLogger.info(
+		`Session key structure: ${sessionKeyStructure.toString()}`,
+	);
 
 	// Update the data offset
 	dataOffset += 2 + nextDataLength;
@@ -135,7 +138,9 @@ export async function processGameLogin(
 
 				// If the user is not found, return an error
 				if (user === undefined) {
-					defaultLogger.error(`User not found for context token: ${contextToken}`);
+					defaultLogger.error(
+						`User not found for context token: ${contextToken}`,
+					);
 
 					// Create a new message - Not found
 					const response = new GameMessage(0);

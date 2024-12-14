@@ -7,8 +7,8 @@ import type { GatewayOptions } from "./types.js";
 import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
 import { mcotsPortRouter } from "./mcotsPortRouter.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer" });
+import {logger, type Logger } from "rusty-motors-utilities";
+
 import http from "node:http";
 
 /**
@@ -33,13 +33,15 @@ export class Gateway {
 		log?: Logger;
 	}) => void;
 	webServer: http.Server;
+	private static instance: Gateway;
+
 	/**
 	 * Creates an instance of GatewayServer.
 	 * @param {GatewayOptions} options
 	 */
 	constructor({
 		config = getServerConfiguration(),
-		log = defaultLogger,
+		log = logger.child({ name: "GatewayServer" }),
 		backlogAllowedCount = 0,
 		listeningPortList = [],
 		socketConnectionHandler = onSocketConnection,
@@ -64,15 +66,28 @@ export class Gateway {
 	}
 
 	/**
+	 * Gets the singleton instance of GatewayServer.
+	 *
+	 * @param {GatewayOptions} options - The options to use when creating the GatewayServer instance.
+	 * @returns {Gateway} The singleton instance of GatewayServer.
+	 */
+	static getGatewayServer(options: GatewayOptions): Gateway {
+		if (!Gateway.instance) {
+			Gateway.instance = new Gateway(options);
+		}
+		return Gateway.instance;
+	}
+
+	/**
 	 * Starts the GatewayServer.
-	 * 
+	 *
 	 * This method initializes the server, starts new servers on the specified ports,
 	 * and sets up the web server connection. If the web server is not defined, it throws an error.
 	 * Finally, it updates the server status to "running".
-	 * 
+	 *
 	 * @throws {Error} If the web server is undefined.
 	 */
-	start(): void {
+	async start(): Promise<void> {
 		// Initialize the GatewayServer
 		this.init();
 
@@ -118,30 +133,32 @@ export class Gateway {
 
 	/**
 	 * Gracefully stops the GatewayServer and exits the process.
-	 * 
+	 *
 	 * This method first stops the GatewayServer by calling the `stop` method,
 	 * and then exits the Node.js process with a status code of 0.
-	 * 
+	 *
 	 * @returns {Promise<void>} A promise that resolves when the server has stopped and the process has exited.
 	 */
 	async exit(): Promise<void> {
 		// Stop the GatewayServer
 		await this.stop();
+	}
 
-		// Exit the process
-		process.exit(0);
+	public static async exitServer(): Promise<void> {
+		const gatewayServer = Gateway.getGatewayServer({});
+		await gatewayServer.exit();
 	}
 
 	/**
 	 * Stops the GatewayServer.
-	 * 
+	 *
 	 * This method performs the following actions:
 	 * 1. Marks the GatewayServer as stopping.
 	 * 2. Stops the servers by calling `shutdownServers`.
 	 * 3. Stops the timer if it is running.
 	 * 4. Marks the GatewayServer as stopped.
 	 * 5. Resets the global state by creating and saving the initial state.
-	 * 
+	 *
 	 * @returns {Promise<void>} A promise that resolves when the server has been stopped.
 	 */
 	async stop(): Promise<void> {
@@ -164,11 +181,13 @@ export class Gateway {
 		// Reset the global state
 		this.log.debug("Resetting the global state");
 		createInitialState({}).save();
+
+		this.log.info("GatewayServer stopped");
 	}
 
 	/**
 	 * Shuts down all active servers and emits a close event on the web server.
-	 * 
+	 *
 	 * @throws {Error} If the webServer is undefined.
 	 * @private
 	 * @async
@@ -199,7 +218,5 @@ export class Gateway {
 		addPortRouter(8228, npsPortRouter);
 		addPortRouter(7003, npsPortRouter);
 		addPortRouter(43300, mcotsPortRouter);
-
-		process.on("SIGINT", this.exit.bind(this));
 	}
 }

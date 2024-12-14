@@ -1,0 +1,33 @@
+[Unit]
+Description=Rusty Motors Racing Server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=nodeuser  # Replace with your service user
+Group=nodeuser # Replace with your service group
+WorkingDirectory=/path/to/your/app
+Environment=NODE_ENV=production
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=PORT=3000
+
+# If you're using environment files
+EnvironmentFile=/path/to/your/app/.env
+
+ExecStart=/usr/bin/node /path/to/your/app/server.js
+Restart=always
+RestartSec=1
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=myservice
+
+# Security options
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+
+[Install]
+WantedBy=multi-user.target

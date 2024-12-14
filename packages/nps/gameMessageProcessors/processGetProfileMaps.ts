@@ -8,8 +8,8 @@ import {
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processGetProfileMaps" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processGetProfileMaps" });
 
 export async function processGetProfileMaps(
 	connectionId: string,

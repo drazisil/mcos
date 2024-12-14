@@ -8,8 +8,8 @@ import {
 import { UserStatusManager } from "rusty-motors-nps";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { sendSuccess } from "./sendSuccess.js";
-import pino from "pino";
-const log = pino({ name: "PersonaServer.receivePersonaData" });
+import { logger } from "rusty-motors-utilities";
+const log = logger.child({ name: "PersonaServer.receivePersonaData" });
 export async function processClientConnect(
 	connectionId: string,
 	message: ServerPacket,
@@ -28,7 +28,9 @@ export async function processClientConnect(
 		const userStatus = UserStatusManager.getUserStatus(request.getCustomerId());
 
 		if (!userStatus) {
-			throw new Error(`User status not found for customer ID: ${request.getCustomerId()}`);
+			throw new Error(
+				`User status not found for customer ID: ${request.getCustomerId()}`,
+			);
 		}
 
 		log.debug(`User status found: ${userStatus.toString()}`);
@@ -37,7 +39,9 @@ export async function processClientConnect(
 		const connection = ClientConnectionManager.getConnection(connectionId);
 
 		if (!connection) {
-			throw new Error(`Connection not found for connection ID: ${connectionId}`);
+			throw new Error(
+				`Connection not found for connection ID: ${connectionId}`,
+			);
 		}
 
 		log.debug(`Connection found: ${connection.toString()}`);
@@ -45,7 +49,9 @@ export async function processClientConnect(
 		const sessionKey = userStatus.getSessionKey();
 
 		if (!sessionKey) {
-			throw new Error(`Session key not found for customer ID: ${request.getCustomerId()}`);
+			throw new Error(
+				`Session key not found for customer ID: ${request.getCustomerId()}`,
+			);
 		}
 
 		const cipherPair = createDataEncryptionPair(sessionKey.getKey());

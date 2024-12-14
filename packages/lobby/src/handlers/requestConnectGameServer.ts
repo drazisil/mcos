@@ -15,9 +15,8 @@ import {
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { UserInfoMessage } from "../UserInfoMessage.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
-import pino from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
-
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "LoginServer" });
 
 /**
  * Convert to zero padded hex

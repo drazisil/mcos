@@ -3,8 +3,9 @@ import { assertLength } from "./assertLength.js";
 import { ListInGameEmailsMessage } from "./ListInGameEmailsMessage.js";
 import { ListInGameEmailsResponseMessage } from "./ListInGameEmailsResponseMessage.js";
 import { InGameEmailMessage } from "./InGameEmailMessage.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "chat.inGameEmails" });
+import {logger } from "rusty-motors-utilities";
+
+const defaultLogger = logger.child({ name: "inGameEmails" });
 
 
 

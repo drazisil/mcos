@@ -1,9 +1,9 @@
-import {  OldServerMessage } from "rusty-motors-shared";
+import { OldServerMessage } from "rusty-motors-shared";
 import { EntryFeePurseMessage, PurseEntry } from "./EntryFeePurseMessage.js";
 import { LobbyInfo, LobbyMessage } from "./LobbyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "transactionServer.getLobbies" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactionServer.getLobbies" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -14,7 +14,9 @@ async function _getLobbies({
 	connectionId,
 	packet,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
-	defaultLogger.debug(`[${connectionId}] Received getLobbies packet ${packet.toString()}`);
+	defaultLogger.debug(
+		`[${connectionId}] Received getLobbies packet ${packet.toString()}`,
+	);
 
 	defaultLogger.debug(`[${connectionId}] Sending lobbies response...`);
 
@@ -37,7 +39,8 @@ async function _getLobbies({
 
 	lobbyResponse.addLobby(lobby);
 
-	defaultLogger.debug(`[${connectionId}] Sending lobbyResponse: ${lobbyResponse.toString()}`
+	defaultLogger.debug(
+		`[${connectionId}] Sending lobbyResponse: ${lobbyResponse.toString()}`,
 	);
 
 	lobbiesResponsePacket.setBuffer(lobbyResponse.serialize());
@@ -52,7 +55,9 @@ async function _getLobbies({
 	perseEntryResponse._shouldExpectMoreMessages = false;
 	perseEntryResponse.addEntry(purseEntry);
 
-	defaultLogger.debug(`[${connectionId}] Sending purseEntryResponse: ${perseEntryResponse.toString()}`);
+	defaultLogger.debug(
+		`[${connectionId}] Sending purseEntryResponse: ${perseEntryResponse.toString()}`,
+	);
 
 	const perseEntriesResponsePacket = new OldServerMessage();
 	perseEntriesResponsePacket._header.sequence = packet._header.sequence;

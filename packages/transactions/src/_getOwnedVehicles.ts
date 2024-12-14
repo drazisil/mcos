@@ -1,9 +1,9 @@
 import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { OwnedVehicle, OwnedVehiclesMessage } from "./OwnedVehiclesMessage.js";
-import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js"
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getOwnedVehicles" });
+import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactions.getOwnedVehicles" });
 
 const vehicleList = [
 	{
@@ -17,9 +17,11 @@ export function getVehiclesForPerson(personId: number) {
 	return vehicleList.filter((vehicle) => vehicle.personId === personId);
 }
 
-export async function _getOwnedVehicles(
-	{ connectionId, packet, log = defaultLogger }: MessageHandlerArgs
-): Promise<MessageHandlerResult> {
+export async function _getOwnedVehicles({
+	connectionId,
+	packet,
+	log = defaultLogger,
+}: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getOwnedVehiclesMessage = new GenericRequestMessage();
 	getOwnedVehiclesMessage.deserialize(packet.data);
 

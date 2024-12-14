@@ -8,15 +8,17 @@
     "check": "tsc",
     "lint": "npx @biomejs/biome lint --write .",
     "format": "npx @biomejs/biome format --write .",
-    "test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage"
+    "test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage",
+    "build": "tsc"
   },
-  "type": "commonjs",
+  "type": "module",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "description": "",
   "dependencies": {
-    "@sentry/profiling-node": "8.42.0"
+    "@sentry/profiling-node": "8.42.0",
+    "utils": "link:src/utils"
   },
   "devDependencies": {
     "add": "^2.0.6",

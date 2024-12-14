@@ -15,10 +15,11 @@
   "type": "module",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "description": "",
   "dependencies": {
-    "@sentry/profiling-node": "8.42.0"
+    "@sentry/profiling-node": "8.42.0",
+    "utils": "link:src/utils"
   },
   "devDependencies": {
     "add": "^2.0.6",

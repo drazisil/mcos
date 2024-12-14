@@ -1,12 +1,8 @@
-import { getServerLogger } from "rusty-motors-shared";
 import {
 	BufferSerializer,
 	ServerMessagePayload,
 } from "rusty-motors-shared-packets";
 
-const log = getServerLogger({
-	name: "StockCar",
-});
 
 export class StockCar extends BufferSerializer {
 	private brandedPartId: number = 0; // 4 bytes

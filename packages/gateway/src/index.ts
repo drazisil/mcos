@@ -18,9 +18,11 @@ import { Socket } from "node:net";
 import { randomUUID } from "node:crypto";
 import { tagSocketWithId } from "./socketUtility.js";
 import { getPortRouter } from "./portRouters.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "gatewayServer" });
+import {logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "gatewayServer" });
+
 import * as Sentry from "@sentry/node";
+
 
 /**
  * Handle incoming TCP connections

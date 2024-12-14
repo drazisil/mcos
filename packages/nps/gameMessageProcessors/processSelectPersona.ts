@@ -2,8 +2,8 @@ import { GameMessage, getDWord } from "rusty-motors-nps";
 import type { GameSocketCallback } from "./index.js";
 
 import { UserStatus, UserStatusManager, sendNPSAck } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processSelectPersona" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processSelectPersona" });
 
 export async function processSelectPersona(
 	_connectionId: string,

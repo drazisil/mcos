@@ -6,8 +6,8 @@ import {
 	LoginPayload,
 	ServerPacket,
 } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.login" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactions.login" });
 
 /**
  * @param {MessageHandlerArgs} args
@@ -52,7 +52,10 @@ export async function login({
 
 	// Normalize the packet
 
-	const outgoingPacket = ServerPacket.copy(incomingPacket, response.serialize());
+	const outgoingPacket = ServerPacket.copy(
+		incomingPacket,
+		response.serialize(),
+	);
 	outgoingPacket.setSequence(incomingPacket.getSequence());
 	outgoingPacket.setPayloadEncryption(true);
 	outgoingPacket.setSignature("TOMC");

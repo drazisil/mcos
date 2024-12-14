@@ -1,11 +1,10 @@
-import { getServerConfiguration,  } from "rusty-motors-shared";
+import { getServerConfiguration } from "rusty-motors-shared";
 import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { channelRecordSize, channels } from "./channels.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "Lobby.handleSendMiniRiffList" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "Lobby.handleSendMiniRiffList" });
 
 // const users = [user1];
 /**

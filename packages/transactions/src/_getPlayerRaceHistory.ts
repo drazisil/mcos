@@ -1,14 +1,13 @@
 import { ServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
-import {
-	PlayerRacingHistoryMessage,
-} from "./PlayerRacingHistoryMessage.js";
+import { PlayerRacingHistoryMessage } from "./PlayerRacingHistoryMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getRacingHistoryRecords } from "./database/racingHistoryRecords.js";
 import { GenericReplyPayload } from "rusty-motors-shared-packets";
-import pino from "pino";
-const defaultLogger = pino({ name: "transactionServer._getPlayerRaceHistory" });
-
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "transactionServer._getPlayerRaceHistory",
+});
 
 export async function _getPlayerRaceHistory({
 	connectionId,
