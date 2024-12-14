@@ -5,12 +5,10 @@
  *
  */
 
-// eslint-disable-next-line no-unused-vars
 import { Cipher, Decipher } from "crypto";
 import { SerializedBufferOld } from "./SerializedBufferOld.js";
 import { BufferSerializer } from "rusty-motors-shared-packets";
-import { logger, type Logger } from "rusty-motors-utilities";
-const defaultLogger = logger.child({ name: "GatewayServer/State" });
+import { type Logger } from "rusty-motors-utilities";
 
 /**
  * State management for the gateway server.
