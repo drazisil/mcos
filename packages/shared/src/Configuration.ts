@@ -1,4 +1,4 @@
-import type { Logger } from "pino";
+import type { Logger } from "rusty-motors-utilities";
 
 /**
  * @module shared/Configuration

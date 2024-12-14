@@ -1,11 +1,16 @@
-import { LegacyMessage, NPSMessage, SerializedBufferOld  } from "rusty-motors-shared";
+import {
+	LegacyMessage,
+	NPSMessage,
+	SerializedBufferOld,
+} from "rusty-motors-shared";
 import { createGameProfile } from "rusty-motors-nps";
 import { getPersonasByPersonaId } from "../getPersonasByPersonaId.js";
 import { personaToString } from "../internal.js";
 
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "PersonaServer.receivePersonaData",
+});
 
 export async function getPersonaInfo({
 	connectionId,
@@ -21,31 +26,31 @@ export async function getPersonaInfo({
 }> {
 	log.debug("getPersonaInfo...");
 	const requestPacket = new NPSMessage();
-    requestPacket._doDeserialize(message.serialize());
+	requestPacket._doDeserialize(message.serialize());
 
 	log.debug(
 		`LegacyMsg request object from getPersonaInfo ${requestPacket.toString()}`,
 	);
 
-    const personaId = requestPacket.data.readUInt32BE(0);
+	const personaId = requestPacket.data.readUInt32BE(0);
 
-    log.debug(`personaId: ${personaId}`);
+	log.debug(`personaId: ${personaId}`);
 
-    const persona = await getPersonasByPersonaId({
-        personaId,
-    });
+	const persona = await getPersonasByPersonaId({
+		personaId,
+	});
 
-    if (!persona[0]) {
-        throw new Error(`Persona not found for personaId: ${personaId}`);
-    }
+	if (!persona[0]) {
+		throw new Error(`Persona not found for personaId: ${personaId}`);
+	}
 
 	log.debug(`Persona found: ${personaToString(persona[0])}`);
 
-    const profile = createGameProfile();
+	const profile = createGameProfile();
 
-    profile.customerId = persona[0]!.customerId;
-    profile.profileId = persona[0]!.personaId;
-    profile.profileName = persona[0]!.personaName;
+	profile.customerId = persona[0]!.customerId;
+	profile.profileId = persona[0]!.personaId;
+	profile.profileName = persona[0]!.personaName;
 
 	// Build the packet
 	// Response Code

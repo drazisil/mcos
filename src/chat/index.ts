@@ -1,7 +1,4 @@
-import {
-	SerializedBufferOld,
-	type ServiceResponse,
-} from "rusty-motors-shared";
+import { SerializedBufferOld, type ServiceResponse } from "rusty-motors-shared";
 import { type BufferSerializer } from "rusty-motors-shared-packets";
 import { ChatMessage } from "./ChatMessage.js";
 import {
@@ -10,13 +7,12 @@ import {
 } from "./inGameEmails.js";
 import { bufferToHexString } from "./toHexString.js";
 import * as Sentry from "@sentry/node";
-import pino from "pino";
-const defaultLogger = pino({ name: "chat.receiveChatData" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "chat.receiveChatData" });
 
 const handlers = new Map<number, (message: ChatMessage) => Buffer[]>();
 handlers.set(0x0524, handleReceiveEmailMessage);
 handlers.set(0x0526, handleListInGameEmailsMessage);
-
 
 /**
  * Receive chat data
@@ -36,7 +32,7 @@ async function receiveChatData({
 	defaultLogger.debug(`Message: ${message.toHexString()}`);
 
 	let inboundMessage: ChatMessage;
-	
+
 	try {
 		inboundMessage = ChatMessage.fromBuffer(message.serialize());
 	} catch (error) {

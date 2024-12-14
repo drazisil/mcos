@@ -2,9 +2,10 @@ import { SerializedBufferOld } from "../../shared/src/SerializedBufferOld.js";
 import { NPSMessage } from "../../shared/src/NPSMessage.js";
 import { LegacyMessage } from "../../shared/src/LegacyMessage.js";
 import { BuddyCount, BuddyInfoMessage, BuddyList } from "./BuddyInfoMessage.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "PersonaServer.receivePersonaData",
+});
 
 export async function _getFirstBuddy({
 	connectionId,

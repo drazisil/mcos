@@ -15,8 +15,8 @@ import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import { TClientConnectMessage } from "./TClientConnectMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.clientConnect" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactions.clientConnect" });
 
 /**
  * @param {MessageHandlerArgs} args

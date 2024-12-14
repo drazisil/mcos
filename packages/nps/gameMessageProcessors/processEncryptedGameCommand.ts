@@ -13,8 +13,8 @@ import type { GameSocketCallback } from "./index.js";
 import { lobbyCommandMap } from "./lobbyCommands.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processEncryptedGameCommand" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processEncryptedGameCommand" });
 
 export async function processEncryptedGameCommand(
 	connectionId: string,
@@ -41,12 +41,16 @@ export async function processEncryptedGameCommand(
 			setEncryptionSession(newSession);
 			encryptionSession = newSession;
 		} catch (error) {
-			defaultLogger.error(`Error creating encryption session: ${error as string}`);
+			defaultLogger.error(
+				`Error creating encryption session: ${error as string}`,
+			);
 			throw new Error("Error creating encryption session");
 		}
 
 		// Log the encryption session
-		defaultLogger.info(`Created encryption session for ${userStatus.getCustomerId()}`);
+		defaultLogger.info(
+			`Created encryption session for ${userStatus.getCustomerId()}`,
+		);
 	}
 
 	// Attempt to decrypt the message
@@ -62,7 +66,9 @@ export async function processEncryptedGameCommand(
 	decryptedMessage.deserialize(decryptedbytes);
 
 	// Log the decrypted message id
-	defaultLogger.info(`Decrypted message ID: ${decryptedMessage.header.getId()}`);
+	defaultLogger.info(
+		`Decrypted message ID: ${decryptedMessage.header.getId()}`,
+	);
 
 	// Do we have a valid message processor?
 	const processor = lobbyCommandMap.get(decryptedMessage.header.getId());
@@ -80,7 +86,9 @@ export async function processEncryptedGameCommand(
 	);
 
 	// Log the response
-	defaultLogger.info(`Response: ${response.length} bytes, ${getAsHex(response)}`);
+	defaultLogger.info(
+		`Response: ${response.length} bytes, ${getAsHex(response)}`,
+	);
 
 	// Encrypt the response
 	const encryptedResponse = encryptionSession.gameCipher.update(response);

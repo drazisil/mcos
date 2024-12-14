@@ -1,11 +1,9 @@
 import { privateDecrypt } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-import { Configuration,  } from "rusty-motors-shared";
+import { Configuration } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "nps.NPSUserStatus" });
-
+import { type Logger } from "rusty-motors-utilities";
 
 /**
  * @typedef {import("../../shared/Configuration.js").Configuration} Configuration

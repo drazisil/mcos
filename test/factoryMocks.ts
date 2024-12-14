@@ -1,7 +1,7 @@
 import { expect, it, vi } from "vitest";
 import { ensureLegacyCipherCompatibility } from "../packages/shared/src/verifyLegacyCipherSupport.js";
 
-export function mockPino() {
+export function mocklogger.child() {
 	vi.mock("pino", () => {
 		return {
 			default: vi.fn().mockImplementation(() => {
@@ -24,7 +24,7 @@ export function mockPino() {
 	});
 }
 
-export function unmockPino() {
+export function unmocklogger.child() {
 	vi.unmock("pino");
 }
 

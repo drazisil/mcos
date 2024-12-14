@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import pino, { Logger } from "pino";
+import { logger, type Logger } from "rusty-motors-utilities";
 
 import {
 	McosEncryption,
@@ -33,8 +33,7 @@ import {
 	type BufferSerializer,
 } from "rusty-motors-shared-packets";
 import { _MSG_STRING } from "./_MSG_STRING.js";
-const defaultLogger = pino({ name: "transactionServer" });
-
+const defaultLogger = logger.child({ name: "transactionServer" });
 
 /**
  * Route or process MCOTS commands

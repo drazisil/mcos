@@ -8,9 +8,10 @@ import {
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PlayerPhysicalMessage } from "./PlayerPhysicalMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "transactionServer._getPlayerPhysical" });
-
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "transactionServer._getPlayerPhysical",
+});
 
 export async function _getPlayerPhysical({
 	connectionId,

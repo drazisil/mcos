@@ -3,12 +3,12 @@ import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processCheckProfileName" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processCheckProfileName" });
 
 export async function processCheckProfileName(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

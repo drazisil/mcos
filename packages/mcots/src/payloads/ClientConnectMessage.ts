@@ -1,7 +1,7 @@
 import { ServerMessagePayload } from "rusty-motors-shared-packets";
 import { readStringFromBuffer } from "./utils.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "mcots.ClientConnectionMessage" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "mcots.ClientConnectionMessage" });
 
 export class ClientConnectionMessage extends ServerMessagePayload {
 	private _customerId: number = 0; // 4 bytes

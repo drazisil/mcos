@@ -38,6 +38,46 @@ services:
             - pgadmin:/var/lib/pgadmin
         depends_on:
             - db
+    server:
+        image: "node:20.17.0"
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=production
+            - NPM_CONFIG_PREFIX=/home/node/.npm-global
+        volumes:
+            - ./:/home/node/app
+        expose:
+            - "3000"
+            - "6660" 
+            - "7003" 
+            - "8228" 
+            - "8226" 
+            - "8227" 
+            - "9000-9014"
+            - "43200" 
+            - "43300" 
+            - "43400" 
+            - "53303"
+        ports: # use if it is necessary to expose the container to the host machine
+            - "3000:3000"
+            - "6660:6660"
+            - "7003:7003"
+            - "8228:8228"
+            - "8226:8226"
+            - "8227:8227"
+            - "9000-9014:9000-9014"
+            - "43200:43200"
+            - "43300:43300"
+            - "43400:43400"
+            - "53303:53303"
+        entrypoint: /home/node/app/docker-entrypoint.sh
+        init: true
+        depends_on:
+            - db
+            - nginx
+        env_file:
+            - .env
 
 volumes:
     pgadmin:

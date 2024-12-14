@@ -4,10 +4,9 @@ import {
 	type SerializableInterface,
 } from "rusty-motors-shared-packets";
 import { receiveTransactionsData } from "rusty-motors-transactions";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "GatewayServer" });
 import * as Sentry from "@sentry/node";
-
 
 /**
  * Handles the routing of messages for the MCOTS (Motor City Online Transaction Server) ports.
@@ -48,9 +47,12 @@ export async function mcotsPortRouter({
 					socket.write(response);
 				})
 				.catch((error) => {
-					throw new Error(`[${id}] Error routing initial mcots message: ${error}`, {
-						cause: error,
-					});
+					throw new Error(
+						`[${id}] Error routing initial mcots message: ${error}`,
+						{
+							cause: error,
+						},
+					);
 				});
 		} catch (error) {
 			Sentry.captureException(error);

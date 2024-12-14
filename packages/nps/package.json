@@ -19,7 +19,8 @@
 	"license": "AGPL-3.0",
 	"dependencies": {
 		"@sentry/profiling-node": "8.42.0",
-		"short-unique-id": "^5.2.0"
+		"short-unique-id": "^5.2.0",
+		"utils": "link:src/utils"
 	},
 	"description": "",
 	"devDependencies": {

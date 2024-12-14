@@ -2,8 +2,8 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { ArcadeCarInfo, ArcadeCarMessage } from "./ArcadeCarMessage.js";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getArcadeCarInfo" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactions.getArcadeCarInfo" });
 
 /**
  * @param {MessageHandlerArgs} args

@@ -1,5 +1,5 @@
 import type { Socket } from "net";
-import { Logger } from "pino";
+import type { Logger } from "rusty-motors-utilities";
 import type { Configuration } from "rusty-motors-shared";
 
 /**

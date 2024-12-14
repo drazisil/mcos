@@ -3,8 +3,8 @@ import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
 import { sendNPSAck } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processPing" });
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "nps.processPing" });
 
 export async function processPing(
 	connectionId: string,

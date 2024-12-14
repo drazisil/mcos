@@ -1,10 +1,9 @@
-import { getServerConfiguration,  } from "rusty-motors-shared";
+import { getServerConfiguration } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
 import { updateUser } from "rusty-motors-database";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "Lobby" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "Lobby" });
 
 export async function _setMyUserData({
 	connectionId,

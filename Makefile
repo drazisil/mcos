@@ -1,14 +1,3 @@
-# This will read from .env file and export all the variables
-# to the environment. This is useful for running the tests
-# and other commands that require the environment variables
-# to be set.
-#
-# Warning: This will cause the makefile to fail if the .env
-# file is not present. This is the desired behavior as we
-# want to make sure that the environment variables are set
-# before running the tests.
-include .env # Disabled for now
-
 # Variables
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
@@ -19,13 +8,18 @@ NC = \033[0m  # No Color
 
 # Docker related variables
 DOCKER_COMPOSE = docker compose
-DOCKER_SERVICES = nginx db pgadmin
+DOCKER_SERVICES = nginx db pgadmin server
+
+.PHONY: build
+build: ## Build the project
+	@echo "Building project..."
+	pnpm build
 
 # Development targets
 .PHONY: up
 up: ## Start all services
 	$(DOCKER_COMPOSE) up -d $(DOCKER_SERVICES)
-	npx dotenvx run -- make migration-up
+	make migration-up
 
 .PHONY: down
 down: ## Stop all services
@@ -57,11 +51,39 @@ test: ## Run tests
 
 .PHONY: start
 start: up ## Start the development environment
-	@pnpx tsx --import ./instrument.mjs --openssl-legacy-provider --env-file=.env src/server.ts
+
+.PHONY: service-install
+service-install: ## Install system service
+	@echo "Installing system service..."
+	sudo cp rustymotors.service /etc/systemd/system/
+	sudo chmod 644 /etc/systemd/system/rustymotors.service
+	sudo systemctl daemon-reload
+	sudo systemctl enable rustymotors
+	@echo "Service installed successfully"
+
+.PHONY: service-start
+service-start: ## Start system service
+	sudo systemctl start rustymotors
+
+.PHONY: service-stop
+service-stop: ## Stop system service
+	sudo systemctl stop rustymotors
+
+.PHONY: service-restart
+service-restart: ## Restart system service
+	sudo systemctl restart rustymotors
+
+.PHONY: service-status
+service-status: ## Check service status
+	sudo systemctl status rustymotors
+
+.PHONY: service-logs
+service-logs: ## View service logs
+	sudo journalctl -u rustymotors -f
 
 .PHONY: stop
 stop: ## Stop the development environment
-	@killall ts-node || true
+	@killall node || true
 
 .PHONY: setcap
 setcap: ## Set capabilities for node to bind to port 80
@@ -69,7 +91,7 @@ setcap: ## Set capabilities for node to bind to port 80
 
 .PHONY: migration-up
 migration-up: ## Run migrations
-	vendor/goose --dir ./migrations up
+	npx dotenvx run -- vendor/goose --dir ./migrations up
 
 # Help target
 .PHONY: help

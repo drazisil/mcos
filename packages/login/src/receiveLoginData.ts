@@ -13,14 +13,11 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import {
-	SerializedBufferOld,
-	type ServiceResponse,
-} from "rusty-motors-shared";
+import { SerializedBufferOld, type ServiceResponse } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "LoginServer" });
 
 /**
  * Receives login data and handles the login process.

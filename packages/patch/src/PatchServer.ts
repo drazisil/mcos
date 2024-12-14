@@ -1,8 +1,7 @@
 import { Buffer } from "node:buffer";
 import { IncomingMessage, ServerResponse } from "node:http";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PatchServer.receivePatchData" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "PatchServer.receivePatchData" });
 
 export const CastanetResponse = {
 	body: Buffer.from([

@@ -9,9 +9,8 @@
 import { Cipher, Decipher } from "crypto";
 import { SerializedBufferOld } from "./SerializedBufferOld.js";
 import { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer/State" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "GatewayServer/State" });
 
 /**
  * State management for the gateway server.

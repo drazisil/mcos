@@ -1,9 +1,5 @@
-import { getServerLogger } from "rusty-motors-shared";
 import { ServerMessagePayload } from "rusty-motors-shared-packets";
 
-const log = getServerLogger({
-	name: "SetOptionsMessage",
-});
 
 export class SetOptionsMessage extends ServerMessagePayload {
 	private _lpCode: number = 0; // 2 bytes

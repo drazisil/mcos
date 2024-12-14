@@ -1,8 +1,9 @@
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
-
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({
+	name: "PersonaServer.receivePersonaData",
+});
 
 /**
  * Handle game logout
@@ -30,12 +31,16 @@ export async function _gameLogout({
 }> {
 	log.debug(`[${connectionId}] _gameLogout`);
 	const requestPacket = message;
-	log.debug(`[${connectionId}] _npsLogoutGameUser request: ${requestPacket.toHexString()}`);
+	log.debug(
+		`[${connectionId}] _npsLogoutGameUser request: ${requestPacket.toHexString()}`,
+	);
 
 	// Build the packet
 	const responsePacket = new LegacyMessage();
 	responsePacket._header.id = 519;
-	log.debug(`[${connectionId}] _npsLogoutGameUser response: ${responsePacket.toHexString()}`);
+	log.debug(
+		`[${connectionId}] _npsLogoutGameUser response: ${responsePacket.toHexString()}`,
+	);
 
 	const outboundMessage = new SerializedBufferOld();
 	outboundMessage._doDeserialize(responsePacket._doSerialize());

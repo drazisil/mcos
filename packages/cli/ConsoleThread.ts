@@ -2,9 +2,7 @@ import { emitKeypressEvents } from "node:readline";
 // eslint-disable-next-line no-unused-vars
 import { Gateway } from "rusty-motors-gateway";
 import { SubThread  } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "ConsoleThread" });
-
+import type { Logger } from "rusty-motors-utilities";
 
 /**
  * @module ConsoleThread

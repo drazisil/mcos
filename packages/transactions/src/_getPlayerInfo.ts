@@ -2,16 +2,14 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PlayerInfoMessage } from "./PlayerInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getPlayerInfo" });
+import { logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "transactions.getPlayerInfo" });
 
 export async function _getPlayerInfo({
 	connectionId,
 	packet,
 	log = defaultLogger,
-}: MessageHandlerArgs
-
-): Promise<MessageHandlerResult> {
+}: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getPlayerInfoMessage = new GenericRequestMessage();
 	getPlayerInfoMessage.deserialize(packet.data);
 

@@ -74,7 +74,7 @@
 			"**/dist",
 			"**/out",
 			"**/node_modules",
-			"**/coverage",
+			"coverage",
 			"**/__generated__"
 		]
 	}

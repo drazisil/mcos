@@ -1,9 +1,8 @@
 import { putLenString } from "rusty-motors-nps";
 
 import { BaseSerializable } from "./BaseSerializable.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "MiniRiffList" });
-
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "MiniRiffList" });
 
 const channelRecordSize = 40;
 
@@ -31,7 +30,9 @@ export class MiniRiffInfo extends BaseSerializable {
 		buffer.writeUInt32BE(this.riffId, offset);
 		offset += 4;
 		buffer.writeUInt16BE(this.population, offset);
-		defaultLogger.debug(`MiniRiffInfo: ${this.toString()} - ${buffer.toString("hex")}`);
+		defaultLogger.debug(
+			`MiniRiffInfo: ${this.toString()} - ${buffer.toString("hex")}`,
+		);
 		return buffer;
 	}
 	override getByteSize(): number {
@@ -71,7 +72,9 @@ export class MiniRiffList extends BaseSerializable {
 			offset += riff.getByteSize();
 		}
 
-		defaultLogger.debug(`MiniRiffList: ${this.toString()} - ${buffer.toString("hex")}`);
+		defaultLogger.debug(
+			`MiniRiffList: ${this.toString()} - ${buffer.toString("hex")}`,
+		);
 		return buffer;
 	}
 	override toString(): string {

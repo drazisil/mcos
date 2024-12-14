@@ -3,8 +3,8 @@
  */
 
 import { EventEmitter } from "node:events";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "SubThread" });
+import {logger, type Logger } from "rusty-motors-utilities";
+const defaultLogger = logger;
 
 
 export class SubThread extends EventEmitter {

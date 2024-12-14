@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"lib": ["es2022"],
-		"module": "CommonJS",
+		"module": "NodeNext",
 		"target": "es2022",
 		"allowUnusedLabels": false,
 		"allowUnreachableCode": false,
@@ -34,7 +34,8 @@
 		"skipLibCheck": true,
 		"isolatedModules": true,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+		"moduleResolution": "nodenext"
 	},
 	"files": [],
 	"references": [

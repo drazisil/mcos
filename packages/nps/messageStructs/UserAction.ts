@@ -1,8 +1,7 @@
 import type { ISerializable } from "rusty-motors-nps";
 import { getAsHex } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "UserAction" });
-
+import { logger } from "rusty-motors-utilities";
+const defaultLogger = logger.child({ name: "UserAction" });
 
 export class UserAction implements ISerializable {
 	private name: string;

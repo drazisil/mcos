@@ -11,6 +11,7 @@
   },
   "scripts": {
     "clean": "rm --verbose -rf **/node_modules node_modules",
+    "build": "pnpm run -r --stream build",
     "start": "make start",
     "check:all": "pnpm run -r --stream check",
     "lint:all": "pnpm run -r --stream lint",
@@ -43,9 +44,6 @@
     "debug": "^4.4.0",
     "fastify": "^5.1.0",
     "moment": "^2.30.1",
-    "pino": "^9.5.0",
-    "pino-debug": "^2.0.0",
-    "pino-pretty": "^13.0.0",
     "rusty-motors-chat": "link:src/chat",
     "rusty-motors-cli": "link:packages/cli",
     "rusty-motors-database": "link:packages/database",
@@ -61,6 +59,7 @@
     "rusty-motors-shared-packets": "link:packages/shared-packets",
     "rusty-motors-socket": "link:src/socket",
     "rusty-motors-transactions": "link:packages/transactions",
+    "rusty-motors-utilities": "link:src/utils",
     "sqlite": "^5.1.1",
     "ts-node": "10.9.2"
   },
