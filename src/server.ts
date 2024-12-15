@@ -21,8 +21,6 @@ import { Gateway } from "rusty-motors-gateway";
 import { Configuration, verifyLegacyCipherSupport } from "rusty-motors-shared";
 import { logger } from "rusty-motors-utilities";
 
-const logger = pino.default({ name: "RustyMotorsServer" });
-
 // Handle process signals for graceful shutdown
 process.on("SIGTERM", async () => {
 	logger.info("Received SIGTERM signal, initiating shutdown...");
@@ -39,11 +37,13 @@ process.on("SIGINT", async () => {
 // Error handling
 process.on("uncaughtException", (error) => {
 	logger.error(`Uncaught Exception: ${error.message}`);
+	Sentry.captureException(error);
 	process.exitCode = 1;
 });
 
 process.on("unhandledRejection", (reason, promise) => {
-	logger.error("Unhandled Rejection at:", promise, "reason:", reason);
+	logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+	Sentry.captureException(reason);
 	process.exitCode = 1;
 });
 
@@ -92,7 +92,7 @@ async function main() {
 		logger.info("Service started successfully");
 	} catch (err) {
 		Sentry.captureException(err);
-		logger.fatal("Error during startup:", err);
+		logger.fatal(`Error during startup: ${err}`);
 		process.exitCode = 1;
 	}
 	function ensureEnvVariablesSet(): boolean {
@@ -119,6 +119,7 @@ async function main() {
 }
 
 main().catch((error) => {
-	logger.error("Error during startup:", error);
+	logger.error(`Error during startup: ${error}`);
+	Sentry.captureException(error);
 	process.exitCode = 1;
 });

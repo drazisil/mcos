@@ -22,7 +22,7 @@
     "types:db": "pnpm --filter=rusty-motors-database run types:db",
     "types": "dotenvx run -- pnpm run types:db",
     "migrate": "pg-migrations apply --directory migrations    ",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "files": [
     "README.md",
@@ -120,7 +120,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c",
+  "packageManager": "pnpm@10.0.0-beta.3+sha512.c80ce119df06d870c6029de0040d75ca3fad1e1e386914b691cdf663ec5aa8ab470312580b11257fddf4a340fc6a9737599fc2a489b195c13bf88c86bd3f9006",
   "pnpm": {
     "overrides": {
       "tinymce": "^7.6.0"
