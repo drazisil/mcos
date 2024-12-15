@@ -22,14 +22,22 @@ fi
 # Check if pnpm/pnpx is installed
 if ! command -v pnpx &> /dev/null; then
     echo "Error: pnpx not found. Installing pnpm..."
-    npm install -g pnpm
+    corepack enable pnpm
+fi 
+
+# Install dependencies
+echo "Installing dependencies..."
+if ! command -v pnpx &> /dev/null; then
+    echo "Error: pnpx not found, even after installing pnpm"
+    exit 1
 fi
+pnpm install
 
 # Print startup message
 echo "Starting server with tsx..."
 
 # Execute the command
-exec pnpx tsx \
+pnpx tsx \
     --import ./instrument.mjs \
     --openssl-legacy-provider \
     --env-file=.env \

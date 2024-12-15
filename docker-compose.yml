@@ -11,6 +11,12 @@ services:
             - "host.docker.internal:host-gateway"
         env_file:
             - .env
+        healthcheck:
+            test: ["CMD", "service", "nginx", "status"]
+            interval: 5s
+            timeout: 30s
+            retries: 5
+            start_period: 30s
     db:
         image: postgres:14.6
         ports:
@@ -22,6 +28,12 @@ services:
             POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password is required}
         env_file:
             - .env
+        healthcheck:
+            test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
+            interval: 10s
+            timeout: 3s
+            retries: 3
+
     pgadmin:
         image: dpage/pgadmin4:6.18
         # TODO: #1182 remove these before prod https://github.com/drazisil/mco-server/issues/1008
@@ -37,10 +49,12 @@ services:
         volumes:
             - pgadmin:/var/lib/pgadmin
         depends_on:
-            - db
+            db:
+                condition: service_healthy
     server:
-        image: "node:20.17.0"
-        user: "node"
+        build:
+            context: .
+            dockerfile: Dockerfile
         working_dir: /home/node/app
         environment:
             - NODE_ENV=production
@@ -49,17 +63,18 @@ services:
             - ./:/home/node/app
         expose:
             - "3000"
-            - "6660" 
-            - "7003" 
-            - "8228" 
-            - "8226" 
-            - "8227" 
+            - "6660"
+            - "7003"
+            - "8228"
+            - "8226"
+            - "8227"
             - "9000-9014"
-            - "43200" 
-            - "43300" 
-            - "43400" 
+            - "43200"
+            - "43300"
+            - "43400"
             - "53303"
-        ports: # use if it is necessary to expose the container to the host machine
+        ports:
+            # use if it is necessary to expose the container to the host machine
             - "3000:3000"
             - "6660:6660"
             - "7003:7003"
@@ -74,8 +89,10 @@ services:
         entrypoint: /home/node/app/docker-entrypoint.sh
         init: true
         depends_on:
-            - db
-            - nginx
+            db:
+                condition: service_healthy
+            nginx:
+                condition: service_healthy
         env_file:
             - .env
 

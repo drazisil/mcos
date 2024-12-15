@@ -10,6 +10,10 @@ NC = \033[0m  # No Color
 DOCKER_COMPOSE = docker compose
 DOCKER_SERVICES = nginx db pgadmin server
 
+.PHONY: docker-rebuild
+docker-rebuild: ## Rebuild docker images
+	$(DOCKER_COMPOSE) build
+
 .PHONY: build
 build: ## Build the project
 	@echo "Building project..."
@@ -25,6 +29,9 @@ up: ## Start all services
 down: ## Stop all services
 	$(DOCKER_COMPOSE) down
 	@echo "All services stopped"
+
+.PHONY: rebuild
+rebuild: down build up ## Rebuild and start all services
 
 .PHONY: clean
 clean: stop ## Clean up generated files and stopped containers
