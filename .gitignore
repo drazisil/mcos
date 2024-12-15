@@ -94,3 +94,6 @@ dist-storybook/
 # Heft temporary files
 .cache/
 .heft/
+
+# Test result files
+*.xml
