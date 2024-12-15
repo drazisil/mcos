@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.508">
-    <testsuite name="test/PatchServer.test.ts" timestamp="2024-12-15T11:33:37.209Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.007203192">
-        <testcase classname="test/PatchServer.test.ts" name="PatchServer &gt; should return the hard-coded value that tells the client there are no updates or patches" time="0.005748268">
-        </testcase>
-    </testsuite>
-</testsuites>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.599">
-    <testsuite name="test/shard-entry.test.ts" timestamp="2024-12-15T11:33:37.837Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.003103848">
-        <testcase classname="test/shard-entry.test.ts" name="ShardEntry#formatForShardList() &gt; should return a formatted list" time="0.001838892">
-        </testcase>
-    </testsuite>
-</testsuites>
