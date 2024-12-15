@@ -1,0 +1,3 @@
+path_filters:
+  exclude:
+    - 'common/config/rush/repo-state.json'
