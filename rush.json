@@ -1,0 +1,23 @@
+{
+	"$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+
+	"rushVersion": "5.82.1",
+
+	"pnpmVersion": "6.7.1",
+
+	"nodeSupportedVersionRange": "22.x",
+	"ensureConsistentVersions": true,
+	"gitPolicy": {},
+
+	"repository": {},
+
+	"eventHooks": {
+		"preRushInstall": [],
+
+		"postRushInstall": [],
+		"preRushBuild": [],
+		"postRushBuild": []
+	},
+	"variants": [],
+	"projects": []
+}

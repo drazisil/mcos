@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="0.863">
+    <testsuite name="test/ErrorNoKey.test.ts" timestamp="2024-12-15T11:33:36.593Z" hostname="strawberry" tests="2" failures="0" errors="0" skipped="0" time="0.003240637">
+        <testcase classname="test/ErrorNoKey.test.ts" name="ErrorNoKey &gt; should have default message &quot;No key provided&quot; when no message is given" time="0.001480844">
+        </testcase>
+        <testcase classname="test/ErrorNoKey.test.ts" name="ErrorNoKey &gt; should use the provided message" time="0.000252069">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/index.test.ts" timestamp="2024-12-15T11:33:36.594Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.002886329">
+        <testcase classname="test/index.test.ts" name="example &gt; should pass" time="0.001505814">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/payloads/ClientConnectMessage.test.ts" timestamp="2024-12-15T11:33:36.595Z" hostname="strawberry" tests="2" failures="0" errors="0" skipped="0" time="0.004556372">
+        <testcase classname="src/payloads/ClientConnectMessage.test.ts" name="ClientConnectionMessage &gt; should deserialize the data correctly" time="0.001987382">
+        </testcase>
+        <testcase classname="src/payloads/ClientConnectMessage.test.ts" name="ClientConnectionMessage &gt; should throw an error if there is not enough data to deserialize" time="0.001472065">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/payloads/utils.test.ts" timestamp="2024-12-15T11:33:36.596Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.003193398">
+        <testcase classname="src/payloads/utils.test.ts" name="readStringFromBuffer &gt; should read a string from the buffer" time="0.001201726">
+        </testcase>
+        <testcase classname="src/payloads/utils.test.ts" name="readStringFromBuffer &gt; should handle empty strings" time="0.000276739">
+        </testcase>
+        <testcase classname="src/payloads/utils.test.ts" name="readStringFromBuffer &gt; should handle strings with null characters" time="0.000215909">
+        </testcase>
+        <testcase classname="src/payloads/utils.test.ts" name="readStringFromBuffer &gt; should handle start and end indices outside the buffer range" time="0.000193769">
+        </testcase>
+    </testsuite>
+</testsuites>

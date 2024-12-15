@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="60" failures="0" errors="0" time="0.699">
+    <testsuite name="test/BasePacket.test.ts" timestamp="2024-12-15T11:33:38.519Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.006331456">
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should initialize with default values" time="0.002674819">
+        </testcase>
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should initialize with provided values" time="0.000400618">
+        </testcase>
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should serialize data correctly" time="0.000679117">
+        </testcase>
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should deserialize data correctly" time="0.000451278">
+        </testcase>
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should return correct byte size" time="0.000319209">
+        </testcase>
+        <testcase classname="test/BasePacket.test.ts" name="BasePacket &gt; should set and get data buffer correctly" time="0.000294209">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/BufferSerializer.test.ts" timestamp="2024-12-15T11:33:38.521Z" hostname="strawberry" tests="8" failures="0" errors="0" skipped="0" time="0.006763504">
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should initialize with a buffer of length 4" time="0.001468854">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should serialize data to a buffer" time="0.000405828">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should deserialize data from a buffer" time="0.001292645">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should throw an error if data is too short in _assertEnoughData" time="0.000442098">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should not throw an error if data is sufficient in _assertEnoughData" time="0.001051146">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should return the correct byte size of the data" time="0.000233629">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should convert serialized data to a hexadecimal string" time="0.000278209">
+        </testcase>
+        <testcase classname="test/BufferSerializer.test.ts" name="BufferSerializer &gt; should add a leading zero if the hex string length is odd" time="0.000211369">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/GameMessageHeader.test.ts" timestamp="2024-12-15T11:33:38.522Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.005332519">
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should serialize and deserialize correctly for version 0" time="0.001785613">
+        </testcase>
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should serialize and deserialize correctly for version 257" time="0.000508268">
+        </testcase>
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should throw error if data is too short during deserialization" time="0.001011206">
+        </testcase>
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should set and get payload encryption status correctly" time="0.000274709">
+        </testcase>
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should convert to string correctly" time="0.000210499">
+        </testcase>
+        <testcase classname="test/GameMessageHeader.test.ts" name="GameMessageHeader &gt; should copy correctly" time="0.000225969">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/GameMessagePayload.test.ts" timestamp="2024-12-15T11:33:38.524Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.005002371">
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should create a copy of the payload" time="0.002311291">
+        </testcase>
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should return the correct byte size" time="0.00020051">
+        </testcase>
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should serialize the payload correctly" time="0.00023042">
+        </testcase>
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should deserialize the payload correctly" time="0.000353258">
+        </testcase>
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should correctly indicate if the payload is encrypted" time="0.000244219">
+        </testcase>
+        <testcase classname="test/GameMessagePayload.test.ts" name="GameMessagePayload &gt; should set the payload encryption correctly" time="0.000243779">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/GamePacket.test.ts" timestamp="2024-12-15T11:33:38.525Z" hostname="strawberry" tests="9" failures="0" errors="0" skipped="0" time="0.006559474">
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should deserialize v0 correctly" time="0.001953942">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should deserialize v1 correctly" time="0.000396339">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should be able to make a copy of the packet" time="0.000492418">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should be able to make a copy of the packet with new data" time="0.000278019">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should throw error if data is insufficient for header" time="0.000989496">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should throw error if checksum is incorrect for v1 packet" time="0.000323079">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should throw error if data is insufficient for full v1 packet" time="0.000282079">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should identify version v1 correctly" time="0.0002315">
+        </testcase>
+        <testcase classname="test/GamePacket.test.ts" name="GamePacket &gt; should handle version v0 correctly" time="0.00020084">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/GenericReplyPayload.test.ts" timestamp="2024-12-15T11:33:38.526Z" hostname="strawberry" tests="5" failures="0" errors="0" skipped="0" time="0.004859021">
+        <testcase classname="test/GenericReplyPayload.test.ts" name="GenericReplyPayload &gt; should have default values" time="0.001771373">
+        </testcase>
+        <testcase classname="test/GenericReplyPayload.test.ts" name="GenericReplyPayload &gt; should return correct byte size" time="0.000258259">
+        </testcase>
+        <testcase classname="test/GenericReplyPayload.test.ts" name="GenericReplyPayload &gt; should serialize correctly" time="0.000656537">
+        </testcase>
+        <testcase classname="test/GenericReplyPayload.test.ts" name="GenericReplyPayload &gt; should deserialize correctly" time="0.000381949">
+        </testcase>
+        <testcase classname="test/GenericReplyPayload.test.ts" name="GenericReplyPayload &gt; should set and get data buffer correctly" time="0.000267189">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/GenericRequestPayload.test.ts" timestamp="2024-12-15T11:33:38.527Z" hostname="strawberry" tests="5" failures="0" errors="0" skipped="0" time="0.005536818">
+        <testcase classname="test/GenericRequestPayload.test.ts" name="GenericRequestPayload &gt; should return correct byte size" time="0.001636914">
+        </testcase>
+        <testcase classname="test/GenericRequestPayload.test.ts" name="GenericRequestPayload &gt; should serialize data correctly" time="0.000504528">
+        </testcase>
+        <testcase classname="test/GenericRequestPayload.test.ts" name="GenericRequestPayload &gt; should deserialize data correctly" time="0.000394619">
+        </testcase>
+        <testcase classname="test/GenericRequestPayload.test.ts" name="GenericRequestPayload &gt; should set and get data buffer correctly" time="0.000264249">
+        </testcase>
+        <testcase classname="test/GenericRequestPayload.test.ts" name="GenericRequestPayload &gt; should throw an error if there is not enough data to deserialize" time="0.001192206">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/ServerMessageHeader.test.ts" timestamp="2024-12-15T11:33:38.528Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.005428639">
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should serialize correctly" time="0.002374151">
+        </testcase>
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should deserialize correctly" time="0.000556668">
+        </testcase>
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should validate signature correctly" time="0.000268709">
+        </testcase>
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should set and get payload encryption correctly" time="0.000254309">
+        </testcase>
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should convert to string correctly" time="0.000238129">
+        </testcase>
+        <testcase classname="test/ServerMessageHeader.test.ts" name="ServerMessageHeader &gt; should convert to hex string correctly" time="0.000293328">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/ServerMessagePayload.test.ts" timestamp="2024-12-15T11:33:38.529Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.004332033">
+        <testcase classname="test/ServerMessagePayload.test.ts" name="ServerMessagePayload &gt; should copy correctly" time="0.002959629">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/ServerPacket.test.ts" timestamp="2024-12-15T11:33:38.530Z" hostname="strawberry" tests="8" failures="0" errors="0" skipped="0" time="0.008483537">
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; should serialize correctly" time="0.002103992">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; should deserialize correctly" time="0.000578398">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; should get and set messageId correctly" time="0.000244599">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; ServerPacket &gt; should serialize correctly" time="0.001158875">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; ServerPacket &gt; should deserialize correctly" time="0.000652688">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; ServerPacket &gt; should throw error if signature is invalid during serialization" time="0.001241715">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; ServerPacket &gt; should throw error if sequence is zero during serialization" time="0.000397378">
+        </testcase>
+        <testcase classname="test/ServerPacket.test.ts" name="ServerMessagePayload &gt; ServerPacket &gt; should convert to string correctly" time="0.000379879">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="2.474">
+    <testsuite name="test/encryption.test.ts" timestamp="2024-12-15T11:33:36.444Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.008570676">
+        <testcase classname="test/encryption.test.ts" name="Encryption &gt; should be able to encrypt and decrypt a command message" time="0.004077224">
+        </testcase>
+        <testcase classname="test/encryption.test.ts" name="Encryption &gt; should be able to encrypt and decrypt a command message" time="0.000571167">
+        </testcase>
+        <testcase classname="test/encryption.test.ts" name="Encryption &gt; data should throw when the key is too short" time="0.001105896">
+        </testcase>
+        <testcase classname="test/encryption.test.ts" name="Encryption &gt; command should throw when the key is too short" time="0.000359288">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/mcotsPortRouter.test.ts" timestamp="2024-12-15T11:33:36.446Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.008736906">
+        <testcase classname="test/mcotsPortRouter.test.ts" name="mcotsPortRouter &gt; should log an error and close the socket if local port is undefined" time="0.003880145">
+        </testcase>
+        <testcase classname="test/mcotsPortRouter.test.ts" name="mcotsPortRouter &gt; should handle data event and route initial message" time="0.00265767">
+        </testcase>
+        <testcase classname="test/mcotsPortRouter.test.ts" name="mcotsPortRouter &gt; should log socket end event" time="0.000362208">
+        </testcase>
+        <testcase classname="test/mcotsPortRouter.test.ts" name="mcotsPortRouter &gt; should log socket error event" time="0.000310249">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/npsPortRouter.test.ts" timestamp="2024-12-15T11:33:36.447Z" hostname="strawberry" tests="5" failures="0" errors="0" skipped="0" time="0.011387125">
+        <testcase classname="test/npsPortRouter.test.ts" name="npsPortRouter &gt; should log an error and close the socket if local port is undefined" time="0.003536556">
+        </testcase>
+        <testcase classname="test/npsPortRouter.test.ts" name="npsPortRouter &gt; should log the start of the router and send ok to login packet for port 7003" time="0.002206271">
+        </testcase>
+        <testcase classname="test/npsPortRouter.test.ts" name="npsPortRouter &gt; should handle data event and route initial message" time="0.003128148">
+        </testcase>
+        <testcase classname="test/npsPortRouter.test.ts" name="npsPortRouter &gt; should log socket end event" time="0.000694757">
+        </testcase>
+        <testcase classname="test/npsPortRouter.test.ts" name="npsPortRouter &gt; should log socket error event" time="0.000567058">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/portRouters.test.ts" timestamp="2024-12-15T11:33:36.448Z" hostname="strawberry" tests="11" failures="0" errors="0" skipped="0" time="0.009353014">
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; should add a router for a specific port" time="0.00259592">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; should overwrite an existing router for the same port" time="0.000392589">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; should handle multiple ports correctly" time="0.000385998">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; getPortRouter &gt; should return the correct router for a specific port" time="0.000526538">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; getPortRouter &gt; should return notFoundRouter if no router is found for the port" time="0.000445488">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; getPortRouter &gt; should return the correct router after overwriting an existing router for the same port" time="0.000279909">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; getPortRouter &gt; should handle multiple ports correctly" time="0.000307269">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; clearPortRouters &gt; should clear all routers" time="0.000507038">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; clearPortRouters &gt; addPortRouter &gt; should throw an error if the port number is not an integer" time="0.001267596">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; clearPortRouters &gt; addPortRouter &gt; should throw an error if the port number is negative" time="0.000354769">
+        </testcase>
+        <testcase classname="test/portRouters.test.ts" name="addPortRouter &gt; clearPortRouters &gt; addPortRouter &gt; should throw an error if the port number is greater than 65535" time="0.000391298">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/socketErrorHandler.test.ts" timestamp="2024-12-15T11:33:36.451Z" hostname="strawberry" tests="2" failures="0" errors="0" skipped="0" time="0.00528812">
+        <testcase classname="test/socketErrorHandler.test.ts" name="socketErrorHandler &gt; should log a debug message when error code is ECONNRESET" time="0.003068218">
+        </testcase>
+        <testcase classname="test/socketErrorHandler.test.ts" name="socketErrorHandler &gt; should throw an error when error code is not handled" time="0.001049546">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/socketUtility.test.ts" timestamp="2024-12-15T11:33:36.451Z" hostname="strawberry" tests="5" failures="0" errors="0" skipped="0" time="0.01042289">
+        <testcase classname="test/socketUtility.test.ts" name="tagSocketWithId &gt; returns an object with the correct properties" time="0.001773673">
+        </testcase>
+        <testcase classname="test/socketUtility.test.ts" name="tagSocketWithId &gt; returns an object with the correct values" time="0.000427159">
+        </testcase>
+        <testcase classname="test/socketUtility.test.ts" name="tagSocketWithId &gt; tagSocketWithId &gt; returns an object with the correct properties" time="0.000299039">
+        </testcase>
+        <testcase classname="test/socketUtility.test.ts" name="tagSocketWithId &gt; trySocketWrite &gt; resolves when data is successfully written" time="0.004446133">
+        </testcase>
+        <testcase classname="test/socketUtility.test.ts" name="tagSocketWithId &gt; trySocketWrite &gt; rejects when an error occurs during write" time="0.001802673">
+        </testcase>
+    </testsuite>
+</testsuites>

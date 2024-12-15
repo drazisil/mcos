@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="0" errors="0" time="0.927">
+    <testsuite name="src/ServerMessage.test.ts" timestamp="2024-12-15T11:33:38.196Z" hostname="strawberry" tests="2" failures="0" errors="0" skipped="0" time="0.004239924">
+        <testcase classname="src/ServerMessage.test.ts" name="ServerMessage &gt; .byteLength &gt; should have the correct size" time="0.001548624">
+        </testcase>
+        <testcase classname="src/ServerMessage.test.ts" name="ServerMessage &gt; should serialize and deserialize correctly" time="0.001427215">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/BaseSerialized.test.ts" timestamp="2024-12-15T11:33:38.197Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.004811091">
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should have a length" time="0.001439405">
+        </testcase>
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should have a string representation" time="0.000290899">
+        </testcase>
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should have a hex representation" time="0.000203909">
+        </testcase>
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should have a data property" time="0.000678998">
+        </testcase>
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should throw when serialize is not implemented" time="0.000841096">
+        </testcase>
+        <testcase classname="test/BaseSerialized.test.ts" name="BaseSerialized &gt; should throw when deserialize is not implemented" time="0.000253689">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/RawMessage.test.ts" timestamp="2024-12-15T11:33:38.199Z" hostname="strawberry" tests="8" failures="0" errors="0" skipped="0" time="0.006084926">
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should serialize and deserialize correctly" time="0.00260992">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should have a length" time="0.000209349">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should have a string representation" time="0.000194589">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should have a hex representation" time="0.0001655">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should have a data property" time="0.000334399">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should have a messageId property" time="0.00013577">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should throw when deserialize is given a buffer smaller than 4 bytes" time="0.000826566">
+        </testcase>
+        <testcase classname="test/RawMessage.test.ts" name="RawMessage &gt; should throw when deserialize is given a buffer smaller than the length in the header" time="0.000237679">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/SerializedBuffer.test.ts" timestamp="2024-12-15T11:33:38.205Z" hostname="strawberry" tests="7" failures="0" errors="0" skipped="0" time="0.008016119">
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should serialize and deserialize correctly" time="0.003024268">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should have a length" time="0.000274149">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should have a string representation" time="0.000245419">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should have a hex representation" time="0.000265319">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should have a data property" time="0.000491968">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should thow when there is an error in deserialize" time="0.001118226">
+        </testcase>
+        <testcase classname="test/SerializedBuffer.test.ts" name="SerializedBuffer &gt; should throw when there is an error in serialize" time="0.001110535">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/legacyHeader.test.ts" timestamp="2024-12-15T11:33:38.207Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.002923489">
+        <testcase classname="test/legacyHeader.test.ts" name="legacyHeader &gt; should have a length of 4" time="0.001581884">
+        </testcase>
+    </testsuite>
+</testsuites>

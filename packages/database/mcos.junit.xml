@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="1.244">
+    <testsuite name="test/Database.test.ts" timestamp="2024-12-15T11:33:35.234Z" hostname="strawberry" tests="3" failures="0" errors="0" skipped="0" time="0.005033341">
+        <testcase classname="test/Database.test.ts" name="Database &gt; fetchSessionKeyByCustomerId &gt; throws when session key is not found" time="0.002013173">
+        </testcase>
+        <testcase classname="test/Database.test.ts" name="Database &gt; fetchSessionKeyByConnectionId &gt; throws when session key is not found" time="0.000357979">
+        </testcase>
+        <testcase classname="test/Database.test.ts" name="Database &gt; updateUser &gt; returns successfully when passed a valid user record" time="0.001092206">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/tunables.test.ts" timestamp="2024-12-15T11:33:35.236Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.004778731">
+        <testcase classname="test/tunables.test.ts" name="Tunables &gt; should return the correct tunable value" time="0.001853553">
+        </testcase>
+        <testcase classname="test/tunables.test.ts" name="Tunables &gt; should throw an error for an invalid tunable name" time="0.001120216">
+        </testcase>
+        <testcase classname="test/tunables.test.ts" name="Tunables &gt; should set the tunable value correctly" time="0.000253839">
+        </testcase>
+        <testcase classname="test/tunables.test.ts" name="Tunables &gt; should throw an error when setting an invalid tunable name" time="0.000315859">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="0" errors="0" time="2.079">
+    <testsuite name="test/getPersonasByPersonaId.test.ts" timestamp="2024-12-15T11:33:39.016Z" hostname="strawberry" tests="3" failures="0" errors="0" skipped="0" time="0.004353443">
+        <testcase classname="test/getPersonasByPersonaId.test.ts" name="getPersonasByPersonaId &gt; returns a persona" time="0.001325405">
+        </testcase>
+        <testcase classname="test/getPersonasByPersonaId.test.ts" name="getPersonasByPersonaId &gt; getPersonasByPersonaId &gt; returns a persona when a matching ID is found" time="0.000350419">
+        </testcase>
+        <testcase classname="test/getPersonasByPersonaId.test.ts" name="getPersonasByPersonaId &gt; getPersonasByPersonaId &gt; throws an error when no matching ID is found" time="0.001470174">
+        </testcase>
+    </testsuite>
+</testsuites>

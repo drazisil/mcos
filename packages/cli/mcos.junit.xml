@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="1.105">
+    <testsuite name="test/index.test.ts" timestamp="2024-12-15T11:33:35.074Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.00532581">
+        <testcase classname="test/index.test.ts" name="ConsoleThread &gt; should throw if more then one instance is created" time="0.004202203">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.445">
+    <testsuite name="test/Logger.test.ts" timestamp="2024-12-15T11:33:39.951Z" hostname="strawberry" tests="1" failures="0" errors="0" skipped="0" time="0.002420021">
+        <testcase classname="test/Logger.test.ts" name="Logger &gt; should log messages" time="0.001324474">
+        </testcase>
+    </testsuite>
+</testsuites>

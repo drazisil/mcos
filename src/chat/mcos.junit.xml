@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="35" failures="0" errors="0" time="0.803">
+    <testsuite name="assertLength.test.ts" timestamp="2024-12-15T11:33:39.975Z" hostname="strawberry" tests="10" failures="0" errors="0" skipped="0" time="0.005914607">
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should not throw an error when actual length matches expected length" time="0.001964982">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error when actual length does not match expected length" time="0.000316309">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error with the correct message when lengths do not match" time="0.000270769">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should not throw an error for zero lengths when they match" time="0.000202519">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error for zero actual length when expected length is non-zero" time="0.000197779">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error for non-zero actual length when expected length is zero" time="0.000189819">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error when actual length is negative" time="0.000251239">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error when expected length is negative" time="0.000393909">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should not throw an error for very large matching lengths" time="0.000490608">
+        </testcase>
+        <testcase classname="assertLength.test.ts" name="assertLength &gt; should throw an error for very large non-matching lengths" time="0.000326089">
+        </testcase>
+    </testsuite>
+    <testsuite name="timestampToTimeT.test.ts" timestamp="2024-12-15T11:33:39.978Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.003530756">
+        <testcase classname="timestampToTimeT.test.ts" name="timestampToTime32T &gt; should convert milliseconds to seconds correctly" time="0.001566614">
+        </testcase>
+        <testcase classname="timestampToTimeT.test.ts" name="timestampToTime32T &gt; should handle large timestamps correctly" time="0.000204879">
+        </testcase>
+        <testcase classname="timestampToTimeT.test.ts" name="timestampToTime32T &gt; should handle negative timestamps correctly" time="0.000205139">
+        </testcase>
+        <testcase classname="timestampToTimeT.test.ts" name="timestampToTime32T &gt; should handle edge cases correctly" time="0.000225979">
+        </testcase>
+    </testsuite>
+    <testsuite name="toHexString.test.ts" timestamp="2024-12-15T11:33:39.979Z" hostname="strawberry" tests="11" failures="0" errors="0" skipped="0" time="0.245559454">
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should convert a buffer to a hexadecimal string" time="0.001570084">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle an empty buffer" time="0.000224749">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should pad single digit hex values with a leading zero" time="0.00014774">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a buffer with multiple bytes" time="0.000133959">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle null input gracefully" time="0.000921766">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle undefined input gracefully" time="0.000219769">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a very large buffer" time="0.239394388">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a buffer with Unicode characters" time="0.000454788">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a buffer with mixed byte values" time="0.000296499">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a buffer with all possible byte values" time="0.000321799">
+        </testcase>
+        <testcase classname="toHexString.test.ts" name="bufferToHexString &gt; should handle a buffer with non-printable ASCII characters" time="0.000231119">
+        </testcase>
+    </testsuite>
+    <testsuite name="writeShortBoolean.test.ts" timestamp="2024-12-15T11:33:39.981Z" hostname="strawberry" tests="4" failures="0" errors="0" skipped="0" time="0.003781225">
+        <testcase classname="writeShortBoolean.test.ts" name="writeShortBooleanBE &gt; should write 1 for true at the specified offset" time="0.001281875">
+        </testcase>
+        <testcase classname="writeShortBoolean.test.ts" name="writeShortBooleanBE &gt; should write 0 for false at the specified offset" time="0.000257159">
+        </testcase>
+        <testcase classname="writeShortBoolean.test.ts" name="writeShortBooleanBE &gt; should not affect other parts of the buffer" time="0.000225789">
+        </testcase>
+        <testcase classname="writeShortBoolean.test.ts" name="writeShortBooleanBE &gt; should throw an error if the offset is out of bounds" time="0.000853827">
+        </testcase>
+    </testsuite>
+    <testsuite name="writeZeroTerminatedString.test.ts" timestamp="2024-12-15T11:33:39.982Z" hostname="strawberry" tests="6" failures="0" errors="0" skipped="0" time="0.006010667">
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should write a zero-terminated string to the buffer at the specified offset" time="0.001651533">
+        </testcase>
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should handle an empty string correctly" time="0.000333728">
+        </testcase>
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should overwrite existing data in the buffer" time="0.000267219">
+        </testcase>
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should handle writing at the start of the buffer" time="0.000311009">
+        </testcase>
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should handle writing at the end of the buffer" time="0.000302029">
+        </testcase>
+        <testcase classname="writeZeroTerminatedString.test.ts" name="writeZeroTerminatedString &gt; should handle buffer overflow" time="0.001746243">
+        </testcase>
+    </testsuite>
+</testsuites>
