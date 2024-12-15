@@ -1,4 +1,4 @@
-name: CI
+name: Rush
 on:
   push:
     branches: [ "main" ]
