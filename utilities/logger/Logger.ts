@@ -1,8 +1,13 @@
 import pino from "pino";
 
 export const logger = pino.default({
-  name: 'app-name',
-  level: 'debug'
+  name: 'rusty-motors-server',
+  level: process.env["LOG_LEVEL"] || 'debug',
+  formatters: {
+    level(label) {
+      return { level: label };
+    }
+  },
 }) as Logger;
 
 export interface Logger {

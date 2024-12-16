@@ -1,16 +1,25 @@
 import { describe, it, expect } from "vitest";
 import { logger } from "./Logger.js";
 
+const enum LogLevel {
+    debug = 'debug',
+    info = 'info',
+    warn = 'warn',
+    error = 'error',
+    fatal = 'fatal',
+    trace = 'trace',
+    }
+
 describe("Logger", () => {
   describe("logging methods", () => {
     ["debug", "info", "warn", "error", "fatal", "trace"].forEach((level) => {
       it(`should have ${level} method`, () => {
-        expect(logger[level]).toBeInstanceOf(Function);
+        expect(logger [level as LogLevel ]).toBeInstanceOf(Function);
       });
       
       it(`should log ${level} messages`, () => {
         const log = logger.child({ name: "test" });
-        expect(() => log[level]("test message")).not.toThrow();
+        expect(() => log[level as LogLevel ]("test message")).not.toThrow();
       });
     });
   });
@@ -30,7 +39,7 @@ describe("Logger", () => {
   describe("error handling", () => {
     it("should handle Error objects", () => {
       const error = new Error("test error");
-      expect(() => logger.error(error)).not.toThrow();
+      expect(() => logger.error(error.message)).not.toThrow();
     });
   });
 });
