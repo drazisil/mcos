@@ -22,5 +22,10 @@
 		"postRushBuild": []
 	},
 	"variants": [],
-	"projects": []
+	"projects": [
+        {
+            "packageName": "rusty-motors-logger",
+            "projectFolder": "utilities/logger"
+        }
+    ]
 }
