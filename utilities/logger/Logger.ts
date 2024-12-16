@@ -11,11 +11,11 @@ export const logger = pino.default({
 }) as Logger;
 
 export interface Logger {
-  debug: (message: string) => void;
-  info: (message: string) => void;
-  warn: (message: string) => void;
-  error: (message: string) => void;
-  fatal: (message: string) => void;
-  trace: (message: string) => void;
+  debug: (obj: object | string, msg?: string) => void;
+  info: (obj: object | string, msg?: string) => void;
+  warn: (obj: object | string, msg?: string) => void;
+  error: (obj: Error | object | string, msg?: string) => void;
+  fatal: (obj: Error | object | string, msg?: string) => void;
+  trace: (obj: object | string, msg?: string) => void;
   child: (options: { name: string; level?: string }) => Logger;
 }
