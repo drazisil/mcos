@@ -8,7 +8,7 @@
     "check": "tsc",
     "lint": "npx @biomejs/biome lint --write .",
     "format": "npx @biomejs/biome format --write .",
-    "test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage",
+    "test": "pnpm node --openssl-legacy-provider $(pnpm root)/vitest/vitest.mjs run --coverage",
     "build": "tsc"
   },
   "type": "module",
