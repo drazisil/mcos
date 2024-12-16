@@ -5,7 +5,7 @@
 
 	"pnpmVersion": "9.15.0",
 
-	"nodeSupportedVersionRange": "22.x",
+    "nodeSupportedVersionRange": ">=20 <23",
 	"ensureConsistentVersions": true,
 	"gitPolicy": {},
 
