@@ -1,3 +1,4 @@
 path_filters:
   exclude:
     - 'common/config/rush/repo-state.json'
+    - 'common/scripts/install-run-rushx.js'
