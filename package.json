@@ -28,7 +28,6 @@
     "CHANGELOG.md",
     "AUTHORS"
   ],
-  "type": "module",
   "dependencies": {
     "@adminjs/sequelize": "^4.1.1",
     "@databases/pg": "^5.5.0",
