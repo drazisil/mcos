@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { logger } from "./Logger.js";
 
 const enum LogLevel {
@@ -11,18 +11,39 @@ const enum LogLevel {
     }
 
 describe("Logger", () => {
-  describe("logging methods", () => {
-    ["debug", "info", "warn", "error", "fatal", "trace"].forEach((level) => {
-      it(`should have ${level} method`, () => {
-        expect(logger [level as LogLevel ]).toBeInstanceOf(Function);
-      });
-      
-      it(`should log ${level} messages`, () => {
-        const log = logger.child({ name: "test" });
-        expect(() => log[level as LogLevel ]("test message")).not.toThrow();
-      });
+describe("logging methods", () => {
+    let logOutput: any;
+    beforeEach(() => {
+        logOutput = [];
+        // Mock the underlying logger to capture output
+        vi.spyOn(logger, 'info').mockImplementation((msg) => {
+            logOutput.push(msg);
+        });
     });
-  });
+
+    ["debug", "info", "warn", "error", "fatal", "trace"].forEach((level) => {
+        it(`should have ${level} method`, () => {
+            expect(logger[level as LogLevel]).toBeInstanceOf(Function);
+        });
+        
+        it(`should log ${level} messages`, () => {
+            const log = logger.child({ name: "test" });
+            expect(() => log[level as LogLevel]("test message")).not.toThrow();
+        });
+
+        it(`should handle empty messages for ${level}`, () => {
+            expect(() => logger[level as LogLevel]("")).not.toThrow();
+        });
+
+        it(`should handle object logging for ${level}`, () => {
+            expect(() => logger[level as LogLevel]({ test: 'value' })).not.toThrow();
+        });
+
+        it(`should handle multiple arguments for ${level}`, () => {
+            expect(() => logger[level as LogLevel]("msg", { data: 1 })).not.toThrow();
+        });
+    });
+});
 
   describe("child loggers", () => {
     it("should create child logger with custom name", () => {
