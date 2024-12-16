@@ -30,7 +30,7 @@ jobs:
               uses: pnpm/action-setup@v4.0.0
             - name: Install and test
               run: |
-                  pnpm install
+                  pnpm install --no-frozen-lockfile
                   make test
               env:
                   CODECOV_UPLOAD_BUNDLE_TOKEN: ${{ secrets.CODECOV_UPLOAD_BUNDLE_TOKEN }}
