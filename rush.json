@@ -1,0 +1,31 @@
+{
+	"$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+
+	"rushVersion": "5.147.0",
+
+	"pnpmVersion": "9.15.0",
+
+    "nodeSupportedVersionRange": ">=20 <23",
+	"ensureConsistentVersions": true,
+	"gitPolicy": {},
+
+	"repository": {
+        "defaultBranch": "dev",
+        "url": "https://github.com/rustymotors/server.git"
+    },
+
+	"eventHooks": {
+		"preRushInstall": [],
+
+		"postRushInstall": [],
+		"preRushBuild": [],
+		"postRushBuild": []
+	},
+	"variants": [],
+	"projects": [
+        {
+            "packageName": "rusty-motors-logger",
+            "projectFolder": "utilities/logger"
+        }
+    ]
+}
