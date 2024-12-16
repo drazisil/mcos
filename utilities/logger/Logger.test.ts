@@ -45,17 +45,32 @@ describe("logging methods", () => {
     });
 });
 
-  describe("child loggers", () => {
-    it("should create child logger with custom name", () => {
-      const childLogger = logger.child({ name: "custom" });
-      expect(childLogger).toHaveProperty("info");
-    });
-
-    it("should create child logger with custom level", () => {
-      const childLogger = logger.child({ name: "custom", level: "error" });
-      expect(childLogger).toHaveProperty("error");
-    });
+describe("child loggers", () => {
+  it("should create child logger with custom name", () => {
+    const childLogger = logger.child({ name: "custom" });
+    expect(childLogger).toHaveProperty("info");
+    expect(childLogger).toHaveProperty("debug");
+    expect(childLogger).toHaveProperty("warn");
+    expect(childLogger).toHaveProperty("error");
   });
+
+  it("should create child logger with custom level", () => {
+    const childLogger = logger.child({ name: "custom", level: "error" });
+    expect(childLogger).toHaveProperty("error");
+  });
+
+  it("should inherit parent logger methods", () => {
+    const childLogger = logger.child({ name: "custom" });
+    expect(() => childLogger.info("test")).not.toThrow();
+    expect(() => childLogger.error("test")).not.toThrow();
+  });
+
+  it("should throw for invalid level", () => {
+    expect(() => 
+      logger.child({ name: "custom", level: "invalid" as any })
+    ).toThrow();
+  });
+});
 
   describe("error handling", () => {
     it("should handle Error objects", () => {
