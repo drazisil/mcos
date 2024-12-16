@@ -3,7 +3,7 @@
 
 	"rushVersion": "5.147.0",
 
-	"pnpmVersion": "6.7.1",
+	"pnpmVersion": "9.15.0",
 
 	"nodeSupportedVersionRange": "22.x",
 	"ensureConsistentVersions": true,
