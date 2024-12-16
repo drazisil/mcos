@@ -78,54 +78,63 @@ jobs:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag lobby --name lobby --dir packages/lobby
+            
             - name: Codecov upload login coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag login --name login --dir packages/login
+            
             - name: Codecov upload mcots coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag mcots --name mcots --dir packages/mcots
+            
             - name: Codecov upload nps coverageq
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag nps --name nps --dir packages/nps
+            
             - name: Codecov upload patch coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag patch --name patch --dir packages/patch
+            
             - name: Codecov upload persona coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag persona --name persona --dir packages/persona
+            
             - name: Codecov upload shard coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag shard --name shard --dir packages/shard
+            
             - name: Codecov upload shared coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag shared --name shared --dir packages/shared
+            
             - name: Codecov upload shared-packets coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag shared-packets --name shared-packets --dir packages/shared-packets
+            
             - name: Codecov  upload transactions coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
