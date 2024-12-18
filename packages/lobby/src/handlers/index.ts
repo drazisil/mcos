@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import { SerializedBufferOld } from "rusty-motors-shared";
 import { handleEncryptedNPSCommand } from "./encryptedCommand.js";
 import { _npsHeartbeat } from "./heartbeat.js";
 import { _npsRequestGameConnectServer } from "./requestConnectGameServer.js";

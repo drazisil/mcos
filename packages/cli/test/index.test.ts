@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ConsoleThread } from "../ConsoleThread.js";
+import { ConsoleThread } from "../index.js";
 
 describe("ConsoleThread", () => {
 	it("should throw if more then one instance is created", () => {

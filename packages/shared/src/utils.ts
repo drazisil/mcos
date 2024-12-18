@@ -6,9 +6,9 @@
  * @return {string}
  */
 
-export function toHex(data) {
+export function toHex(data: Buffer): string {
 	/** @type {string[]} */
-	const bytes = [];
+	const bytes: string[] = [];
 	data.forEach((b) => {
 		bytes.push(b.toString(16).toUpperCase().padStart(2, "0"));
 	});

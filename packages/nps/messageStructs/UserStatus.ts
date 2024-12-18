@@ -141,8 +141,15 @@ export class UserStatus extends BaseSerializable {
 		return this.personaId;
 	}
 
-	setPersonaId(personaId: number) {
+	/**
+	 * Sets the persona ID for the user status.
+	 *
+	 * @param personaId - The ID of the persona to be set.
+	 * @returns The current instance of UserStatus for method chaining.
+	 */
+	setPersonaId(personaId: number): UserStatus {
 		this.personaId = personaId;
+		return this;
 	}
 
 	getSessionKey(): SessionKey {

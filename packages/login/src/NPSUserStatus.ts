@@ -6,7 +6,7 @@ import { LegacyMessage } from "rusty-motors-shared";
 import { type Logger } from "rusty-motors-utilities";
 
 /**
- * @typedef {import("../../shared/Configuration.js").Configuration} Configuration
+ * @typedef {Configuration} Configuration
  */
 
 /**

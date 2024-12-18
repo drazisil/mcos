@@ -27,7 +27,7 @@ const defaultLogger = logger.child({ name: "LoginServer" });
  * @param {NPSMessage} options.message - The login message.
  * @param {import("pino").Logger} [options.log] - The logger instance.
  *
- * @returns {Promise<import("../../shared/State.js").ServiceResponse>} The response from the login process.
+ * @returns {Promise<ServiceResponse>} The response from the login process.
  *
  * @throws {Error} If there was an error in the login service.
  */

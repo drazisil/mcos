@@ -5,19 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Stop Prod",
+            "name": "Start All",
             "request": "launch",
-            "runtimeArgs": ["run-script", "prod:stop"],
-            "runtimeExecutable": "npm",
+            "runtimeArgs": ["start"],
+            "runtimeExecutable": "make",
             "skipFiles": ["<node_internals>/**"],
             "type": "node"
         },
 
         {
-            "name": "Start Prod",
+            "name": "Stop All",
             "request": "launch",
-            "runtimeArgs": ["run-script", "prod"],
-            "runtimeExecutable": "npm",
+            "runtimeArgs": ["stop"],
+            "runtimeExecutable": "make",
             "skipFiles": ["<node_internals>/**"],
             "type": "node"
         }

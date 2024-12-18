@@ -1,6 +1,6 @@
-import { SerializedBufferOld } from "../../shared/src/SerializedBufferOld.js";
-import { NPSMessage } from "../../shared/src/NPSMessage.js";
-import { LegacyMessage } from "../../shared/src/LegacyMessage.js";
+import { SerializedBufferOld } from "rusty-motors-shared";
+import { NPSMessage } from "rusty-motors-shared";
+import { LegacyMessage } from "rusty-motors-shared";
 import { BuddyCount, BuddyInfoMessage, BuddyList } from "./BuddyInfoMessage.js";
 import { logger, type Logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({

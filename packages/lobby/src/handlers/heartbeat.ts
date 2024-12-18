@@ -1,11 +1,11 @@
-import { getServerLogger } from "rusty-motors-shared";
+import { logger } from "rusty-motors-utilities";
 import { NPSMessage, SerializedBuffer } from "rusty-motors-shared";
 
 export async function _npsHeartbeat({
 	connectionId,
 	// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 	message, 
-	log = getServerLogger({
+	log = logger.child({
 		name: "_npsHeartbeat",
 	}),
 }) {

@@ -1,6 +1,6 @@
 import { ServerMessagePayload } from "rusty-motors-shared-packets";
 import { readStringFromBuffer } from "./utils.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "mcots.ClientConnectionMessage" });
 
 export class ClientConnectionMessage extends ServerMessagePayload {

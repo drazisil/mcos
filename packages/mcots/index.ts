@@ -12,6 +12,4 @@ export {} from // ClientConnectionMessage,
 // SetOptionsMessage,
 // StockCarInfo,
 // StockCar,
-"./src/payloads/index.js";
-
-// Path: packages/mcots/index.ts
+"./src/payloads/ClientConnectMessage.js";

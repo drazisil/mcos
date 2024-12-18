@@ -43,9 +43,9 @@ export async function processUserLogin(
 	}
 
 	// Update the user status
-	existingStatus.setPersonaId(personaId);
+	_userStatus = existingStatus.setPersonaId(personaId);
 
-	_userStatus = existingStatus;
+	// TODO: send the updated user status
 
 	defaultLogger.info(`LobbyLogin: ${message.toString()}`);
 

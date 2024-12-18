@@ -1,4 +1,4 @@
-import { GameMessageOpCode } from "../../interfaces/index.js";
+import { GameMessageOpCode } from "rusty-motors-shared";
 import { NPS_LOGINCLIENT_COMMANDS } from "./NPS_LOGINCLIENT_COMMANDS.js";
 
 /**

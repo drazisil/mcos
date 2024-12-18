@@ -1,4 +1,4 @@
-import { SerializedBufferOld } from "../../shared/src/SerializedBufferOld.js";
+import { SerializedBufferOld } from "rusty-motors-shared";
 
 export class PlayerPhysicalMessage extends SerializedBufferOld {
 	_msgNo: number; // 2 bytes

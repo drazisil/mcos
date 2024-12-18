@@ -38,7 +38,7 @@ export function toHex(data: Buffer): string {
  * Handle a request to connect to a game server packet
  *
  * @private
- * @param {import("../../../interfaces/index.js").ServiceArgs} args
+ * @param {ServiceArgs} args
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],

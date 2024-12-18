@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readStringFromBuffer } from "./utils";
+import { readStringFromBuffer } from "./utils.js";
 
 describe("readStringFromBuffer", () => {
 	it("should read a string from the buffer", () => {
