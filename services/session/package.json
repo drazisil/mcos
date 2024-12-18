@@ -1,0 +1,26 @@
+{
+  "name": "rusty-motors-session-service",
+  "version": "1.0.0-next.0",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "check": "tsc",
+    "lint": "npx @biomejs/biome lint --write .",
+    "format": "npx @biomejs/biome format --write .",
+    "test": "vitest run --coverage",
+    "build": "tsc"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0",
+  "description": "",
+  "dependencies": {
+    "@sentry/profiling-node": "8.46.0",
+    "pino": "^9.5.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}

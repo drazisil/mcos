@@ -4,7 +4,6 @@ import { BaseSerializable } from "./BaseSerializable.js";
 import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "MiniRiffList" });
 
-const channelRecordSize = 40;
 
 export class MiniRiffInfo extends BaseSerializable {
 	riffName: string; // 32 bytes - max length

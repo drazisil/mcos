@@ -68,6 +68,8 @@
     "@databases/pg-schema-cli": "^4.4.0",
     "@databases/pg-test": "^3.1.2",
     "@mikro-orm/cli": "^6.4.1",
+    "@rushstack/heft": "^0.68.11",
+    "@rushstack/heft-typescript-plugin": "^0.6.4",
     "@sentry/cli": "^2.39.1",
     "@tsconfig/node-lts": "^22.0.1",
     "@tsconfig/node20": "^20.1.4",
@@ -123,5 +125,6 @@
       "cross-spawn@>=7.0.0 <7.0.5": ">=7.0.5",
       "nanoid@<3.3.8": ">=3.3.8"
     }
-  }
+  },
+  "type": "module"
 }

@@ -3,7 +3,7 @@ import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { StockCar } from "./StockCar.js";
 import { StockCarInfoMessage } from "./StockCarInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "transactions.getStockCarInfo" });
 
 /**

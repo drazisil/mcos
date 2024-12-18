@@ -4,9 +4,9 @@ import { sendNPSAck } from "../src/utils/sendNPSAck.js";
 import type { GameSocketCallback } from "./index.js";
 
 export async function processGameLogout(
-	connectionId: string,
-	userStatus: UserStatus,
-	message: GameMessage,
+	_connectionId: string,
+	_userStatus: UserStatus,
+	_message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
 	sendNPSAck(socketCallback);

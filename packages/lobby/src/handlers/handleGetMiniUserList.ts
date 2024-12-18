@@ -1,4 +1,3 @@
-import { getServerConfiguration } from "rusty-motors-shared";
 import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";

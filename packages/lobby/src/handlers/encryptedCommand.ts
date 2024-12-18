@@ -33,7 +33,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: SerializedBufferOld;
-		log: import("pino").Logger;
+		log: Logger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];

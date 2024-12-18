@@ -2,7 +2,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { TunablesMessage } from "./TunablesMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "transactions.getTunables" });
 
 /**

@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { updateSessionKey } from "rusty-motors-database";
-import { TClientConnectMessage } from "../src/TClientConnectMessage.js";
+import { TClientConnectMessage } from "../index.js";
 import { clientConnect } from "../src/clientConnect.js";
-import { ServerLogger } from "rusty-motors-shared";
 
 describe("clientConnect", () => {
 	it("throws when connection is not found", async () => {
@@ -15,14 +14,7 @@ describe("clientConnect", () => {
 		const incomingMessage = new TClientConnectMessage();
 		incomingMessage._customerId = customerId;
 
-		const log: ServerLogger = {
-			debug: () => vi.fn(),
-			error: () => vi.fn(),
-			fatal: () => vi.fn(),
-			info: () => vi.fn(),
-			trace: () => vi.fn(),
-			warn: () => vi.fn(),
-		};
+
 		updateSessionKey(customerId, sessionKey, contextId, connectionId);
 
 		// act
@@ -30,7 +22,6 @@ describe("clientConnect", () => {
 			await clientConnect({
 				connectionId,
 				packet: incomingMessage,
-				log,
 			});
 		} catch (error) {
 			// assert

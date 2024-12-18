@@ -12,8 +12,8 @@ import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "nps.processGetProfileInfo" });
 
 export async function processGetProfileInfo(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

@@ -1,4 +1,4 @@
-import type { ISerializable, IMessage } from "../types.ts";
+import type { ISerializable } from "../types.ts";
 
 export class NPSList implements ISerializable {
 	serialize(): Buffer {
@@ -10,7 +10,6 @@ export class NPSList implements ISerializable {
 	getByteSize(): number {
 		throw new Error("Method not implemented.");
 	}
-	private list: IMessage[] = [];
 
 	toBytes(): Buffer {
 		throw new Error("Method not implemented.");

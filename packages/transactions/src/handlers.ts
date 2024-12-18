@@ -31,8 +31,7 @@ import { getLobbies } from "./getLobbies.js";
 import { login } from "./login.js";
 import { trackingPing } from "./trackingPing.js";
 import { _buyCarFromDealer } from "./_buyCarFromDealer.js";
-import { logger, type Logger } from "rusty-motors-utilities";
-const defaultLogger = logger.child({ name: "transactionServer" });
+import { type Logger } from "rusty-motors-utilities";
 
 export interface MessageHandlerArgs {
 	connectionId: string;

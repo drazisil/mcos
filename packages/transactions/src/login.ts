@@ -6,7 +6,7 @@ import {
 	LoginPayload,
 	ServerPacket,
 } from "rusty-motors-shared-packets";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "transactions.login" });
 
 /**

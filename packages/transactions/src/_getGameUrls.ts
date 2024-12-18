@@ -2,7 +2,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GameUrl, GameUrlsMessage } from "./GameUrlsMessage.js";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "transactions.getGameUrls" });
 
 /**

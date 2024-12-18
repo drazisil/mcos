@@ -1,0 +1,40 @@
+{
+	"$schema": "https://developer.microsoft.com/json-schemas/heft/v0/heft.schema.json",
+
+	"phasesByName": {
+		// Define a phase whose name is "build"
+		"build": {
+			"phaseDescription": "This phase compiles the project source code.",
+
+			// Before invoking the compiler, delete the "dist" and "lib" folders
+			"cleanFiles": [{ "sourcePath": "dist" }, { "sourcePath": "lib" }],
+
+			"tasksByName": {
+				// Define a task whose name is "typescript"
+				"typescript": {
+					"taskPlugin": {
+						// This task will invoke the TypeScript plugin
+						"pluginPackage": "@rushstack/heft-typescript-plugin"
+					}
+				}
+			}
+		},
+        // Define a phase whose name is "test"
+    "test": {
+        "phaseDescription": "This phase runs the project's unit tests.",
+  
+        // This phase requires the "build" phase to be run first
+        "phaseDependencies": ["build"],
+  
+        "tasksByName": {
+          // Define a task whose name is "jest"
+          "jest": {
+            "taskPlugin": {
+               // This task will invoke the Jest plugin
+               "pluginPackage": "@rushstack/heft-jest-plugin"
+            }
+          }
+        }
+      }
+	}
+}

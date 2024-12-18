@@ -1,4 +1,3 @@
-import { getServerConfiguration } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
 import { updateUser } from "rusty-motors-database";

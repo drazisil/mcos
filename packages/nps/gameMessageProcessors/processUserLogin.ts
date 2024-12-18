@@ -12,8 +12,8 @@ import { logger } from "rusty-motors-utilities";
 const defaultLogger = logger.child({ name: "nps.processUserLogin" });
 
 export async function processUserLogin(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
@@ -45,7 +45,7 @@ export async function processUserLogin(
 	// Update the user status
 	existingStatus.setPersonaId(personaId);
 
-	userStatus = existingStatus;
+	_userStatus = existingStatus;
 
 	defaultLogger.info(`LobbyLogin: ${message.toString()}`);
 
