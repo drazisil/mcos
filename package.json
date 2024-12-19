@@ -126,5 +126,5 @@
       "nanoid@<3.3.8": ">=3.3.8"
     }
   },
-  "type": "module"
+  "type": "commonjs"
 }
