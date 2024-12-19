@@ -27,10 +27,7 @@ import { _selectGamePersona } from "./_selectGamePersona.js";
 import { validatePersonaName } from "./handlers/validatePersonaName.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
-import { logger, type Logger } from "rusty-motors-utilities";
-const defaultLogger = logger.child({
-	name: "PersonaServer.receivePersonaData",
-});
+import { logger, type Logger } from "rusty-motors-logger";
 
 /**
  * Array of supported message handlers
@@ -180,7 +177,7 @@ async function getPersonaMapsByCustomerId(
 async function getPersonaMaps({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = logger.child({ name: "PersonaServer.getPersonaMaps" }),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -275,7 +272,7 @@ async function getPersonaMaps({
 export async function receivePersonaData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = logger.child({ name: "PersonaServer.receivePersonaData" }),
 }: {
 	connectionId: string;
 	message: BufferSerializer;

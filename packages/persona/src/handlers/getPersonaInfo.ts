@@ -7,7 +7,7 @@ import { createGameProfile } from "rusty-motors-nps";
 import { getPersonasByPersonaId } from "../getPersonasByPersonaId.js";
 import { personaToString } from "../internal.js";
 
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({
 	name: "PersonaServer.receivePersonaData",
 });

@@ -13,7 +13,7 @@ import type { GameSocketCallback } from "./index.js";
 import { lobbyCommandMap } from "./lobbyCommands.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processEncryptedGameCommand" });
 
 export async function processEncryptedGameCommand(

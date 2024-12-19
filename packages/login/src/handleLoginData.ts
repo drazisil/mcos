@@ -1,6 +1,6 @@
 import { SerializedBufferOld, NPSMessage } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "LoginServer.handleLoginData" });
 
 /**

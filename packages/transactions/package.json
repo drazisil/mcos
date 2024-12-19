@@ -9,7 +9,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"check": "tsc",
+		"build": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
 		"test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage",
@@ -25,6 +25,9 @@
 	},
 	"dependencies": {
 		"@sentry/profiling-node": "8.47.0",
-		"utils": "link:src/utils"
+		"rusty-motors-logger": "workspace:*",
+		"rusty-motors-database": "workspace:*",
+		"rusty-motors-shared": "workspace:*",
+		"rusty-motors-shared-packets": "workspace:*"
 	}
 }

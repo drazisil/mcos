@@ -4,7 +4,7 @@ import {
 	MiniUserList,
 	getAsHex,
 } from "rusty-motors-nps";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.getLobMiniUserList" });
 
 // Command id: 0x128

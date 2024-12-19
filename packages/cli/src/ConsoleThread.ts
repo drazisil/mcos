@@ -2,7 +2,7 @@ import { emitKeypressEvents } from "node:readline";
 // eslint-disable-next-line no-unused-vars
 import { Gateway } from "rusty-motors-gateway";
 import { KeypressEvent, SubThread  } from "rusty-motors-shared";
-import type { Logger } from "rusty-motors-utilities";
+import type { Logger } from "rusty-motors-logger";
 
 /**
  * @module ConsoleThread
@@ -36,6 +36,7 @@ export class ConsoleThread extends SubThread {
 		}
 		this.parentThread = parentThread;
 		ConsoleThread._instance = this;
+		this.log = log;
 	}
 
 	/** @param {KeypressEvent} key */

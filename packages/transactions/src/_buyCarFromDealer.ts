@@ -3,7 +3,7 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "transactions._buyCarFromDealer" });
 
 class PurchaseStockCarMessage extends ServerPacket {

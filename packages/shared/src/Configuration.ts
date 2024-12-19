@@ -1,4 +1,4 @@
-import type { Logger } from "rusty-motors-utilities";
+import type { Logger } from "rusty-motors-logger";
 
 /**
  * @module shared/Configuration

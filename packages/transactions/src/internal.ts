@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 
 import {
 	McosEncryption,

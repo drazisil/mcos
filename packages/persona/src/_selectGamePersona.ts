@@ -1,6 +1,6 @@
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({
 	name: "PersonaServer.receivePersonaData",
 });

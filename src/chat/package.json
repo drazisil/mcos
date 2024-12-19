@@ -18,7 +18,9 @@
   "description": "",
   "dependencies": {
     "@sentry/profiling-node": "8.47.0",
-    "utils": "link:src/utils"
+    "rusty-motors-logger": "workspace:*",
+    "rusty-motors-shared": "workspace:*",
+    "rusty-motors-shared-packets": "workspace:*"
   },
   "devDependencies": {
     "add": "^2.0.6",

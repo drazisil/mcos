@@ -10,7 +10,7 @@ import { UserStatusManager } from "../src/UserStatusManager.js";
 import { getAsHex, getLenString } from "../src/utils/pureGet.js";
 import type { ISerializable } from "../types.js";
 import type { GameSocketCallback } from "./index.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processGameLogin" });
 
 export function loadPrivateKey(path: string): string {

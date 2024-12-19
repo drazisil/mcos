@@ -9,7 +9,7 @@
 import { Cipher, Decipher } from "crypto";
 import { SerializedBufferOld } from "./SerializedBufferOld.js";
 import { BufferSerializer } from "rusty-motors-shared-packets";
-import { type Logger } from "rusty-motors-utilities";
+import { type Logger } from "rusty-motors-logger";
 
 /**
  * State management for the gateway server.

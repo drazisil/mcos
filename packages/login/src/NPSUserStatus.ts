@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 
 import { Configuration } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import { type Logger } from "rusty-motors-utilities";
+import { type Logger } from "rusty-motors-logger";
 
 /**
  * @typedef {Configuration} Configuration

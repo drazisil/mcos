@@ -17,7 +17,7 @@
 import { type UserRecordMini } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { login } from "./login.js";
-import { type Logger } from "rusty-motors-utilities";
+import { type Logger } from "rusty-motors-logger";
 
 export const userRecords: UserRecordMini[] = [
 	{

@@ -10,6 +10,7 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "tsc",
 		"check": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
@@ -27,6 +28,6 @@
 	},
 	"dependencies": {
 		"@sentry/profiling-node": "8.47.0",
-		"utils": "link:src/utils"
+		"rusty-motors-shared": "workspace:*"
 	}
 }

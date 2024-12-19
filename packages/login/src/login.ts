@@ -6,7 +6,7 @@ import {
 } from "rusty-motors-shared";
 import { userRecords } from "./internal.js";
 import { NPSUserStatus } from "./NPSUserStatus.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "LoginServer" });
 
 /**

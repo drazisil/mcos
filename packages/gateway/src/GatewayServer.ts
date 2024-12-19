@@ -7,7 +7,7 @@ import type { GatewayOptions } from "./types.js";
 import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
 import { mcotsPortRouter } from "./mcotsPortRouter.js";
-import {logger, type Logger } from "rusty-motors-utilities";
+import {logger, type Logger } from "rusty-motors-logger";
 
 import http from "node:http";
 

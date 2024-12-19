@@ -1,7 +1,7 @@
 import { putLenString } from "rusty-motors-nps";
 
 import { BaseSerializable } from "./BaseSerializable.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "MiniRiffList" });
 
 

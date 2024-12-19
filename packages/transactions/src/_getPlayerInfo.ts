@@ -2,7 +2,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PlayerInfoMessage } from "./PlayerInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "transactions.getPlayerInfo" });
 
 export async function _getPlayerInfo({

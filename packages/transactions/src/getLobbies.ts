@@ -2,7 +2,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { EntryFeePurseMessage, PurseEntry } from "./EntryFeePurseMessage.js";
 import { LobbyInfo, LobbyMessage } from "./LobbyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "transactionServer.getLobbies" });
 
 /**

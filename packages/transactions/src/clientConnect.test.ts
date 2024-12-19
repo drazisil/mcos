@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { updateSessionKey } from "rusty-motors-database";
 import { TClientConnectMessage } from "../index.js";
-import { clientConnect } from "../src/clientConnect.js";
+import { clientConnect } from "./clientConnect.js";
 
 describe("clientConnect", () => {
 	it("throws when connection is not found", async () => {

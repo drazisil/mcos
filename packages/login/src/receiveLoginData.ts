@@ -16,7 +16,7 @@
 import { SerializedBufferOld, type ServiceResponse } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "LoginServer" });
 
 /**

@@ -3,7 +3,7 @@
  */
 
 import { EventEmitter } from "node:events";
-import {logger, type Logger } from "rusty-motors-utilities";
+import {logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger;
 
 

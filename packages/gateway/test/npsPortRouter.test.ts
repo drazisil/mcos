@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { npsPortRouter } from "../src/npsPortRouter.js";
 import type { TaggedSocket } from "../src/socketUtility.js";
 import { GamePacket } from "rusty-motors-shared-packets";
+import { Socket } from "node:net";
+import { logger } from "rusty-motors-logger";
 
 describe("npsPortRouter", () => {
 	beforeEach(() => {
@@ -9,12 +11,14 @@ describe("npsPortRouter", () => {
 	});
 
 	it("should log an error and close the socket if local port is undefined", async () => {
-		const mockSocket = {
-			localPort: undefined,
-			end: vi.fn(),
-			on: vi.fn(),
+		vi.mock("node:net", async (importOriginal) => {
+			const mockSocket = await importOriginal();
+			return mockSocket;
+		});
+		const mockSocket = new Socket();
+		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id",
+			connectionStamp: 0,
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
 		try {
 			await npsPortRouter({ taggedSocket });
@@ -26,12 +30,14 @@ describe("npsPortRouter", () => {
 	});
 
 	it("should log the start of the router and send ok to login packet for port 7003", async () => {
-		const mockSocket = {
-			localPort: 7003,
-			write: vi.fn(),
-			on: vi.fn(),
+		vi.mock("net", async () => {
+			const mockSocket = await vi.importActual("net");
+			return mockSocket;
+		});
+		const mockSocket = new Socket();
+		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id",
+			connectionStamp: 0,
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
 		await npsPortRouter({ taggedSocket }).catch((error) => {
 			expect(error).toBeUndefined();
@@ -44,21 +50,30 @@ describe("npsPortRouter", () => {
 	});
 
 	it("should handle data event and route initial message", async () => {
-		const mockSocket = {
-			localPort: 8228,
-			write: vi.fn(),
-			on: vi.fn((event, callback) => {
-				if (event === "data") {
-					try {
-						callback(Buffer.from([0x01, 0x02, 0x03]));
-					} catch (error) {
-						expect(error).toBeUndefined();
-					}
-				}
-			}),
-		};
 
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-nps" };
+			vi.mock("net", async () => {
+				const origionalNet = await vi.importActual("net");
+				const origionalSocket = origionalNet.Socket as Socket;
+				return {
+					...origionalNet,
+					Socket: vi.fn().mockImplementation(() => {
+						return {
+							...origionalSocket,
+							on: vi.fn((event, callback) => {
+								if (event === "data") {
+									callback(Buffer.from([0x01, 0x02, 0x03]));
+								}
+								return origionalSocket.on(event, callback);
+							}),
+						};
+					}),
+				};
+			});
+		const mockSocket = new Socket();
+
+		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-nps",
+			connectionStamp: 0,
+		};
 
 		const mockGamePacket = {
 			deserialize: vi.fn(),
@@ -80,52 +95,72 @@ describe("npsPortRouter", () => {
 	});
 
 	it("should log socket end event", async () => {
-		const mockSocket = {
-			localPort: 7003,
-			on: vi.fn((event, callback) => {
-				if (event === "end") {
-					callback();
-				}
-			}),
-			write: vi.fn(),
+		vi.mock("net", async () => {
+			const origionalNet = await vi.importActual("net");
+			const origionalSocket = origionalNet.Socket as Socket;
+			return {
+				...origionalNet,
+				Socket: vi.fn().mockImplementation(() => {
+					return {
+						...origionalSocket,
+						localPort: 7003,
+						on: vi.fn((event, callback) => {
+							if (event === "end") {
+								callback();
+							}
+							return origionalSocket.on(event, callback);
+						}),
+					};
+				}),
+			};
+		});
+		const spy = vi.spyOn(logger, "debug");
+		const mockSocket = new Socket();
+		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id",
+			connectionStamp: 0,
 		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
 
-		await npsPortRouter({ taggedSocket, log: mockLogger }).catch((error) => {
+		await npsPortRouter({ taggedSocket, log: logger }).catch((error) => {
 			expect(error).toBeUndefined();
 		});
 
-		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed");
+		expect(spy).toHaveBeenCalledWith("[test-id] Socket closed");
 	});
 
 	it("should log socket error event", async () => {
-		const mockSocket = {
-			localPort: 7003,
-			on: vi.fn((event, callback) => {
-				if (event === "error") {
-					callback(new Error("Test error"));
-				}
-			}),
-			write: vi.fn(),
+		vi.mock("net", async () => {
+			const origionalNet = await vi.importActual("net");
+			const origionalSocket = origionalNet.Socket as Socket;
+			return {
+				...origionalNet,
+				Socket: vi.fn().mockImplementation(() => {
+					return {
+						...origionalSocket,
+						localPort: 7003,
+						on: vi.fn((event, callback) => {
+							if (event === "error") {
+								callback(new Error("Test error"));
+							}
+							return origionalSocket.on(event, callback);
+						}),
+						write: vi.fn(),
+					};
+				}),
+			};
+		});
+		const mockSocket = new Socket();
+		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id",
+			connectionStamp: 0,
 		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
-
+		const spy = vi.spyOn(logger, "error");
 		try {
 		
-			await npsPortRouter({ taggedSocket, log: mockLogger });
+			await npsPortRouter({ taggedSocket, log: logger });
 		} catch (error) {
 			expect(error).toBeUndefined();
 		}
 
-		expect(mockLogger.error).toHaveBeenCalledWith(
+		expect(spy).toHaveBeenCalledWith(
 			"[test-id] Socket error: Error: Test error",
 		);
 	});

@@ -7,7 +7,7 @@ import { receiveLobbyData } from "rusty-motors-lobby";
 import { receiveChatData } from "rusty-motors-chat";
 import { receivePersonaData } from "rusty-motors-personas";
 import { receiveLoginData } from "rusty-motors-login";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "gatewayServer.npsPortRouter" });
 import * as Sentry from "@sentry/node";
 

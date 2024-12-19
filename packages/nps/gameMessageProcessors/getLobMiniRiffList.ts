@@ -4,7 +4,7 @@ import {
 	MiniRiffList,
 	getAsHex,
 } from "rusty-motors-nps";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.getLobMiniRiffList" });
 
 // Command id: 0x30c

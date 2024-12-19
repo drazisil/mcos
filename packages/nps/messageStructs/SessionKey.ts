@@ -1,6 +1,6 @@
 import { getAsHex, isOnlyOneSet } from "rusty-motors-nps";
 import { BaseSerializable } from "./BaseSerializable.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "SessionKey" });
 
 export class SessionKey extends BaseSerializable {

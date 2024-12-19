@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 import { IncomingMessage, ServerResponse } from "node:http";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "PatchServer.receivePatchData" });
 
 export const CastanetResponse = {
@@ -21,21 +21,9 @@ export const CastanetResponse = {
  */
 
 export class PatchServer {
-	/**
-	 *
-	 *
-	 * @static
-	 * @type {PatchServer}
-	 * @memberof PatchServer
-	 */
 	static _instance: PatchServer;
 
-	/**
-	 *
-	 *
-	 * @private
-	 * @type {import("pino").Logger}
-	 */
+	
 	_log: Logger;
 
 	/**

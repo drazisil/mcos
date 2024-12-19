@@ -7,7 +7,7 @@ import {
 } from "./inGameEmails.js";
 import { bufferToHexString } from "./toHexString.js";
 import * as Sentry from "@sentry/node";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "chat.receiveChatData" });
 
 const handlers = new Map<number, (message: ChatMessage) => Buffer[]>();

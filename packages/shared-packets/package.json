@@ -10,6 +10,7 @@
 		}
 	},
 	"scripts": {
+		"build": "tsc",
 		"check": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
@@ -24,7 +25,6 @@
 		"vitest": "^2.1.8"
 	},
 	"dependencies": {
-		"@sentry/profiling-node": "8.47.0",
-		"utils": "link:src/utils"
+		"@sentry/profiling-node": "8.47.0"
 	}
 }

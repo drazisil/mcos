@@ -17,11 +17,12 @@
   "license": "AGPL-3.0",
   "description": "",
   "dependencies": {
-    "@sentry/profiling-node": "8.46.0",
+    "@sentry/profiling-node": "8.47.0",
     "pino": "^9.5.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "@types/node": "^22.10.2"
   }
 }

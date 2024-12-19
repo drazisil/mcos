@@ -17,7 +17,7 @@
 import * as Sentry from "@sentry/node";
 import { Gateway } from "rusty-motors-gateway";
 import { Configuration, verifyLegacyCipherSupport } from "rusty-motors-shared";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 
 // Handle process signals for graceful shutdown
 process.on("SIGTERM", async () => {

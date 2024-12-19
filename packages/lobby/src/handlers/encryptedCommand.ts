@@ -9,7 +9,7 @@ import { LegacyMessage } from "rusty-motors-shared";
 import { _setMyUserData } from "./_setMyUserData.js";
 import { handleGetMiniUserList } from "./handleGetMiniUserList.js";
 import { handleSendMiniRiffList } from "./handleSendMiniRiffList.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "Lobby" });
 
 /**

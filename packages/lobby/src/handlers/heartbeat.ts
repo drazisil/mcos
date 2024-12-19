@@ -1,4 +1,4 @@
-import { Logger, logger } from "rusty-motors-utilities";
+import { Logger, logger } from "rusty-motors-logger";
 import { NPSMessage, SerializedBuffer } from "rusty-motors-shared";
 
 export async function _npsHeartbeat({

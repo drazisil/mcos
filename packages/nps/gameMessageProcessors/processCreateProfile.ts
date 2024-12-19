@@ -3,7 +3,7 @@ import { GameProfile } from "../messageStructs/GameProfile.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
 import { addGameProfile } from "../services/profile.js";
 import type { GameSocketCallback } from "./index.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processCreateProfile" });
 
 export async function processCreateProfile(

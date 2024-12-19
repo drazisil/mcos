@@ -1,5 +1,5 @@
 import type { Socket } from "net";
-import type { Logger } from "rusty-motors-utilities";
+import type { Logger } from "rusty-motors-logger";
 import type { Configuration } from "rusty-motors-shared";
 
 /**

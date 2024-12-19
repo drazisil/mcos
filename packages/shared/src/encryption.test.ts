@@ -11,7 +11,7 @@ import {
 import {
 	createCommandEncryptionPair,
 	createDataEncryptionPair,
-} from "../src/encryption.js";
+} from "./encryption.js";
 
 let testSave: (state: State) => void;
 let testState: State;

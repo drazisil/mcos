@@ -8,7 +8,7 @@ import {
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processGetProfileInfo" });
 
 export async function processGetProfileInfo(

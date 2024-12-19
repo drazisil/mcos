@@ -9,6 +9,7 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "tsc",
 		"check": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
@@ -20,7 +21,9 @@
 	"dependencies": {
 		"@sentry/profiling-node": "8.47.0",
 		"short-unique-id": "^5.2.0",
-		"utils": "link:src/utils"
+		"rusty-motors-logger": "workspace:*",
+		"rusty-motors-database": "workspace:*",
+		"rusty-motors-shared": "workspace:*"
 	},
 	"description": "",
 	"devDependencies": {

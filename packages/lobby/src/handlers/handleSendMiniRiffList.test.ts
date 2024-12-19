@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LegacyMessage } from "rusty-motors-shared";
-import { handleSendMiniRiffList } from "../../src/handlers/handleSendMiniRiffList.js";
+import { handleSendMiniRiffList } from "./handleSendMiniRiffList.js";
 
 describe("handleSendMiniRiffList", () => {
 	it("should return a buffer", async () => {

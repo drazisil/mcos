@@ -32,8 +32,52 @@
 			"projectFolder": "packages/cli"
 		},
 		{
-			"packageName": "rusty-motors-utilities",
-			"projectFolder": "src/utils"
+			"packageName": "rusty-motors-gateway",
+			"projectFolder": "packages/gateway"
+		},
+		{
+			"packageName": "rusty-motors-lobby",
+			"projectFolder": "packages/lobby"
+		},
+		{
+			"packageName": "rusty-motors-login",
+			"projectFolder": "packages/login"
+		},
+		{
+			"packageName": "rusty-motors-nps",
+			"projectFolder": "packages/nps"
+		},
+		{
+			"packageName": "rusty-motors-patch",
+			"projectFolder": "packages/patch"
+		},
+		{
+			"packageName": "rusty-motors-personas",
+			"projectFolder": "packages/persona"
+		},
+		{
+			"packageName": "rusty-motors-shard",
+			"projectFolder": "packages/shard"
+		},
+		{
+			"packageName": "rusty-motors-shared",
+			"projectFolder": "packages/shared"
+		},
+		{
+			"packageName": "rusty-motors-shared-packets",
+			"projectFolder": "packages/shared-packets"
+		},
+		{
+			"packageName": "rusty-motors-database",
+			"projectFolder": "packages/database"
+		},
+		{
+			"packageName": "rusty-motors-transactions",
+			"projectFolder": "packages/transactions"
+		},
+		{
+			"packageName": "rusty-motors-chat",
+			"projectFolder": "src/chat"
 		},
         {
             "packageName": "rusty-motors-logger",

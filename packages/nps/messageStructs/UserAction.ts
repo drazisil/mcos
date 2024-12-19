@@ -1,6 +1,6 @@
 import type { ISerializable } from "rusty-motors-nps";
 import { getAsHex } from "rusty-motors-nps";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "UserAction" });
 
 export class UserAction implements ISerializable {

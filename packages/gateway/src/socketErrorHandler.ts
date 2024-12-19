@@ -1,4 +1,4 @@
-import { Logger, logger } from "rusty-motors-utilities";
+import { Logger, logger } from "rusty-motors-logger";
 
 /**
  * Handles socket errors by logging specific error codes or throwing an error.

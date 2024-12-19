@@ -35,6 +35,7 @@ export type { State } from "./src/State.js";
 export type { OnDataHandler, ServiceResponse } from "./src/State.js";
 export { LegacyMessage } from "./src/LegacyMessage.js";
 export { NPSHeader } from "./src/NPSHeader.js";
+export {createCommandEncryptionPair, createDataEncryptionPair} from "./src/encryption.js";
 export * from "./src/interfaces.js";
 
 export interface KeypressEvent {

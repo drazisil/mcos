@@ -14,7 +14,7 @@ importers:
     dependencies:
       '@adminjs/sequelize':
         specifier: ^4.1.1
-        version: 4.1.1(adminjs@7.8.13(@types/react@19.0.2)(debug@4.4.0))(sequelize@6.37.5(pg@8.13.1))
+        version: 4.1.1(adminjs@7.8.13(@types/react@19.0.2)(debug@4.4.0))(sequelize@6.37.5)
       '@databases/pg':
         specifier: ^5.5.0
         version: 5.5.0(typescript@5.7.2)
@@ -22,7 +22,7 @@ importers:
         specifier: ^1.31.0
         version: 1.31.0
       '@fastify/sensible':
-        specifier: ^6.0.1
+        specifier: ^6.0.2
         version: 6.0.2
       '@mikro-orm/core':
         specifier: ^6.4.1
@@ -37,8 +37,8 @@ importers:
         specifier: ^8.46.0
         version: 8.46.0
       '@sentry/profiling-node':
-        specifier: 8.46.0
-        version: 8.46.0
+        specifier: 8.47.0
+        version: 8.47.0
       adminjs:
         specifier: ^7.8.13
         version: 7.8.13(@types/react@19.0.2)(debug@4.4.0)
@@ -51,9 +51,18 @@ importers:
       moment:
         specifier: ^2.30.1
         version: 2.30.1
+      rusty-motors-gateway:
+        specifier: workspace:*
+        version: link:../../packages/gateway
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../../packages/shared
       sequelize:
-        specifier: ~6.37.5
-        version: 6.37.5(pg@8.13.1)
+        specifier: ^6.37.5
+        version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
       sqlite:
         specifier: ^5.1.1
         version: 5.1.1
@@ -78,7 +87,7 @@ importers:
         version: 3.1.2(typescript@5.7.2)
       '@mikro-orm/cli':
         specifier: ^6.4.1
-        version: 6.4.1(pg@8.13.1)
+        version: 6.4.1
       '@rushstack/heft':
         specifier: ^0.68.11
         version: 0.68.11(@types/node@22.10.2)
@@ -113,7 +122,7 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0)(typescript@5.7.2)
       '@vitest/coverage-v8':
-        specifier: ^2.1.8
+        specifier: 2.1.8
         version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
       eslint:
         specifier: ^9.17.0
@@ -158,28 +167,303 @@ importers:
   ../../packages/cli:
     dependencies:
       '@sentry/profiling-node':
-        specifier: 8.46.0
-        version: 8.46.0
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-gateway:
+        specifier: workspace:*
+        version: link:../gateway
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
         version: 22.10.2
       '@vitest/coverage-v8':
-        specifier: ^2.1.8
+        specifier: 2.1.8
         version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)
 
-  ../../src/utils:
+  ../../packages/database:
+    dependencies:
+      '@types/pg':
+        specifier: ^8.11.10
+        version: 8.11.10
+      pg:
+        specifier: ^8.13.1
+        version: 8.13.1
+      pg-hstore:
+        specifier: ^2.3.4
+        version: 2.3.4
+      sequelize:
+        specifier: ^6.37.5
+        version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/gateway:
+    dependencies:
+      '@fastify/sensible':
+        specifier: ^6.0.2
+        version: 6.0.2
+      fastify:
+        specifier: ^5.2.0
+        version: 5.2.0
+      rusty-motors-chat:
+        specifier: workspace:*
+        version: link:../../src/chat
+      rusty-motors-lobby:
+        specifier: workspace:*
+        version: link:../lobby
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-login:
+        specifier: workspace:*
+        version: link:../login
+      rusty-motors-personas:
+        specifier: workspace:*
+        version: link:../persona
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
+      rusty-motors-transactions:
+        specifier: workspace:*
+        version: link:../transactions
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/lobby:
+    dependencies:
+      '@fastify/sensible':
+        specifier: ^6.0.2
+        version: 6.0.2
+      fastify:
+        specifier: ^5.2.0
+        version: 5.2.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-personas:
+        specifier: workspace:*
+        version: link:../persona
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/login:
+    dependencies:
+      '@fastify/sensible':
+        specifier: ^6.0.2
+        version: 6.0.2
+      fastify:
+        specifier: ^5.2.0
+        version: 5.2.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/nps:
     dependencies:
       '@sentry/profiling-node':
-        specifier: 8.46.0
-        version: 8.46.0
-      pino:
-        specifier: ^9.5.0
-        version: 9.5.0
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+      short-unique-id:
+        specifier: ^5.2.0
+        version: 5.2.0
     devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/patch:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/persona:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-nps:
+        specifier: workspace:*
+        version: link:../nps
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
+      short-unique-id:
+        specifier: ^5.2.0
+        version: 5.2.0
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/shard:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/shared:
+    dependencies:
+      fastify:
+        specifier: ^5.2.0
+        version: 5.2.0
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/shared-packets:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../packages/transactions:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  ../../src/chat:
+    dependencies:
+      '@sentry/profiling-node':
+        specifier: 8.47.0
+        version: 8.47.0
+      rusty-motors-logger:
+        specifier: workspace:*
+        version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../../packages/shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../../packages/shared-packets
+    devDependencies:
+      add:
+        specifier: ^2.0.6
+        version: 2.0.6
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)
@@ -187,8 +471,8 @@ importers:
   ../../utilities/logger:
     dependencies:
       '@sentry/profiling-node':
-        specifier: 8.46.0
-        version: 8.46.0
+        specifier: 8.47.0
+        version: 8.47.0
       pino:
         specifier: ^9.5.0
         version: 9.5.0
@@ -196,6 +480,9 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.10.2
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)
@@ -1909,6 +2196,9 @@ packages:
   '@prisma/instrumentation@5.19.1':
     resolution: {integrity: sha512-VLnzMQq7CWroL5AeaW0Py2huiNKeoMfCH3SUxstdzPrlWQi6UQ9UrfcbUkNHlVFqOMacqy8X/8YtE0kuKDpD9w==}
 
+  '@prisma/instrumentation@5.22.0':
+    resolution: {integrity: sha512-LxccF392NN37ISGxIurUljZSh1YWnphO34V5a0+T7FVQG2u9bhAXRTJpgmQ3483woVhkraQZFF7cbRrpbw/F4Q==}
+
   '@redux-devtools/extension@3.3.0':
     resolution: {integrity: sha512-X34S/rC8S/M1BIrkYD1mJ5f8vlH0BDqxXrs96cvxSBo4FhMdbhU+GUGsmNYov1xjSyLMHgo8NYrUG8bNX7525g==}
     peerDependencies:
@@ -2177,8 +2467,16 @@ packages:
     resolution: {integrity: sha512-aOEOBw5ueqN0cv7J3DJDDAlfJf+GxiGsUJZCG5Rsgiq4/jYW8ezY4glUyx+J9yjwvpfHt4IFaQtBQaeXUQBN6g==}
     engines: {node: '>=14.18'}
 
+  '@sentry/core@8.47.0':
+    resolution: {integrity: sha512-iSEJZMe3DOcqBFZQAqgA3NB2lCWBc4Gv5x/SCri/TVg96wAlss4VrUunSI2Mp0J4jJ5nJcJ2ChqHSBAU48k3FA==}
+    engines: {node: '>=14.18'}
+
   '@sentry/node@8.46.0':
     resolution: {integrity: sha512-cBgDyjAkwxrwd/tu2BDuH/7u2pJbfrECcV75X2LPxN8ZgpdvhgK4GS9nAewarx+31HNU4cTx4dPQiTXAEWioRQ==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/node@8.47.0':
+    resolution: {integrity: sha512-tMzeU3KkmDi2OVvSu+Ah5pwoi7srsSyc1DovBbRQU96RFf/lOFzGe9JERa1MyDUqqLH95NqnPTNsa4Amb8/Vxg==}
     engines: {node: '>=14.18'}
 
   '@sentry/opentelemetry@8.46.0':
@@ -2191,8 +2489,18 @@ packages:
       '@opentelemetry/sdk-trace-base': ^1.29.0
       '@opentelemetry/semantic-conventions': ^1.28.0
 
-  '@sentry/profiling-node@8.46.0':
-    resolution: {integrity: sha512-JcfwAMhFOPf1ergba4SkYsousef56O8jQ+DtSDac9TZyEP8X5rFM3SyNBVqd6TM8oW+rgubgZfc0aHJs1D748Q==}
+  '@sentry/opentelemetry@8.47.0':
+    resolution: {integrity: sha512-wunyBIUPeY6Kx3SFhOQqOPs+hyRADO5bztpo8aZ3N3xfzhefSTOdrgUroKvHx1DvoQO6MAlykcuUFps3yfaqmg==}
+    engines: {node: '>=14.18'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.9.0
+      '@opentelemetry/core': ^1.29.0
+      '@opentelemetry/instrumentation': ^0.56.0
+      '@opentelemetry/sdk-trace-base': ^1.29.0
+      '@opentelemetry/semantic-conventions': ^1.28.0
+
+  '@sentry/profiling-node@8.47.0':
+    resolution: {integrity: sha512-YRta5UpsIOs3F/Px0XCWWybouZ62/5I+y/3Qh1u1x0PqBI42CReQTzRPGxwleXonEv5PT+P9WQoYjxRKGQCx9w==}
     engines: {node: '>=14.18'}
     hasBin: true
 
@@ -2499,6 +2807,9 @@ packages:
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
 
+  '@types/pg@8.11.10':
+    resolution: {integrity: sha512-LczQUW4dbOQzsH2RQ5qoeJ6qJPdrcM/DcMLoqWQkMLMsq83J5lAX3LXjdkWdpscFy67JSOWDnh7Ny/sPFykmkg==}
+
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
 
@@ -2684,6 +2995,9 @@ packages:
 
   add-stream@1.0.0:
     resolution: {integrity: sha512-qQLMr+8o0WC4FZGQTcJiKBVC59JylcPSrTtk6usvmIDFUOCKegapy1VHQwRbFMOFyb/inzUVqHs+eMYKDM1YeQ==}
+
+  add@2.0.6:
+    resolution: {integrity: sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==}
 
   address@1.2.2:
     resolution: {integrity: sha512-4B/qKCfeE/ODUaAUpSwfzazo5x29WD4r3vXiWsB7I2mSDAihwEqKO+g8GELZUQSSAo5e1XTYh3ZVfLyxBc12nA==}
@@ -4634,6 +4948,9 @@ packages:
     resolution: {integrity: sha512-nK28WOo+QIjBkDduTINE4JkF/UJJKyf2EJxvJKfblDpyg0Q+pkOHNTL0Qwy6NP6FhE/EnzV73BxxqcJaXY9anw==}
     engines: {node: '>= 0.4'}
 
+  obuf@1.1.2:
+    resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
+
   on-exit-leak-free@2.1.2:
     resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}
     engines: {node: '>=14.0.0'}
@@ -4811,9 +5128,17 @@ packages:
     peerDependencies:
       pg: ^8
 
+  pg-hstore@2.3.4:
+    resolution: {integrity: sha512-N3SGs/Rf+xA1M2/n0JBiXFDVMzdekwLZLAO0g7mpDY9ouX+fDI7jS6kTq3JujmYbtNSJ53TJ0q4G98KVZSM4EA==}
+    engines: {node: '>= 0.8.x'}
+
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
+
+  pg-numeric@1.0.2:
+    resolution: {integrity: sha512-BM/Thnrw5jm2kKLE5uJkXqqExRUY/toLHda65XgFTBTFYZyopbKjBe29Ii3RbkvlsMoFwD+tHeGaCjjv0gHlyw==}
+    engines: {node: '>=4'}
 
   pg-pool@3.7.0:
     resolution: {integrity: sha512-ZOBQForurqh4zZWjrgSwwAtzJ7QiRX0ovFkZr2klsen3Nm0aoh33Ls0fzfv3imeH/nw/O27cjdz5kzYJfeGp/g==}
@@ -4826,6 +5151,10 @@ packages:
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
+
+  pg-types@4.0.2:
+    resolution: {integrity: sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==}
+    engines: {node: '>=10'}
 
   pg@8.13.1:
     resolution: {integrity: sha512-OUir1A0rPNZlX//c7ksiu7crsGZTKSOXJPgtNiHGIlC9H0lO+NC6ZDYksSgBYY/thSWhnSRBv8w1lieNNGATNQ==}
@@ -4916,6 +5245,10 @@ packages:
     resolution: {integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==}
     engines: {node: '>=0.10.0'}
 
+  postgres-bytea@3.0.0:
+    resolution: {integrity: sha512-CNd4jim9RFPkObHSjVHlVrxoVQXz7quwNFpz7RY1okNNme49+sVyiTvTRobiLV548Hx/hb1BG+iE7h9493WzFw==}
+    engines: {node: '>= 6'}
+
   postgres-date@1.0.7:
     resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
     engines: {node: '>=0.10.0'}
@@ -4928,9 +5261,16 @@ packages:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
 
+  postgres-interval@3.0.0:
+    resolution: {integrity: sha512-BSNDnbyZCXSxgA+1f5UU2GmwhoI0aU5yMxRGO8CdFEcY2BQF9xm/7MqKnYoM1nJDk8nONNWDk9WeSmePFhQdlw==}
+    engines: {node: '>=12'}
+
   postgres-interval@4.0.2:
     resolution: {integrity: sha512-EMsphSQ1YkQqKZL2cuG0zHkmjCCzQqQ71l2GXITqRwjhRleCdv00bDk/ktaSi0LnlaPzAc3535KTrjXsTdtx7A==}
     engines: {node: '>=12'}
+
+  postgres-range@1.1.4:
+    resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -5485,6 +5825,10 @@ packages:
 
   shimmer@1.2.1:
     resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
+
+  short-unique-id@5.2.0:
+    resolution: {integrity: sha512-cMGfwNyfDZ/nzJ2k2M+ClthBIh//GlZl1JEf47Uoa9XR11bz8Pa2T2wQO4bVrRdH48LrIDWJahQziKo3MjhsWg==}
+    hasBin: true
 
   side-channel-list@1.0.0:
     resolution: {integrity: sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==}
@@ -6248,11 +6592,11 @@ snapshots:
       - react-is
       - supports-color
 
-  '@adminjs/sequelize@4.1.1(adminjs@7.8.13(@types/react@19.0.2)(debug@4.4.0))(sequelize@6.37.5(pg@8.13.1))':
+  '@adminjs/sequelize@4.1.1(adminjs@7.8.13(@types/react@19.0.2)(debug@4.4.0))(sequelize@6.37.5)':
     dependencies:
       adminjs: 7.8.13(@types/react@19.0.2)(debug@4.4.0)
       escape-regexp: 0.0.1
-      sequelize: 6.37.5(pg@8.13.1)
+      sequelize: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -7851,7 +8195,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@mikro-orm/cli@6.4.1(pg@8.13.1)':
+  '@mikro-orm/cli@6.4.1':
     dependencies:
       '@jercle/yargonaut': 1.1.5
       '@mikro-orm/core': 6.4.1
@@ -8233,6 +8577,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@prisma/instrumentation@5.22.0':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/instrumentation': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.29.0(@opentelemetry/api@1.9.0)
+    transitivePeerDependencies:
+      - supports-color
+
   '@redux-devtools/extension@3.3.0(redux@4.2.1)':
     dependencies:
       '@babel/runtime': 7.26.0
@@ -8480,6 +8832,8 @@ snapshots:
 
   '@sentry/core@8.46.0': {}
 
+  '@sentry/core@8.47.0': {}
+
   '@sentry/node@8.46.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -8520,6 +8874,46 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@sentry/node@8.47.0':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/context-async-hooks': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/core': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.56.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-amqplib': 0.45.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-connect': 0.42.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-dataloader': 0.15.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-express': 0.46.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-fastify': 0.43.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-fs': 0.18.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-generic-pool': 0.42.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-graphql': 0.46.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-hapi': 0.44.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-http': 0.56.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-ioredis': 0.46.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-kafkajs': 0.6.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-knex': 0.43.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-koa': 0.46.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-lru-memoizer': 0.43.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mongodb': 0.50.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mongoose': 0.45.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mysql': 0.44.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mysql2': 0.44.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-nestjs-core': 0.43.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-pg': 0.49.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-redis-4': 0.45.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-tedious': 0.17.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-undici': 0.9.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/resources': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.28.0
+      '@prisma/instrumentation': 5.22.0
+      '@sentry/core': 8.47.0
+      '@sentry/opentelemetry': 8.47.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)
+      import-in-the-middle: 1.11.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@sentry/opentelemetry@8.46.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -8529,10 +8923,19 @@ snapshots:
       '@opentelemetry/semantic-conventions': 1.28.0
       '@sentry/core': 8.46.0
 
-  '@sentry/profiling-node@8.46.0':
+  '@sentry/opentelemetry@8.47.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)':
     dependencies:
-      '@sentry/core': 8.46.0
-      '@sentry/node': 8.46.0
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/core': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.56.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.29.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.28.0
+      '@sentry/core': 8.47.0
+
+  '@sentry/profiling-node@8.47.0':
+    dependencies:
+      '@sentry/core': 8.47.0
+      '@sentry/node': 8.47.0
       detect-libc: 2.0.3
       node-abi: 3.71.0
     transitivePeerDependencies:
@@ -8861,7 +9264,13 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.6.1
+      '@types/pg': 8.11.10
+
+  '@types/pg@8.11.10':
+    dependencies:
+      '@types/node': 22.10.2
+      pg-protocol: 1.7.0
+      pg-types: 4.0.2
 
   '@types/pg@8.6.1':
     dependencies:
@@ -9101,6 +9510,8 @@ snapshots:
   acorn@8.14.0: {}
 
   add-stream@1.0.0: {}
+
+  add@2.0.6: {}
 
   address@1.2.2: {}
 
@@ -11255,6 +11666,8 @@ snapshots:
       has-symbols: 1.1.0
       object-keys: 1.1.1
 
+  obuf@1.1.2: {}
+
   on-exit-leak-free@2.1.2: {}
 
   once@1.4.0:
@@ -11421,7 +11834,13 @@ snapshots:
     dependencies:
       pg: 8.13.1
 
+  pg-hstore@2.3.4:
+    dependencies:
+      underscore: 1.13.7
+
   pg-int8@1.0.1: {}
+
+  pg-numeric@1.0.2: {}
 
   pg-pool@3.7.0(pg@8.13.1):
     dependencies:
@@ -11436,6 +11855,16 @@ snapshots:
       postgres-bytea: 1.0.0
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
+
+  pg-types@4.0.2:
+    dependencies:
+      pg-int8: 1.0.1
+      pg-numeric: 1.0.2
+      postgres-array: 3.0.2
+      postgres-bytea: 3.0.0
+      postgres-date: 2.1.0
+      postgres-interval: 3.0.0
+      postgres-range: 1.1.4
 
   pg@8.13.1:
     dependencies:
@@ -11513,6 +11942,10 @@ snapshots:
 
   postgres-bytea@1.0.0: {}
 
+  postgres-bytea@3.0.0:
+    dependencies:
+      obuf: 1.1.2
+
   postgres-date@1.0.7: {}
 
   postgres-date@2.1.0: {}
@@ -11521,7 +11954,11 @@ snapshots:
     dependencies:
       xtend: 4.0.2
 
+  postgres-interval@3.0.0: {}
+
   postgres-interval@4.0.2: {}
+
+  postgres-range@1.1.4: {}
 
   prelude-ls@1.2.1: {}
 
@@ -12065,7 +12502,7 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize@6.37.5(pg@8.13.1):
+  sequelize@6.37.5(pg-hstore@2.3.4)(pg@8.13.1):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
@@ -12085,6 +12522,7 @@ snapshots:
       wkx: 0.5.0
     optionalDependencies:
       pg: 8.13.1
+      pg-hstore: 2.3.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12127,6 +12565,8 @@ snapshots:
   shebang-regex@3.0.0: {}
 
   shimmer@1.2.1: {}
+
+  short-unique-id@5.2.0: {}
 
   side-channel-list@1.0.0:
     dependencies:

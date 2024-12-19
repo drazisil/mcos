@@ -13,6 +13,7 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "tsc",
 		"check": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
@@ -23,7 +24,8 @@
 	"license": "AGPL-3.0",
 	"dependencies": {
 		"fastify": "^5.2.0",
-		"utils": "link:src/utils"
+		"rusty-motors-logger": "workspace:*",
+		"rusty-motors-shared-packets": "workspace:*"
 	},
 	"directories": {
 		"test": "test"

@@ -2,7 +2,7 @@
  * @module interfaces
  */
 
-import type { Logger } from "rusty-motors-utilities";
+import type { Logger } from "rusty-motors-logger";
 import type { SerializedBufferOld } from "./SerializedBufferOld.js";
 
 export const name = "interfaces";

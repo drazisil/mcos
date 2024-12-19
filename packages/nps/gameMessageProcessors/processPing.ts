@@ -3,7 +3,7 @@ import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
 import { sendNPSAck } from "rusty-motors-nps";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processPing" });
 
 export async function processPing(

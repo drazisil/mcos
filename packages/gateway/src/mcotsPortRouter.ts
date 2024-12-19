@@ -4,7 +4,7 @@ import {
 	type SerializableInterface,
 } from "rusty-motors-shared-packets";
 import { receiveTransactionsData } from "rusty-motors-transactions";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "GatewayServer" });
 import * as Sentry from "@sentry/node";
 

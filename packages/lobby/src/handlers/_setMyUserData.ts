@@ -1,7 +1,7 @@
 import { LegacyMessage } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
 import { updateUser } from "rusty-motors-database";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "Lobby" });
 
 export async function _setMyUserData({

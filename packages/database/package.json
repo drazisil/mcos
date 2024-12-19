@@ -9,6 +9,7 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "echo 'No build step yet'",
 		"lint": "npx @biomejs/biome lint --write",
 		"format": "npx @biomejs/biome format --write .",
 		"test": "vitest run --coverage",
@@ -21,8 +22,7 @@
 		"@types/pg": "^8.11.10",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
-		"sequelize": "^6.37.5",
-		"utils": "link:src/utils"
+		"sequelize": "^6.37.5"
 	},
 	"directories": {
 		"test": "test"

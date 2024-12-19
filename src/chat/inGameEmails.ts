@@ -3,7 +3,7 @@ import { assertLength } from "./assertLength.js";
 import { ListInGameEmailsMessage } from "./ListInGameEmailsMessage.js";
 import { ListInGameEmailsResponseMessage } from "./ListInGameEmailsResponseMessage.js";
 import { InGameEmailMessage } from "./InGameEmailMessage.js";
-import {logger } from "rusty-motors-utilities";
+import {logger } from "rusty-motors-logger";
 
 const defaultLogger = logger.child({ name: "inGameEmails" });
 

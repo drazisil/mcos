@@ -2,7 +2,7 @@ import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { channelRecordSize, channels } from "./channels.js";
-import { logger, type Logger } from "rusty-motors-utilities";
+import { logger, type Logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "Lobby.handleSendMiniRiffList" });
 
 // const users = [user1];

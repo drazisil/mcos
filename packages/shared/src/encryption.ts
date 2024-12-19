@@ -17,8 +17,8 @@
 import { createCipheriv, createDecipheriv } from "node:crypto";
 import {
 	McosEncryptionPair,
-	verifyLegacyCipherSupport,
-} from "rusty-motors-shared";
+} from "./State.js";
+import { ensureLegacyCipherCompatibility } from "./verifyLegacyCipherSupport.js";
 
 /**
  * This function creates a new encryption pair for use with the game server
@@ -30,7 +30,7 @@ import {
  */
 export function createCommandEncryptionPair(key: string): McosEncryptionPair {
 	try {
-		verifyLegacyCipherSupport();
+		ensureLegacyCipherCompatibility();
 
 		if (key.length < 16) {
 			throw Error("Key too short");

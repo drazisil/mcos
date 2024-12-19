@@ -6,7 +6,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PartsAssemblyMessage } from "./PartsAssemblyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "transactions.getOwnedParts" });
 
 export async function _getOwnedParts({

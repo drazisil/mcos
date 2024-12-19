@@ -5,7 +5,7 @@ import { LoginInfoMessage } from "../LoginInfoMessage.js";
 import {
 	createCommandEncryptionPair,
 	createDataEncryptionPair,
-} from "rusty-motors-gateway";
+} from "rusty-motors-shared";
 import {
 	McosEncryption,
 	addEncryption,
@@ -15,7 +15,7 @@ import {
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { UserInfoMessage } from "../UserInfoMessage.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "LoginServer" });
 
 /**

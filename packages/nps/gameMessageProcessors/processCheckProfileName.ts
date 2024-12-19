@@ -3,7 +3,7 @@ import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processCheckProfileName" });
 
 export async function processCheckProfileName(

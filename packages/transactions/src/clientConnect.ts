@@ -15,7 +15,7 @@ import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import { TClientConnectMessage } from "./TClientConnectMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
-import { logger } from "rusty-motors-utilities";
+import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "transactions.clientConnect" });
 
 /**
