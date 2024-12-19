@@ -27,13 +27,17 @@
 			"packageName": "rusty-motors-server",
 			"projectFolder": "apps/server"
 		},
-        {
-            "packageName": "rusty-motors-logger",
-            "projectFolder": "utilities/logger"
-        },
+		{
+			"packageName": "rusty-motors-cli",
+			"projectFolder": "packages/cli"
+		},
 		{
 			"packageName": "rusty-motors-utilities",
 			"projectFolder": "src/utils"
-		}
+		},
+        {
+            "packageName": "rusty-motors-logger",
+            "projectFolder": "utilities/logger"
+        }
     ]
 }

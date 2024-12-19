@@ -11,7 +11,7 @@
   },
   "scripts": {
     "clean": "rm --verbose -rf **/node_modules node_modules",
-    "build": "pnpm run -r --stream build",
+    "build": "tsc",
     "start": "make start",
     "check:all": "pnpm run -r --stream check",
     "lint:all": "pnpm run -r --stream lint",

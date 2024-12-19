@@ -19,12 +19,12 @@
 	"author": "",
 	"license": "AGPL-3.0",
 	"devDependencies": {
-		"@vitest/coverage-v8": "2.1.8",
-		"vitest": "^2.1.8"
+		"@vitest/coverage-v8": "^2.1.8",
+		"vitest": "^2.1.8",
+		"@types/node": "^22.10.2"
 	},
 	"dependencies": {
-		"@sentry/profiling-node": "8.47.0",
-		"utils": "link:src/utils"
+		"@sentry/profiling-node": "8.46.0"
 	},
 	"description": ""
 }

@@ -350,14 +350,11 @@ importers:
   packages/cli:
     dependencies:
       '@sentry/profiling-node':
-        specifier: 8.47.0
-        version: 8.47.0
-      utils:
-        specifier: link:src/utils
-        version: link:src/utils
+        specifier: 8.46.0
+        version: 8.46.0
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 2.1.8
+        specifier: ^2.1.8
         version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
       vitest:
         specifier: ^2.1.8
