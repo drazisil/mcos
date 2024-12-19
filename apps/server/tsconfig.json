@@ -1,8 +1,8 @@
 {
-	"extends": "./tsconfig.base.json",
+	"extends": "../../tsconfig.base.json",
     "compilerOptions": {
 		"incremental": true,
         "composite": true
 	},
-	"include": ["src/server.ts"]
+	"include": ["index.ts", "instrment.mjs"]
 }

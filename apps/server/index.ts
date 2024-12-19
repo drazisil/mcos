@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // Rusty Motors is a game server, written from scratch, for an old game
 // Copyright (C) <2017>  <Drazi Crendraven>
 //

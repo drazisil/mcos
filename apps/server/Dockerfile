@@ -8,7 +8,7 @@ EXPOSE 43200 43300 43400 53303
 RUN corepack enable
 COPY . /app
 WORKDIR /app
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod
 
 USER node
 
@@ -17,4 +17,4 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 
 # Set the entrypoint
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

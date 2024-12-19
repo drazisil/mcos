@@ -18,7 +18,7 @@
     "format:all": "pnpm run -r --stream format",
     "test:root": "vitest run --coverage test",
     "test:packages": "pnpm run -r --stream test",
-    "test": "pnpm run test:root && pnpm run test:all",
+    "test": "echo \"No tests for main server\"",
     "types:db": "pnpm --filter=rusty-motors-database run types:db",
     "types": "dotenvx run -- pnpm run types:db",
     "migrate": "pg-migrations apply --directory migrations    "
@@ -42,24 +42,9 @@
     "debug": "^4.4.0",
     "fastify": "^5.2.0",
     "moment": "^2.30.1",
-    "rusty-motors-chat": "link:src/chat",
-    "rusty-motors-cli": "link:packages/cli",
-    "rusty-motors-database": "link:packages/database",
-    "rusty-motors-gateway": "link:packages/gateway",
-    "rusty-motors-lobby": "link:packages/lobby",
-    "rusty-motors-login": "link:packages/login",
-    "rusty-motors-mcots": "link:packages/mcots",
-    "rusty-motors-nps": "link:packages/nps",
-    "rusty-motors-patch": "link:packages/patch",
-    "rusty-motors-personas": "link:packages/persona",
-    "rusty-motors-shard": "link:packages/shard",
-    "rusty-motors-shared": "link:packages/shared",
-    "rusty-motors-shared-packets": "link:packages/shared-packets",
-    "rusty-motors-socket": "link:src/socket",
-    "rusty-motors-transactions": "link:packages/transactions",
-    "rusty-motors-utilities": "link:src/utils",
     "sqlite": "^5.1.1",
-    "ts-node": "10.9.2"
+    "ts-node": "10.9.2",
+    "sequelize": "~6.37.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -118,13 +103,5 @@
     }
   },
   "packageManager": "pnpm@10.0.0-rc.0+sha512.bce495587126f9a37d64150bf80dcf9bd96f0d64cfd450c9b1a7e5bf2cfc81aef3d50178f259855351c872905a240861a55031652c81e8a11665bfa65f6a1dc2",
-  "pnpm": {
-    "overrides": {
-      "tinymce": "^7.6.0",
-      "cross-spawn@<6.0.6": ">=6.0.6",
-      "cross-spawn@>=7.0.0 <7.0.5": ">=7.0.5",
-      "nanoid@<3.3.8": ">=3.3.8"
-    }
-  },
   "type": "module"
 }

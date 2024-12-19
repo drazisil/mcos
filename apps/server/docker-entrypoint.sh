@@ -9,13 +9,13 @@ if [ ! -f ".env" ]; then
     # Don't exit as env vars might be provided through Docker
 fi
 
-if [ ! -f "src/server.ts" ]; then
-    echo "Error: src/server.ts not found"
+if [ ! -f "apps/server/index.ts" ]; then
+    echo "Error: server index.ts not found"
     exit 1
 fi
 
-if [ ! -f "instrument.mjs" ]; then
-    echo "Error: instrument.mjs not found"
+if [ ! -f "apps/server/instrument.mjs" ]; then
+    echo "Error: server instrument.mjs not found"
     exit 1
 fi
 
@@ -38,10 +38,10 @@ echo "Starting server with tsx..."
 
 # Execute the command
 pnpx tsx \
-    --import ./instrument.mjs \
+    --import ./apps/server/instrument.mjs \
     --openssl-legacy-provider \
     --env-file=.env \
-    src/server.ts
+    ./apps/server/index.ts
 
 # Note: Using exec ensures the script properly handles signals
 # and the Node.js process runs as PID 1

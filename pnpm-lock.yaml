@@ -16,7 +16,7 @@ importers:
     dependencies:
       '@adminjs/sequelize':
         specifier: ^4.1.1
-        version: 4.1.1(adminjs@7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0))(sequelize@6.37.5(pg@8.13.1))
+        version: 4.1.1(adminjs@7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0))(sequelize@6.37.5)
       '@databases/pg':
         specifier: ^5.5.0
         version: 5.5.0(typescript@5.7.2)
@@ -101,6 +101,151 @@ importers:
       rusty-motors-utilities:
         specifier: link:src/utils
         version: link:src/utils
+      sqlite:
+        specifier: ^5.1.1
+        version: 5.1.1
+      ts-node:
+        specifier: 10.9.2
+        version: 10.9.2(@types/node@22.10.2)(typescript@5.7.2)
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@changesets/cli':
+        specifier: ^2.27.10
+        version: 2.27.10
+      '@databases/pg-migrations':
+        specifier: ^5.0.3
+        version: 5.0.3(typescript@5.7.2)
+      '@databases/pg-schema-cli':
+        specifier: ^4.4.0
+        version: 4.4.0(typescript@5.7.2)
+      '@databases/pg-test':
+        specifier: ^3.1.2
+        version: 3.1.2(typescript@5.7.2)
+      '@mikro-orm/cli':
+        specifier: ^6.4.1
+        version: 6.4.1(pg@8.13.1)
+      '@rushstack/heft':
+        specifier: ^0.68.11
+        version: 0.68.11(@types/node@22.10.2)
+      '@rushstack/heft-typescript-plugin':
+        specifier: ^0.6.4
+        version: 0.6.4(@rushstack/heft@0.68.11(@types/node@22.10.2))(@types/node@22.10.2)
+      '@sentry/cli':
+        specifier: ^2.39.1
+        version: 2.39.1
+      '@tsconfig/node-lts':
+        specifier: ^22.0.1
+        version: 22.0.1
+      '@tsconfig/node20':
+        specifier: ^20.1.4
+        version: 20.1.4
+      '@types/chai':
+        specifier: 5.0.1
+        version: 5.0.1
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.10.2
+      '@types/sinon':
+        specifier: 17.0.3
+        version: 17.0.3
+      '@types/sinon-chai':
+        specifier: 4.0.0
+        version: 4.0.0
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.18.1
+        version: 8.18.1(@typescript-eslint/parser@8.18.1(eslint@9.17.0(jiti@2.4.1))(typescript@5.7.2))(eslint@9.17.0(jiti@2.4.1))(typescript@5.7.2)
+      '@typescript-eslint/parser':
+        specifier: ^8.18.1
+        version: 8.18.1(eslint@9.17.0(jiti@2.4.1))(typescript@5.7.2)
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.8(vitest@2.1.8(@types/node@22.10.2))
+      eslint:
+        specifier: ^9.17.0
+        version: 9.17.0(jiti@2.4.1)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@9.17.0(jiti@2.4.1))
+      eslint-plugin-prettier:
+        specifier: 5.2.1
+        version: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.17.0(jiti@2.4.1)))(eslint@9.17.0(jiti@2.4.1))(prettier@3.4.2)
+      jsdoc:
+        specifier: ^4.0.4
+        version: 4.0.4
+      lint-staged:
+        specifier: ^15.2.11
+        version: 15.2.11
+      prettier:
+        specifier: 3.4.2
+        version: 3.4.2
+      prettier-eslint:
+        specifier: 16.3.0
+        version: 16.3.0
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      standard-version:
+        specifier: ^9.5.0
+        version: 9.5.0
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+      typescript-eslint-language-service:
+        specifier: ^5.0.5
+        version: 5.0.5(@typescript-eslint/parser@8.18.1(eslint@9.17.0(jiti@2.4.1))(typescript@5.7.2))(eslint@9.17.0(jiti@2.4.1))(typescript@5.7.2)
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.2)
+
+  apps/server:
+    dependencies:
+      '@adminjs/sequelize':
+        specifier: ^4.1.1
+        version: 4.1.1(adminjs@7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0))(sequelize@6.37.5)
+      '@databases/pg':
+        specifier: ^5.5.0
+        version: 5.5.0(typescript@5.7.2)
+      '@dotenvx/dotenvx':
+        specifier: ^1.31.0
+        version: 1.31.0
+      '@fastify/sensible':
+        specifier: ^6.0.1
+        version: 6.0.1
+      '@mikro-orm/core':
+        specifier: ^6.4.1
+        version: 6.4.1
+      '@mikro-orm/postgresql':
+        specifier: ^6.4.1
+        version: 6.4.1(@mikro-orm/core@6.4.1)
+      '@mikro-orm/reflection':
+        specifier: ^6.4.1
+        version: 6.4.1(@mikro-orm/core@6.4.1)
+      '@sentry/node':
+        specifier: ^8.46.0
+        version: 8.46.0
+      '@sentry/profiling-node':
+        specifier: 8.46.0
+        version: 8.46.0
+      adminjs:
+        specifier: ^7.8.13
+        version: 7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0)
+      debug:
+        specifier: ^4.4.0
+        version: 4.4.0(supports-color@5.5.0)
+      fastify:
+        specifier: ^5.2.0
+        version: 5.2.0
+      moment:
+        specifier: ^2.30.1
+        version: 2.30.1
+      sequelize:
+        specifier: ~6.37.5
+        version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
       sqlite:
         specifier: ^5.1.1
         version: 5.1.1
@@ -2627,9 +2772,6 @@ packages:
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
-  '@types/node@20.17.6':
-    resolution: {integrity: sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==}
-
   '@types/node@22.10.2':
     resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
 
@@ -3364,15 +3506,6 @@ packages:
 
   debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
-  debug@4.3.7:
-    resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -6053,9 +6186,6 @@ packages:
   underscore@1.13.7:
     resolution: {integrity: sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==}
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
-
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
@@ -6394,7 +6524,7 @@ snapshots:
       - react-is
       - supports-color
 
-  '@adminjs/sequelize@4.1.1(adminjs@7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0))(sequelize@6.37.5(pg@8.13.1))':
+  '@adminjs/sequelize@4.1.1(adminjs@7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0))(sequelize@6.37.5)':
     dependencies:
       adminjs: 7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0)
       escape-regexp: 0.0.1
@@ -8939,10 +9069,6 @@ snapshots:
 
   '@types/node@12.20.55': {}
 
-  '@types/node@20.17.6':
-    dependencies:
-      undici-types: 6.19.8
-
   '@types/node@22.10.2':
     dependencies:
       undici-types: 6.20.0
@@ -8957,7 +9083,7 @@ snapshots:
 
   '@types/pg@8.11.10':
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 22.10.2
       pg-protocol: 1.7.0
       pg-types: 4.0.2
 
@@ -9126,7 +9252,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
-      debug: 4.3.7
+      debug: 4.4.0(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-report: 3.0.1
       istanbul-lib-source-maps: 5.0.6
@@ -9829,10 +9955,6 @@ snapshots:
   debug@4.3.4:
     dependencies:
       ms: 2.1.2
-
-  debug@4.3.7:
-    dependencies:
-      ms: 2.1.3
 
   debug@4.4.0(supports-color@5.5.0):
     dependencies:
@@ -12140,7 +12262,7 @@ snapshots:
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
-      debug: 4.3.7
+      debug: 4.4.0(supports-color@5.5.0)
       dottie: 2.0.6
       inflection: 1.13.4
       lodash: 4.17.21
@@ -12593,8 +12715,6 @@ snapshots:
 
   underscore@1.13.7: {}
 
-  undici-types@6.19.8: {}
-
   undici-types@6.20.0: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
@@ -12694,7 +12814,7 @@ snapshots:
       '@vitest/spy': 2.1.8
       '@vitest/utils': 2.1.8
       chai: 5.1.2
-      debug: 4.3.7
+      debug: 4.4.0(supports-color@5.5.0)
       expect-type: 1.1.0
       magic-string: 0.30.12
       pathe: 1.1.2

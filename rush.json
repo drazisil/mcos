@@ -23,6 +23,10 @@
 	},
 	"variants": [],
 	"projects": [
+		{
+			"packageName": "rusty-motors-server",
+			"projectFolder": "apps/server"
+		},
         {
             "packageName": "rusty-motors-logger",
             "projectFolder": "utilities/logger"

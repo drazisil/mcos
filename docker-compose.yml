@@ -53,7 +53,7 @@ services:
                 condition: service_healthy
     server:
         build:
-            context: .
+            context: apps/server
             dockerfile: Dockerfile
         working_dir: /home/node/app
         environment:
@@ -86,7 +86,7 @@ services:
             - "43300:43300"
             - "43400:43400"
             - "53303:53303"
-        entrypoint: /home/node/app/docker-entrypoint.sh
+        # entrypoint: /home/node/app/docker-entrypoint.sh
         init: true
         depends_on:
             db:
