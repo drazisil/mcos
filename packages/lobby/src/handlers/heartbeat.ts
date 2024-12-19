@@ -1,14 +1,16 @@
-import { logger } from "rusty-motors-utilities";
+import { Logger, logger } from "rusty-motors-utilities";
 import { NPSMessage, SerializedBuffer } from "rusty-motors-shared";
 
 export async function _npsHeartbeat({
 	connectionId,
-	// biome-ignore lint/correctness/noUnusedVariables: <explanation>
-	message, 
 	log = logger.child({
 		name: "_npsHeartbeat",
 	}),
-}) {
+}: {
+	connectionId: string;
+	log?: Logger;
+}
+	) {
 	const packetContent = Buffer.alloc(8);
 	const packetResult = new NPSMessage();
 	packetResult._header.id = 0x127;

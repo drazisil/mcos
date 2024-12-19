@@ -1,4 +1,4 @@
-import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
+import { Logger, logger } from "rusty-motors-utilities";
 
 /**
  * Handles socket errors by logging specific error codes or throwing an error.
@@ -13,13 +13,13 @@ import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
 export function socketErrorHandler({
 	connectionId,
 	error,
-	log = getServerLogger({
+	log = logger.child({
 		name: "socketErrorHandler",
 	}),
 }: {
 	connectionId: string;
 	error: NodeJS.ErrnoException;
-	log?: ServerLogger;
+	log?: Logger;
 }) {
 	// Handle socket errors
 	if (error.code == "ECONNRESET") {

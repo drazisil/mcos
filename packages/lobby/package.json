@@ -9,7 +9,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"check": "tsc",
+		"build": "tsc",
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
 		"test": "vitest run --coverage",
