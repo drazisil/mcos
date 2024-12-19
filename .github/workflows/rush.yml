@@ -21,6 +21,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.0.0
       - name: Verify Change Logs
         run: node common/scripts/install-run-rush.js change --verify
       - name: Rush Install
