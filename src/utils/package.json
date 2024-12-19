@@ -17,12 +17,10 @@
   "license": "AGPL-3.0",
   "description": "",
   "dependencies": {
-    "@sentry/profiling-node": "8.47.0",
-    "pino": "^9.5.0",
-    "utils": "link:src/utils"
+    "@sentry/profiling-node": "8.46.0",
+    "pino": "^9.5.0"
   },
   "devDependencies": {
-    "add": "^2.0.6",
     "vitest": "^2.1.8"
   }
 }

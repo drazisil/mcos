@@ -30,6 +30,10 @@
         {
             "packageName": "rusty-motors-logger",
             "projectFolder": "utilities/logger"
-        }
+        },
+		{
+			"packageName": "rusty-motors-utilities",
+			"projectFolder": "src/utils"
+		}
     ]
 }
