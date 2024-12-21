@@ -6,7 +6,7 @@ import { parseInitialMessage } from "../src/npsPortRouter.js";
 describe("parseInitialMessage", () => {
     it("should correctly parse a valid buffer into a GamePacket", () => {
         const id = "test-connection";
-        const buffer = Buffer.from([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08]);
+        const buffer = Buffer.from("050f001801010000000000180054b46c000000150000002c", "hex");
         const gamePacket = parseInitialMessage(id, buffer);
 
         expect(gamePacket).toBeInstanceOf(GamePacket);
