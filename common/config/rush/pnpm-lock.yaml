@@ -321,6 +321,9 @@ importers:
 
   ../../packages/nps:
     dependencies:
+      '@sentry/node':
+        specifier: ^8.46.0
+        version: 8.47.0
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
@@ -466,6 +469,9 @@ importers:
 
   ../../src/chat:
     dependencies:
+      '@sentry/node':
+        specifier: ^8.46.0
+        version: 8.47.0
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
