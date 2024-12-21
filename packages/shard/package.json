@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@sentry/profiling-node": "8.47.0",
-		"rusty-motors-shared": "workspace:*"
+		"rusty-motors-shared": "workspace:*",
+		"@sentry/node": "^8.46.0"
 	}
 }

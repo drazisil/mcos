@@ -27,7 +27,8 @@
 		"@sentry/profiling-node": "8.47.0",
 		"rusty-motors-shared": "workspace:*",
 		"rusty-motors-gateway": "workspace:*",
-		"rusty-motors-logger": "workspace:*"
+		"rusty-motors-logger": "workspace:*",
+		"@sentry/node": "^8.46.0"
 	},
 	"description": ""
 }

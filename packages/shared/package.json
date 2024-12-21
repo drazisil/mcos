@@ -25,7 +25,8 @@
 	"dependencies": {
 		"fastify": "^5.2.0",
 		"rusty-motors-logger": "workspace:*",
-		"rusty-motors-shared-packets": "workspace:*"
+		"rusty-motors-shared-packets": "workspace:*",
+		"@sentry/node": "^8.46.0"
 	},
 	"directories": {
 		"test": "test"

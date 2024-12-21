@@ -24,7 +24,8 @@
 		"rusty-motors-logger": "workspace:*",
 		"rusty-motors-shared": "workspace:*",
 		"rusty-motors-database": "workspace:*",
-		"rusty-motors-shared-packets": "workspace:*"
+		"rusty-motors-shared-packets": "workspace:*",
+		"@sentry/node": "^8.46.0"
 	},
 	"directories": {
 		"test": "test"
