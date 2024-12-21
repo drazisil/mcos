@@ -465,6 +465,9 @@ importers:
 
   packages/nps:
     dependencies:
+      '@sentry/node':
+        specifier: ^8.46.0
+        version: 8.47.0
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
@@ -572,6 +575,9 @@ importers:
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.10.2
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -607,6 +613,9 @@ importers:
 
   src/chat:
     dependencies:
+      '@sentry/node':
+        specifier: ^8.46.0
+        version: 8.47.0
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
