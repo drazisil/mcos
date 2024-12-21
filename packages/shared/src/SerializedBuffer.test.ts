@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SerializedBuffer } from "../src/SerializedBuffer.js";
+import { SerializedBuffer } from "./SerializedBuffer.js";
 
 describe("SerializedBuffer", () => {
 	it("should serialize and deserialize correctly", () => {

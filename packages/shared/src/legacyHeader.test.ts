@@ -1,4 +1,4 @@
-import { legacyHeader } from "../src/legacyHeader.js";
+import { legacyHeader } from "./legacyHeader.js";
 import { describe, expect, it } from "vitest";
 
 describe("legacyHeader", () => {

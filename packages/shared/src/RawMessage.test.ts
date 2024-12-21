@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RawMessage } from "../src/RawMessage.js";
+import { RawMessage } from "./RawMessage.js";
 
 describe("RawMessage", () => {
 	it("should serialize and deserialize correctly", () => {

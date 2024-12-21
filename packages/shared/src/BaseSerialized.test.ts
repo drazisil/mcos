@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BaseSerialized } from "../src/BaseSerialized.js";
+import { BaseSerialized } from "./BaseSerialized.js";
 
 describe("BaseSerialized", () => {
 	it("should have a length", () => {

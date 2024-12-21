@@ -52,11 +52,7 @@ export class ListMessage extends SerializedBuffer {
 		if (this._list.length === 0) {
 			neededSize = 5;
 		} else {
-			let itemSize = 0;
-			if (typeof this._list[0] !== "undefined") {
-				itemSize = this._list[0].size();
-			}
-			neededSize = 5 + this._list.length * itemSize;
+			neededSize = 5 + this._list.reduce((sum, item) => sum + item.size(), 0)
 		}
 		return neededSize;
 	}
