@@ -54,12 +54,21 @@ jobs:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli do-upload --report-type test_results --file mcos.junit.xml
+
+            - name: Codecov upload all coverage
+              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
+              env:
+                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+              run: |
+                  codecovcli --verbose do-upload --fail-on-error --name all
+
             - name: Codecov upload cli coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag cli --name cli --dir packages/cli
+
             - name: Codecov upload database coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
@@ -85,13 +94,6 @@ jobs:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli --verbose do-upload --fail-on-error --flag login --name login --dir packages/login
-            
-            - name: Codecov upload mcots coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag mcots --name mcots --dir packages/mcots
             
             - name: Codecov upload nps coverageq
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
