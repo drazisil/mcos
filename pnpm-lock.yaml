@@ -164,7 +164,7 @@ importers:
         version: 5.5.0(typescript@5.7.2)
       '@dotenvx/dotenvx':
         specifier: ^1.31.0
-        version: 1.31.0
+        version: 1.31.3
       '@fastify/sensible':
         specifier: ^6.0.2
         version: 6.0.2
@@ -344,6 +344,9 @@ importers:
       pg-hstore:
         specifier: ^2.3.4
         version: 2.3.4
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
       sequelize:
         specifier: ^6.37.5
         version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
@@ -363,15 +366,36 @@ importers:
       fastify:
         specifier: ^5.2.0
         version: 5.2.0
+      rusty-motors-chat:
+        specifier: workspace:*
+        version: link:../../src/chat
+      rusty-motors-lobby:
+        specifier: workspace:*
+        version: link:../lobby
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-login:
+        specifier: workspace:*
+        version: link:../login
+      rusty-motors-patch:
+        specifier: workspace:*
+        version: link:../patch
+      rusty-motors-personas:
+        specifier: workspace:*
+        version: link:../persona
+      rusty-motors-shard:
+        specifier: workspace:*
+        version: link:../shard
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
       rusty-motors-shared-packets:
         specifier: workspace:*
         version: link:../shared-packets
+      rusty-motors-transactions:
+        specifier: workspace:*
+        version: link:../transactions
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -388,12 +412,21 @@ importers:
       fastify:
         specifier: ^5.2.0
         version: 5.2.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-personas:
+        specifier: workspace:*
+        version: link:../persona
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -419,6 +452,9 @@ importers:
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -432,9 +468,15 @@ importers:
       '@sentry/profiling-node':
         specifier: 8.47.0
         version: 8.47.0
+      rusty-motors-database:
+        specifier: workspace:*
+        version: link:../database
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
       short-unique-id:
         specifier: ^5.2.0
         version: 5.2.0
@@ -470,6 +512,9 @@ importers:
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-nps:
+        specifier: workspace:*
+        version: link:../nps
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
@@ -511,6 +556,9 @@ importers:
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -546,6 +594,9 @@ importers:
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -562,6 +613,12 @@ importers:
       rusty-motors-logger:
         specifier: workspace:*
         version: link:../../utilities/logger
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../../packages/shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../../packages/shared-packets
     devDependencies:
       add:
         specifier: ^2.0.6
