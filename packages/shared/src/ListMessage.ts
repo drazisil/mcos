@@ -30,12 +30,7 @@ export class ListMessage extends SerializedBuffer {
 	}
 
 	override serialize() {
-		let neededSize;
-		if (this._list.length === 0) {
-			neededSize = 5;
-		} else {
-			neededSize = 5 + this._list.length * this._list[0].size();
-		}
+		const neededSize = this.size();
 		const buffer = Buffer.alloc(neededSize);
 		let offset = 0; // offset is 0
 		buffer.writeUInt16BE(this._msgNo, offset);
@@ -53,7 +48,17 @@ export class ListMessage extends SerializedBuffer {
 	}
 
 	override size() {
-		return 5 + this._list.length * this._list[0].size();
+		let neededSize;
+		if (this._list.length === 0) {
+			neededSize = 5;
+		} else {
+			let itemSize = 0;
+			if (typeof this._list[0] !== "undefined") {
+				itemSize = this._list[0].size();
+			}
+			neededSize = 5 + this._list.length * itemSize;
+		}
+		return neededSize;
 	}
 
 	override toString() {

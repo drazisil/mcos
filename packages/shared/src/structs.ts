@@ -1,5 +1,3 @@
-import { ServerError } from "./errors/ServerError.js";
-
 export interface Serialized {
 	serialize(): Buffer;
 	deserialize(buf: Buffer): void;
@@ -44,7 +42,7 @@ function deserializeDWord(buff: Buffer) {
 function deserializeString(buf: Buffer) {
 	const size = buf.readUInt16LE();
 	if (size > buf.length - 2) {
-		throw new ServerError("Size is bigger than the buffer length - 2");
+		throw new Error("Size is bigger than the buffer length - 2");
 	}
 	const str = buf.toString("utf8", 2);
 
@@ -102,14 +100,14 @@ export class SerializedBase implements Serialized {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	deserialize(_buff: Buffer): Buffer {
-		throw new ServerError("This method must be implemented by child classes");
+		throw new Error("This method must be implemented by child classes");
 	}
 	serialize(): Buffer {
-		throw new ServerError("This method must be implemented by child classes");
+		throw new Error("This method must be implemented by child classes");
 	}
 
 	sizeOf(): number {
-		throw new ServerError("This method must be implemented by child classes");
+		throw new Error("This method must be implemented by child classes");
 	}
 }
 
@@ -124,16 +122,16 @@ export class UserStatus extends SerializedBase implements Serialized {
 	v2P1368 = 0; // Metrics Id (not used) 64 bytes
 
 	override sizeOf(): number {
-		throw new ServerError("Not yet implemented");
+		throw new Error("Not yet implemented");
 	}
 
 	override serialize(): Buffer {
-		throw new ServerError("Not yet implemented");
+		throw new Error("Not yet implemented");
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	override deserialize(_buff: Buffer): Buffer {
-		throw new ServerError("Not yet implemented");
+		throw new Error("Not yet implemented");
 	}
 }
 
@@ -158,7 +156,7 @@ export class LoginRequestReply extends SerializedBase implements Serialized {
 
 	_doSerialize() {
 		if (this.header === null) {
-			throw new ServerError("Header is null");
+			throw new Error("Header is null");
 		}
 		let buf = this.header.serialize();
 		buf = Buffer.concat([buf, serializeString(this.sessionKey)]);
@@ -168,7 +166,7 @@ export class LoginRequestReply extends SerializedBase implements Serialized {
 
 	_serializeSizeOf() {
 		if (this.header === null) {
-			throw new ServerError("Header is null");
+			throw new Error("Header is null");
 		}
 		let size = this.header.sizeOf();
 		size += sizeOfString(this.sessionKey);
@@ -197,7 +195,7 @@ export class Login extends LoginRequestReply implements Serialized {
 
 	override serialize() {
 		if (this.header === null) {
-			throw new ServerError("Header is null");
+			throw new Error("Header is null");
 		}
 		let buf = this.header.serialize();
 		buf = Buffer.concat([
@@ -213,7 +211,7 @@ export class Login extends LoginRequestReply implements Serialized {
 
 	serializeSizeOf() {
 		if (this.header === null) {
-			throw new ServerError("Header is null");
+			throw new Error("Header is null");
 		}
 
 		let size = this.header.sizeOf();

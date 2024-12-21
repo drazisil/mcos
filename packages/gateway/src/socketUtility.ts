@@ -1,9 +1,9 @@
 import type { Socket } from "net";
 
 export type TaggedSocket = {
-    id: string;
-    socket: Socket;
-    connectionStamp: number;
+	id: string;
+	socket: Socket;
+	connectionStamp: number;
 };
 
 /**
@@ -15,12 +15,16 @@ export type TaggedSocket = {
  * @returns An object containing the id, socket, and connectionStamp.
  */
 
-export function tagSocketWithId(
-	socket: Socket,
-	connectionStamp: number,
-	id: string,
-): TaggedSocket {
-	return { id, socket, connectionStamp };
+export function tagSocketWithId({
+	socket,
+	connectionStamp,
+	id,
+}: {
+	socket: Socket;
+	connectionStamp: number;
+	id: string;
+}): TaggedSocket {
+	return { id, socket, connectionStamp};
 }
 
 /**
@@ -31,14 +35,17 @@ export function tagSocketWithId(
  * @param data - The string data to be written to the socket.
  * @returns A promise that resolves when the data is successfully written, or rejects with an error if the write fails.
  */
-export async function trySocketWrite(socket: TaggedSocket, data: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        socket.socket.write(data, (error) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-    });
+export async function trySocketWrite(
+	socket: TaggedSocket,
+	data: string,
+): Promise<void> {
+	return new Promise((resolve, reject) => {
+		socket.socket.write(data, (error) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve();
+			}
+		});
+	});
 }

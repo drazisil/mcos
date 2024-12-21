@@ -1,5 +1,5 @@
 import { GameMessage } from "../messageStructs/GameMessage.js";
-import { getLenString } from "../src/utils/pureGet.js";
+import { getLenString } from "../../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";

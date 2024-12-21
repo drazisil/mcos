@@ -1,7 +1,7 @@
 import {
 	createCommandEncryptionPair,
 	createDataEncryptionPair,
-} from "rusty-motors-gateway";
+} from "rusty-motors-shared";
 import {
 	McosEncryption,
 	McosSession,

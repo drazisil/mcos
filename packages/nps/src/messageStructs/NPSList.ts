@@ -1,4 +1,4 @@
-import type { ISerializable } from "../types.ts";
+import type { ISerializable } from "../../types.ts";
 
 export class NPSList implements ISerializable {
 	serialize(): Buffer {

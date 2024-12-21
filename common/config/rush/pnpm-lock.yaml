@@ -200,6 +200,9 @@ importers:
       pg-hstore:
         specifier: ^2.3.4
         version: 2.3.4
+      rusty-motors-shared:
+        specifier: workspace:*
+        version: link:../shared
       sequelize:
         specifier: ^6.37.5
         version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
@@ -231,9 +234,15 @@ importers:
       rusty-motors-login:
         specifier: workspace:*
         version: link:../login
+      rusty-motors-patch:
+        specifier: workspace:*
+        version: link:../patch
       rusty-motors-personas:
         specifier: workspace:*
         version: link:../persona
+      rusty-motors-shard:
+        specifier: workspace:*
+        version: link:../shard
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
@@ -271,6 +280,9 @@ importers:
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
@@ -296,6 +308,9 @@ importers:
       rusty-motors-shared:
         specifier: workspace:*
         version: link:../shared
+      rusty-motors-shared-packets:
+        specifier: workspace:*
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8

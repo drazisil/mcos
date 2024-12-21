@@ -23,7 +23,8 @@
 		"fastify": "^5.2.0",
 		"rusty-motors-logger": "workspace:*",
 		"rusty-motors-shared": "workspace:*",
-		"rusty-motors-database": "workspace:*"
+		"rusty-motors-database": "workspace:*",
+		"rusty-motors-shared-packets": "workspace:*"
 	},
 	"directories": {
 		"test": "test"

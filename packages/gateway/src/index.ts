@@ -47,10 +47,11 @@ export function onSocketConnection({
 		throw Error("localPort or remoteAddress is undefined");
 	}
 
-	const socketWithId = tagSocketWithId(
-		incomingSocket,
-		Date.now(),
-		randomUUID(),
+	const socketWithId = tagSocketWithId({
+		socket: incomingSocket,
+		connectionStamp: Date.now(),
+		id: randomUUID(),
+	}
 	);
 
 	/*

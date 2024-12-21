@@ -1,7 +1,7 @@
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import { getLenString } from "../src/utils/pureGet.js";
-import { sendNPSAck } from "../src/utils/sendNPSAck.js";
+import { getLenString } from "../../src/utils/pureGet.js";
+import { sendNPSAck } from "../../src/utils/sendNPSAck.js";
 import type { GameSocketCallback } from "./index.js";
 import { logger } from "rusty-motors-logger";
 const defaultLogger = logger.child({ name: "nps.processCheckPlateText" });

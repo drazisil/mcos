@@ -7,8 +7,8 @@ import {
 	getEncryptionSession,
 	newEncryptionSession,
 	setEncryptionSession,
-} from "../src/EncryptionSession.js";
-import { getAsHex } from "../src/utils/pureGet.js";
+} from "../../src/EncryptionSession.js";
+import { getAsHex } from "../../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 import { lobbyCommandMap } from "./lobbyCommands.js";
 

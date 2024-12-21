@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { BaseSerializable } from "../messageStructs/BaseSerializable.js";
+import { BaseSerializable } from "../src/messageStructs/BaseSerializable.js";
 
 describe("BaseSerializable", () => {
 	let baseSerializable: BaseSerializable;

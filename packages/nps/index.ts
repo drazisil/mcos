@@ -8,21 +8,21 @@ export {
 	populatePortToMessageTypes,
 	portToMessageTypes,
 	type GameSocketCallback,
-} from "./gameMessageProcessors/index.js";
-export { processGameLogin } from "./gameMessageProcessors/processGameLogin.js";
-export { GameMessage, SerializableData } from "./messageStructs/GameMessage.js";
-export { MiniRiffInfo, MiniRiffList } from "./messageStructs/MiniRiffList.js";
-export { MiniUserInfo, MiniUserList } from "./messageStructs/MiniUserList.js";
-export { ProfileList } from "./messageStructs/ProfileList.js";
-export { UserInfo } from "./messageStructs/UserInfo.js";
-export { UserStatus } from "./messageStructs/UserStatus.js";
+} from "./src/gameMessageProcessors/index.js";
+export { processGameLogin } from "./src/gameMessageProcessors/processGameLogin.js";
+export { GameMessage, SerializableData } from "./src/messageStructs/GameMessage.js";
+export { MiniRiffInfo, MiniRiffList } from "./src/messageStructs/MiniRiffList.js";
+export { MiniUserInfo, MiniUserList } from "./src/messageStructs/MiniUserList.js";
+export { ProfileList } from "./src/messageStructs/ProfileList.js";
+export { UserInfo } from "./src/messageStructs/UserInfo.js";
+export { UserStatus } from "./src/messageStructs/UserStatus.js";
 export {
 	gameProfiles,
 	getCustomerId,
 	getGameProfilesForCustomerId,
 	createGameProfile,
-} from "./services/profile.js";
-export { generateToken } from "./services/token.js";
+} from "./src/services/profile.js";
+export { generateToken } from "./src/services/token.js";
 export { UserStatusManager } from "./src/UserStatusManager.js";
 export { isOnlyOneSet } from "./src/utils/pureCompare.js";
 export {

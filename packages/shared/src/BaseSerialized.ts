@@ -5,6 +5,7 @@ export interface Serializable {
 	length: number;
 	toString(): string;
 	asHex(): string;
+	size(): number;
 }
 
 /**
@@ -44,5 +45,9 @@ export class BaseSerialized implements Serializable {
 
 	asHex(): string {
 		return this._data.toString("hex");
+	}
+
+	size(): number {
+		return this._data.length;
 	}
 }

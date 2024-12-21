@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import { SessionKey } from "../messageStructs/SessionKey.js";
-import { getLenString } from "../src/utils/pureGet.js";
+import { getLenString } from "../../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";

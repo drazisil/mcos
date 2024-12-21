@@ -11,6 +11,7 @@ export default defineConfig({
                 "bin/**/*.ts",
                 "interfaces",
                 "vite.config.ts",
+                "common/scripts",
                 ...coverageConfigDefaults.exclude,
             ],
             reporter: ["lcov", "cobertura"],

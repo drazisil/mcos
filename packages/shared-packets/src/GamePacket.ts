@@ -7,8 +7,25 @@ export class GamePacket extends BasePacket implements SerializableMessage {
 	protected override header: GameMessageHeader = new GameMessageHeader();
 	data: GameMessagePayload = new GameMessagePayload();
 
-	constructor() {
-		super({});
+	constructor(
+		{
+			connectionId = "",
+			messageId = 0,
+			sequence = 0,
+			messageSource = "",
+		}: {
+			connectionId?: string;
+			messageId?: number;
+			sequence?: number;
+			messageSource?: string;
+		} = {},
+	) {
+		super({
+			connectionId: connectionId,
+			messageId: messageId,
+			sequence: sequence,
+			messageSource: messageSource,
+		});
 	}
 
 	/**

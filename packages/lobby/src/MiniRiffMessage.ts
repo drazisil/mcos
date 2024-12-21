@@ -68,7 +68,7 @@ export class MiniRiffInfo extends SerializedBuffer {
 		this._riffPopulation = 0; // 2 bytes
 	}
 
-	size() {
+	override size() {
 		return 4 + (4 + this._riffName.length + 1) + 4 + 2;
 	}
 
