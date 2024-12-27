@@ -115,7 +115,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "packageManager": "pnpm@10.0.0-rc.0+sha512.bce495587126f9a37d64150bf80dcf9bd96f0d64cfd450c9b1a7e5bf2cfc81aef3d50178f259855351c872905a240861a55031652c81e8a11665bfa65f6a1dc2",
+  "packageManager": "pnpm@10.0.0-rc.1+sha512.bc9f6703c565ba54f61d3f22cb6d4527b7039d9a59142e4dec81c3a4be844e441c1e5687cd2f7d376d13f09860e515393722c1387716472e0bcc273ce5e6b73b",
   "pnpm": {
     "overrides": {
       "tinymce": "^7.6.0",
