@@ -1,4 +1,4 @@
-import { SerializedBufferOld } from "rusty-motors-shared";
+import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { getServerLogger } from "rusty-motors-shared";
 
 const defaultLogger = getServerLogger("Lobby");
@@ -10,7 +10,7 @@ export async function handleTrackingPing({
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

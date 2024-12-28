@@ -87,8 +87,8 @@ export function unpackUserLoginMessage(message: GameMessage): {
 }
 
 export async function processDeleteProfile(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

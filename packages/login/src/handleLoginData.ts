@@ -1,6 +1,7 @@
 import {
 	SerializedBufferOld,
 	NPSMessage,
+	ServerLogger,
 } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
 import { getServerLogger } from "rusty-motors-shared";
@@ -28,7 +29,7 @@ export async function handleLoginData({
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

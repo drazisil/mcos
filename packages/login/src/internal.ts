@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { type UserRecordMini } from "rusty-motors-shared";
+import { ServerLogger, type UserRecordMini } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { login } from "./login.js";
 
@@ -53,7 +53,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: SerializedBufferOld;
-		log: Logger;
+		log: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];

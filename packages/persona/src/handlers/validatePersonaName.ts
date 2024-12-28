@@ -1,4 +1,4 @@
-import { SerializedBufferOld } from "rusty-motors-shared";
+import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { RawMessage } from "rusty-motors-shared";
 import { getServerLogger } from "rusty-motors-shared";
@@ -16,7 +16,7 @@ export async function validatePersonaName({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

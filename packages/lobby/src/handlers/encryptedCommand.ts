@@ -62,7 +62,7 @@ async function encryptCmd({
 }: {
 	connectionId: string;
 	message: LegacyMessage | MessageBufferOld;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	message: LegacyMessage | MessageBufferOld;
@@ -110,7 +110,7 @@ async function decryptCmd({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	message: LegacyMessage;
@@ -145,7 +145,7 @@ export type NpsCommandHandler = {
 	handler: (args: {
 		connectionId: string;
 		message: LegacyMessage;
-		log: Logger;
+		log: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
 		message: LegacyMessage | null;
@@ -189,7 +189,7 @@ async function handleCommand({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	message: MessageBufferOld | LegacyMessage | null;
@@ -238,7 +238,7 @@ export async function handleEncryptedNPSCommand({
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

@@ -104,7 +104,7 @@ export async function receiveTransactionsData({
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
@@ -230,7 +230,7 @@ function decryptMessage(
 	encryptionSettings: McosEncryption,
 	inboundMessage: ServerPacket,
 	state: State,
-	log: Logger = defaultLogger,
+	log: ServerLogger = defaultLogger,
 	connectionId: string,
 ): ServerPacket {
 	try {
@@ -267,7 +267,7 @@ function encryptOutboundMessage(
 	encryptionSettings: McosEncryption,
 	unencryptedMessage: ServerPacket,
 	state: State,
-	log: Logger,
+	log: ServerLogger,
 	connectionId: string,
 ): ServerPacket {
 	try {

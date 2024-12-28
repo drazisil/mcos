@@ -8,8 +8,8 @@ import { getServerLogger } from "rusty-motors-shared";
 const defaultLogger = getServerLogger("nps.processPing");
 
 export async function processPing(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

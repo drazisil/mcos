@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import {
 	SerializedBufferOld,
+	ServerLogger,
 	type ServiceResponse,
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
@@ -42,7 +43,7 @@ export async function receiveLoginData({
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<ServiceResponse> {
 	try {
 		log.debug(`[${connectionId}] Entering login module`);

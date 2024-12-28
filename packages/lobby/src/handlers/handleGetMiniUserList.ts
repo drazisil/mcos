@@ -1,5 +1,4 @@
-import { getServerConfiguration,  } from "rusty-motors-shared";
-import { GameMessage } from "rusty-motors-shared";
+import { GameMessage, ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
@@ -26,7 +25,7 @@ export async function handleGetMiniUserList({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }) {
 	log.debug("Handling NPS_GET_MINI_USER_LIST");
 	log.debug(`Received command: ${message._doSerialize().toString("hex")}`);

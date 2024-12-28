@@ -1,4 +1,4 @@
-import { getServerConfiguration,  } from "rusty-motors-shared";
+import { ServerLogger,  } from "rusty-motors-shared";
 import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
@@ -21,7 +21,7 @@ export async function handleSendMiniRiffList({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }) {
 	log.debug("Handling NPS_SEND_MINI_RIFF_LIST");
 	log.debug(`Received command: ${message._doSerialize().toString("hex")}`);

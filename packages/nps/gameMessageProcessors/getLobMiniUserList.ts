@@ -10,7 +10,7 @@ const defaultLogger = getServerLogger("nps.getLobMiniUserList");
 
 // Command id: 0x128
 export async function getLobMiniUserList(
-	commandId: number,
+	_commandId: number,
 	data: Buffer,
 ): Promise<Buffer> {
 	defaultLogger.debug("getLobMiniUserList called");
