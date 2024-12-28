@@ -125,7 +125,7 @@ interface coreConfig {
 }
 
 
-function validateEnvVariables(): coreConfig {
+export function validateEnvVariables(): coreConfig {
 	const coreLogger = getServerLogger( "core");
 	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
 

@@ -56,6 +56,13 @@ export async function clientConnect({
 	log.debug(`Looking up the session key for ${customerId}...`);
 
 	result = await DatabaseManager.fetchSessionKeyByCustomerId(customerId);
+
+	if (!result) {
+		log.error(`Session key not found for ${customerId}`);
+		throw new Error(`Session key not found
+		for customer ${customerId}`);
+	}
+
 	log.debug(`Session key found for ${customerId}`);
 
 	const newCommandEncryptionPair = createCommandEncryptionPair(

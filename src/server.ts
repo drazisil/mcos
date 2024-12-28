@@ -16,17 +16,7 @@
 
 import * as Sentry from "@sentry/node";
 import { Gateway } from "rusty-motors-gateway";
-import { getServerLogger, verifyLegacyCipherSupport } from "rusty-motors-shared";
-
-const requiredEnvVariables = [
-	{ name: "EXTERNAL_HOST", description: "The external host to bind to", required: true, default: "" },
-	{ name: "CERTIFICATE_FILE", description: "The path to the certificate file", required: true, default: "" },
-	{ name: "PRIVATE_KEY_FILE", description: "The path to the private key file", required: true, default: "" },
-	{ name: "PUBLIC_KEY_FILE", description: "The path to the public key file", required: true, default: "" },
-	{ name: "MCO_LOG_LEVEL", description: "The log level", required: false, default: "debug" },
-];
-
-
+import { getServerLogger, verifyLegacyCipherSupport, validateEnvVariables } from "rusty-motors-shared";
 
 const coreLogger = getServerLogger( "core");
 
@@ -64,31 +54,8 @@ try {
 	process.exit(1);
 }
 
-interface coreConfig {
-	host: string;
-	certificateFile: string;
-	privateKeyFile: string;
-	publicKeyFile: string;
-	logLevel: string;
-}
 
 
-function validateEnvVariables(): coreConfig {
-	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
 
-	requiredEnvVariables.forEach((envVar) => {
-		if (envVar.required && !process.env[envVar.name]) {
-			coreLogger.fatal(`Missing required environment variable: ${envVar.name}`);
-			process.exit(1);
-		}
-	});
 
-	return {
-		host: process.env["EXTERNAL_HOST"] || "",
-		certificateFile: process.env["CERTIFICATE_FILE"]!,
-		privateKeyFile: process.env["PRIVATE_KEY_FILE"]!,
-		publicKeyFile: process.env["PUBLIC_KEY_FILE"]!,
-		logLevel,
-	}
-}
 
