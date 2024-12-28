@@ -6,10 +6,8 @@ import {
 	getGameProfilesForCustomerId,
 } from "rusty-motors-nps";
 import type { GameSocketCallback } from "./index.js";
-
 import type { UserStatus } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processGetProfileMaps" });
+import { getServerLogger } from "rusty-motors-shared";
 
 export async function processGetProfileMaps(
 	_connectionId: string,
@@ -17,6 +15,7 @@ export async function processGetProfileMaps(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
+	const defaultLogger = getServerLogger("nps.processGetProfileMaps");
 	// This message is a version 257, but it's version is set to 0
 	// This is a bug in the client, so we need to generate a new message
 	// with the correct version

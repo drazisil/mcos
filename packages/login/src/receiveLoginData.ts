@@ -19,8 +19,9 @@ import {
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("PersonaServer");
 
 /**
  * Receives login data and handles the login process.

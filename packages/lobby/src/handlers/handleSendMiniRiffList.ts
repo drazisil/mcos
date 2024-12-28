@@ -3,9 +3,9 @@ import { GameMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { channelRecordSize, channels } from "./channels.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "Lobby.handleSendMiniRiffList" });
+import { getServerLogger } from "rusty-motors-shared";
 
+const defaultLogger = getServerLogger("Lobby");
 
 // const users = [user1];
 /**

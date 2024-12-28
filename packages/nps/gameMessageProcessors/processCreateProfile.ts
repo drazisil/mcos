@@ -2,8 +2,7 @@ import { GameMessage } from "../messageStructs/GameMessage.js";
 import { GameProfile } from "../messageStructs/GameProfile.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
 import type { GameSocketCallback } from "./index.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processCreateProfile" });
+import { getServerLogger } from "rusty-motors-shared";
 
 export async function processCreateProfile(
 	_connectionId: string,
@@ -11,6 +10,7 @@ export async function processCreateProfile(
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
+	const defaultLogger = getServerLogger("nps.processCreateProfile");
 	// Log the request
 	defaultLogger.info(`ProcessCreateProfile request: ${message.toString()}`);
 

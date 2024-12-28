@@ -2,8 +2,9 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GameUrl, GameUrlsMessage } from "./GameUrlsMessage.js";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getGameUrls" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_getGameUrls");
 
 /**
  * @param {MessageHandlerArgs} args

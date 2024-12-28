@@ -17,8 +17,6 @@
 import { type UserRecordMini } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { login } from "./login.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
 
 
 export const userRecords: UserRecordMini[] = [

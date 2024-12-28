@@ -3,8 +3,8 @@ import { readFileSync } from "node:fs";
 
 import { Configuration,  } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "nps.NPSUserStatus" });
+import { getServerLogger } from "rusty-motors-shared";
+
 
 
 /**

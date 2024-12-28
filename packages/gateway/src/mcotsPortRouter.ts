@@ -4,9 +4,10 @@ import {
 	type SerializableInterface,
 } from "rusty-motors-shared-packets";
 import { receiveTransactionsData } from "rusty-motors-transactions";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer" });
 import * as Sentry from "@sentry/node";
+import { getServerLogger, ServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("gateway.mcotsPortRouter");
 
 
 /**
@@ -20,7 +21,7 @@ export async function mcotsPortRouter({
 	log = defaultLogger,
 }: {
 	taggedSocket: TaggedSocket;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<void> {
 	const { socket, id } = taggedSocket;
 

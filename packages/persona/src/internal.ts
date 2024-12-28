@@ -27,8 +27,10 @@ import { _selectGamePersona } from "./_selectGamePersona.js";
 import { validatePersonaName } from "./handlers/validatePersonaName.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+import { getServerLogger } from "rusty-motors-shared";
+
+
+const defaultLogger = getServerLogger("PersonaServer");
 
 
 /**

@@ -3,8 +3,9 @@ import { getLenString } from "../src/utils/pureGet.js";
 import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processCheckProfileName" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.processCheckProfileName");
 
 export async function processCheckProfileName(
 	connectionId: string,

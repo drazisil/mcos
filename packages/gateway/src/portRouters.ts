@@ -1,6 +1,7 @@
 import type { TaggedSocket } from "./socketUtility.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("gateway.portRouters");
 
 
 type PortRouter = (portRouterArgs: {

@@ -6,8 +6,7 @@ import {
 } from "rusty-motors-shared";
 import { userRecords } from "./internal.js";
 import { NPSUserStatus } from "./NPSUserStatus.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
+import { ServerLogger, getServerLogger } from "rusty-motors-shared";
 
 
 /**
@@ -25,11 +24,11 @@ const defaultLogger = pino({ name: "LoginServer" });
 export async function login({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "LoginServer"),
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

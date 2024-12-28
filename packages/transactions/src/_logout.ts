@@ -1,8 +1,9 @@
 import { OldServerMessage } from "rusty-motors-shared";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.logout" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_logout");
 
 /**
  * @param {MessageHandlerArgs} args

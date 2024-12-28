@@ -3,9 +3,9 @@ import { createGameProfile } from "rusty-motors-nps";
 import { getPersonasByPersonaId } from "../getPersonasByPersonaId.js";
 import { personaToString } from "../internal.js";
 
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+import { getServerLogger } from "rusty-motors-shared";
 
+const defaultLogger = getServerLogger("PersonaServer");
 
 export async function getPersonaInfo({
 	connectionId,

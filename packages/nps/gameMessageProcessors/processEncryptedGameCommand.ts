@@ -13,8 +13,9 @@ import type { GameSocketCallback } from "./index.js";
 import { lobbyCommandMap } from "./lobbyCommands.js";
 
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processEncryptedGameCommand" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.processEncryptedGameCommand");
 
 export async function processEncryptedGameCommand(
 	connectionId: string,

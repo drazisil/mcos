@@ -10,9 +10,9 @@ import { UserStatusManager } from "../src/UserStatusManager.js";
 import { getAsHex, getLenString } from "../src/utils/pureGet.js";
 import type { ISerializable } from "../types.js";
 import type { GameSocketCallback } from "./index.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processGameLogin" });
-;
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.processGameLogin");
 
 export function loadPrivateKey(path: string): string {
 	const privateKey = fs.readFileSync(path);

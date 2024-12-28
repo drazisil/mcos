@@ -15,8 +15,7 @@ import {
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { UserInfoMessage } from "../UserInfoMessage.js";
 import { DatabaseManager } from "rusty-motors-database";
-import pino from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
+import { getServerLogger } from "rusty-motors-shared";
 
 
 /**
@@ -39,7 +38,7 @@ export function toHex(data: Buffer): string {
  * Handle a request to connect to a game server packet
  *
  * @private
- * @param {import("../../../interfaces/index.js").ServiceArgs} args
+ * @param {ServiceArgs} args
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],
@@ -48,7 +47,7 @@ export function toHex(data: Buffer): string {
 export async function _npsRequestGameConnectServer({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("handlers/_npsRequestGameConnectServer"),
 }: ServiceArgs): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

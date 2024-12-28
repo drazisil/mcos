@@ -2,8 +2,9 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { OwnedVehicle, OwnedVehiclesMessage } from "./OwnedVehiclesMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js"
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getOwnedVehicles" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_getOwnedVehicles");
 
 const vehicleList = [
 	{

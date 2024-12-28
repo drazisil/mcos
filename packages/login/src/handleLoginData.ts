@@ -3,8 +3,9 @@ import {
 	NPSMessage,
 } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer.handleLoginData" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("LoginServer");
 
 /**
  * Entry and exit point of the Login service

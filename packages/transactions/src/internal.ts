@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import pino, { Logger } from "pino";
+import { getServerLogger, ServerLogger } from "rusty-motors-shared";
+
 
 import {
 	McosEncryption,
@@ -33,7 +34,7 @@ import {
 	type BufferSerializer,
 } from "rusty-motors-shared-packets";
 import { _MSG_STRING } from "./_MSG_STRING.js";
-const defaultLogger = pino({ name: "transactionServer" });
+const defaultLogger = getServerLogger( "transactionServer" );
 
 
 /**
@@ -48,7 +49,7 @@ async function processInput({
 }: {
 	connectionId: string;
 	inboundMessage: ServerPacket;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<MessageHandlerResult> {
 	const currentMessageNo = inboundMessage.getMessageId();
 	const currentMessageString = _MSG_STRING(currentMessageNo);
