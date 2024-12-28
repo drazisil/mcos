@@ -22,7 +22,7 @@ import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("PersonaServer");
+const defaultLogger = getServerLogger("receiveLoginData");
 
 /**
  * Receives login data and handles the login process.
