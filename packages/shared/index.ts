@@ -36,6 +36,8 @@ export type { OnDataHandler, ServiceResponse } from "./src/State.js";
 export { LegacyMessage } from "./src/LegacyMessage.js";
 export { NPSHeader } from "./src/NPSHeader.js";
 export * from "./src/interfaces.js";
+import * as Sentry from "@sentry/node";
+import pino from "pino";
 
 export interface KeypressEvent {
 	sequence: string;
@@ -105,3 +107,33 @@ export const cloth_brown = argbToInt(255, 117, 104, 68); //brown
 export const cloth_black = argbToInt(255, 68, 68, 68); //black
 export const cloth_grey = argbToInt(255, 146, 143, 137); //grey
 export const cloth_white = argbToInt(255, 255, 255, 255); //white
+
+interface Logger {
+	info: (msg: string, obj?: any) => void;
+	warn: (msg: string, obj?: any) => void;
+	error: (msg: string, obj?: any) => void;
+	fatal: (msg: string, obj?: any) => void;
+	debug: (msg: string, obj?: any) => void;
+	trace: (msg: string, obj?: any) => void;
+	child: (obj: any) => Logger;
+}
+
+export function getServerLogger(name?: string): Logger {
+	const loggerName = name || "core";
+	const logger = pino({ name: loggerName });
+	logger.level = process.env["MCO_LOG_LEVEL"] || "debug";
+	return {
+		info: logger.info.bind(logger),
+		warn: logger.warn.bind(logger),
+		error: (msg: string, obj?: any) => {
+			Sentry.captureException(obj);
+			logger.error({ msg, obj });
+		},
+		fatal: logger.fatal.bind(logger),
+		debug: logger.debug.bind(logger),
+		trace: logger.trace.bind(logger),
+		child: (obj) => logger.child(obj),
+	}
+}
+
+export type ServerLogger = Logger;

@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
-import {db as sequelize} from "../services/database.js";
+import { getDatabase } from "../DatabaseManager.js";
+
+const sequelize = getDatabase();
 
 export const ProfileSchema = sequelize.define("Profile", {
     create_stamp: {

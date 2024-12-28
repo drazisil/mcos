@@ -1,7 +1,13 @@
 import { defineConfig, coverageConfigDefaults } from "vitest/config";
 
 export default defineConfig({
+
     test: {
+        poolOptions: {
+            forks: {
+                execArgv: ["--openssl-legacy-provider"],
+            }
+        },
         coverage: {
             enabled: true,
             all: true,

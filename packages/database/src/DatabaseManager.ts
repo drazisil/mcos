@@ -1,14 +1,7 @@
-/**
- * This class abstracts database methods
- * @see {@link getDatabaseServer()} to get a singleton instance
- */
-
 import type { ConnectionRecord } from "rusty-motors-shared";
+import { Sequelize } from "sequelize";
 
-/**
- * This class abstracts database methods
- * @see {@link getDatabaseServer()} to get a singleton instance
- */
+
 
 // This is a fake database table that holds sessions of currently logged in users
 const _sessions: ConnectionRecord[] = [];
@@ -24,7 +17,7 @@ const _users: Map<number, Buffer> = new Map();
 
 * @throws {Error} If the user record is not found
  */
-export async function updateUser(user: {
+async function updateUser(user: {
 	userId: number;
 	userData: Buffer;
 }): Promise<void> {
@@ -41,7 +34,7 @@ export async function updateUser(user: {
  *
  * @throws {Error} If the session key is not found
  */
-export async function fetchSessionKeyByCustomerId(
+async function fetchSessionKeyByCustomerId(
 	customerId: number,
 ): Promise<ConnectionRecord> {
 	const record = _sessions.find((session) => {
@@ -62,7 +55,7 @@ export async function fetchSessionKeyByCustomerId(
  * @param {string} connectionId
  * @returns {Promise<void>}
  */
-export async function updateSessionKey(
+async function updateSessionKey(
 	customerId: number,
 	sessionKey: string,
 	contextId: string,
@@ -94,7 +87,7 @@ export async function updateSessionKey(
  * @returns {Promise<ConnectionRecord>}
  * @throws {Error} If the session key is not found
  */
-export async function fetchSessionKeyByConnectionId(
+async function fetchSessionKeyByConnectionId(
 	connectionId: string,
 ): Promise<ConnectionRecord> {
 	const record = _sessions.find((session) => {
@@ -105,3 +98,34 @@ export async function fetchSessionKeyByConnectionId(
 	}
 	return Promise.resolve(record);
 }
+
+let database: Sequelize;
+
+
+export function getDatabase(): Sequelize {
+	if (!database) {
+		const databaseUrl = process.env["DATABASE_URL"];
+		if ( typeof databaseUrl === "undefined" ) {
+			throw new Error("DATABASE_URL is not defined");
+		}
+
+		database = new Sequelize(databaseUrl, {
+			logging: false,
+		});
+	}
+	return database;
+}
+
+interface DatabaseManager {
+	updateUser: typeof updateUser;
+	fetchSessionKeyByCustomerId: typeof fetchSessionKeyByCustomerId;
+	updateSessionKey: typeof updateSessionKey;
+	fetchSessionKeyByConnectionId: typeof fetchSessionKeyByConnectionId;
+}
+
+export const DatabaseManager: DatabaseManager = {
+	updateUser,
+	fetchSessionKeyByCustomerId,
+	updateSessionKey,
+	fetchSessionKeyByConnectionId,
+};

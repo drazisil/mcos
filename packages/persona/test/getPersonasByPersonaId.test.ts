@@ -1,6 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getPersonasByPersonaId } from "../src/getPersonasByPersonaId.js";
-import { PersonaRecord } from "../src/PersonaMapsMessage.js";
 
 describe("getPersonasByPersonaId", () => {
 	it("returns a persona", async () => {
@@ -21,6 +20,24 @@ describe("getPersonasByPersonaId", () => {
 		it("returns a persona when a matching ID is found", async () => {
 			// arrange
 			const id = 21;
+
+			vi.mock("rocky-motors-database", () => {
+				return {
+					DatabaseManager: {
+						getPersonasByPersonaId: async (personaId: number) => {
+							return [
+								{
+									personaId,
+									personaName: "test",
+									personaDescription: "test",
+									personaImage: "test",
+								},
+							];
+						},
+					},
+				};
+			});
+
 
 			// act
 			const result = await getPersonasByPersonaId({ personaId: id });

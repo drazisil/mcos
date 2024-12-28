@@ -1,4 +1,5 @@
 import type { Logger } from "pino";
+import { getServerLogger } from "../index.js";
 
 /**
  * @module shared/Configuration
@@ -107,11 +108,48 @@ export class Configuration {
 	}
 }
 
+const requiredEnvVariables = [
+	{ name: "EXTERNAL_HOST", description: "The external host to bind to", required: true, default: "" },
+	{ name: "CERTIFICATE_FILE", description: "The path to the certificate file", required: true, default: "" },
+	{ name: "PRIVATE_KEY_FILE", description: "The path to the private key file", required: true, default: "" },
+	{ name: "PUBLIC_KEY_FILE", description: "The path to the public key file", required: true, default: "" },
+	{ name: "MCO_LOG_LEVEL", description: "The log level", required: false, default: "debug" },
+];
+
+interface coreConfig {
+	host: string;
+	certificateFile: string;
+	privateKeyFile: string;
+	publicKeyFile: string;
+	logLevel: string;
+}
+
+
+function validateEnvVariables(): coreConfig {
+	const coreLogger = getServerLogger( "core");
+	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
+
+	requiredEnvVariables.forEach((envVar) => {
+		if (envVar.required && !process.env[envVar.name]) {
+			coreLogger.fatal(`Missing required environment variable: ${envVar.name}`);
+			process.exit(1);
+		}
+	});
+
+	return {
+		host: process.env["EXTERNAL_HOST"] || "",
+		certificateFile: process.env["CERTIFICATE_FILE"]!,
+		privateKeyFile: process.env["PRIVATE_KEY_FILE"]!,
+		publicKeyFile: process.env["PUBLIC_KEY_FILE"]!,
+		logLevel,
+	}
+}
+
 /**
  * Get a singleton instance of Configuration
  *
  * @returns {Configuration}
  */
 export function getServerConfiguration(): Configuration {
-	return Configuration.getInstance();
+	return validateEnvVariables();
 }

@@ -14,7 +14,7 @@ import {
 } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
 import { UserInfoMessage } from "../UserInfoMessage.js";
-import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
+import { DatabaseManager } from "rusty-motors-database";
 import pino from "pino";
 const defaultLogger = pino({ name: "LoginServer" });
 
@@ -79,7 +79,7 @@ export async function _npsRequestGameConnectServer({
 
 	if (!existingEncryption) {
 		// Set the encryption keys on the lobby connection
-		const keys = await fetchSessionKeyByCustomerId(customerId);
+		const keys = await DatabaseManager.fetchSessionKeyByCustomerId(customerId);
 
 		if (keys === undefined) {
 			throw Error("Error fetching session keys!");

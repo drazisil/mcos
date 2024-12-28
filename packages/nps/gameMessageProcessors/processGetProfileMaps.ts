@@ -12,8 +12,8 @@ import pino from "pino";
 const defaultLogger = pino({ name: "nps.processGetProfileMaps" });
 
 export async function processGetProfileMaps(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

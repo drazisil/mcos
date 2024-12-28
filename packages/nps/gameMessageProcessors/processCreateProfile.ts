@@ -1,14 +1,13 @@
 import { GameMessage } from "../messageStructs/GameMessage.js";
 import { GameProfile } from "../messageStructs/GameProfile.js";
 import type { UserStatus } from "../messageStructs/UserStatus.js";
-import { addGameProfile } from "../services/profile.js";
 import type { GameSocketCallback } from "./index.js";
 import pino from "pino";
 const defaultLogger = pino({ name: "nps.processCreateProfile" });
 
 export async function processCreateProfile(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
@@ -20,8 +19,7 @@ export async function processCreateProfile(
 	// Log the request
 	defaultLogger.info(`ProcessCreateProfile request: ${createProfileMessage.toString()}`);
 
-	// Add the profile
-	addGameProfile(createProfileMessage);
+	// TODO: Add the profile
 
 	// TODO: Send the response
 	const response = new GameMessage(257);

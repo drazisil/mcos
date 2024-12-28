@@ -18,9 +18,8 @@ import { Socket } from "node:net";
 import { randomUUID } from "node:crypto";
 import { tagSocketWithId } from "./socketUtility.js";
 import { getPortRouter } from "./portRouters.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "gatewayServer" });
 import * as Sentry from "@sentry/node";
+import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
 /**
  * Handle incoming TCP connections
@@ -32,10 +31,10 @@ import * as Sentry from "@sentry/node";
  */
 export function onSocketConnection({
 	incomingSocket,
-	log = defaultLogger,
+	log = getServerLogger( "onSocketConnection" ),
 }: {
 	incomingSocket: Socket;
-	log?: Logger;
+	log?: ServerLogger;
 }) {
 	// Get the local port and remote address
 	const { localPort, remoteAddress } = incomingSocket;

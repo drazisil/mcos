@@ -267,6 +267,9 @@ importers:
       fastify:
         specifier: ^5.1.0
         version: 5.1.0
+      rusty-motors-shared:
+        specifier: workspace:1.0.0-next.0
+        version: link:../shared
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
