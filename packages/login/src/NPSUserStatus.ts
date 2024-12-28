@@ -81,10 +81,10 @@ export class NPSUserStatus extends LegacyMessage {
 		// length of the session key should be 128 bytes
 		const sessionkeyString = Buffer.from(sessionKeyAsAscii, "hex");
 		// Decrypt the sessionkey
+		if (this._config.privateKeyFile === "") {
+			throw Error("No private key file specified");
+		}
 		try {
-			if (!this._config.privateKeyFile) {
-				throw Error("No private key file specified");
-			}
 			const privatekeyContents = readFileSync(this._config.privateKeyFile);
 
 			const decrypted = privateDecrypt(
@@ -94,10 +94,10 @@ export class NPSUserStatus extends LegacyMessage {
 				sessionkeyString,
 			); // length of decrypted should be 128 bytes
 			this.sessionKey = decrypted.subarray(2, -4).toString("hex"); // length of session key should be 12 bytes
-		} catch (error) {
+		} catch (error: unknown) {
 			this.log.trace(`Session key: ${sessionkeyString.toString("utf8")}`); // 128 bytes
 			this.log.trace(`decrypted: ${this.sessionKey}`); // 12 bytes
-			this.log.fatal(`Error decrypting session key: ${String(error)}`);
+			this.log.fatal(`Error decrypting session key: ${(error as Error).message}`);
 			const err = new Error("Error decrypting session key");
 			err.cause = error;
 			throw err;
