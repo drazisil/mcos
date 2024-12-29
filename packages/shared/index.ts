@@ -112,21 +112,23 @@ export const cloth_grey = argbToInt(255, 146, 143, 137); //grey
 export const cloth_white = argbToInt(255, 255, 255, 255); //white
 
 interface Logger {
-	info: (msg: string, obj?: any) => void;
-	warn: (msg: string, obj?: any) => void;
-	error: (msg: string, obj?: any) => void;
-	fatal: (msg: string, obj?: any) => void;
-	debug: (msg: string, obj?: any) => void;
-	trace: (msg: string, obj?: any) => void;
-	child: (obj: any) => Logger;
+	info: (msg: string, obj?: unknown) => void;
+	warn: (msg: string, obj?: unknown) => void;
+	error: (msg: string, obj?: unknown) => void;
+	fatal: (msg: string, obj?: unknown) => void;
+	debug: (msg: string, obj?: unknown) => void;
+	trace: (msg: string, obj?: unknown) => void;
+	child: (obj: unknown) => Logger;
 }
+
+type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
 
 export function getServerLogger(name?: string): Logger {
 	const loggerName = name || "core";
 	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
 	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
 	
-	if (!validLogLevels.includes(logLevel as any)) {
+	if (!validLogLevels.includes(logLevel as LogLevel)) {
 		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
 	}
 
@@ -136,7 +138,7 @@ export function getServerLogger(name?: string): Logger {
 	return {
 		info: logger.info.bind(logger),
 		warn: logger.warn.bind(logger),
-		error: (msg: string, obj?: any) => {
+		error: (msg: string, obj?: unknown) => {
 			if (obj instanceof Error) {
 				Sentry.captureException(obj);
 			} else if (obj) {

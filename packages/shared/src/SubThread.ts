@@ -7,10 +7,10 @@ import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
 
 export class SubThread extends EventEmitter {
-	name: any;
+	name: string;
 	log: ServerLogger;
 	loopInterval: number;
-	timer: any;
+	timer: NodeJS.Timeout | null;
 	/**
 	 * @param {string} name
 	 * @param {erverLogger} log
@@ -25,6 +25,7 @@ export class SubThread extends EventEmitter {
 		this.name = name;
 		this.log = log;
 		this.loopInterval = loopInterval;
+		this.timer = null;
 		this.init();
 	}
 
