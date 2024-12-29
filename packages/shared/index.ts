@@ -126,7 +126,7 @@ export function getServerLogger(name?: string): Logger {
 	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
 	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
 	
-	if (logLevel && !validLogLevels.includes(logLevel as any)) {
+	if (!validLogLevels.includes(logLevel as any)) {
 		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
 	}
 
