@@ -8,6 +8,8 @@ import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
 import { mcotsPortRouter } from "./mcotsPortRouter.js";
 import http from "node:http";
+import { HotkeyManager } from "./HotkeyManager.js";
+
 
 /**
  * Gateway server
@@ -86,6 +88,9 @@ export class Gateway {
 		});
 
 		this.status = "running";
+
+		new HotkeyManager();
+
 	}
 
 	/**
