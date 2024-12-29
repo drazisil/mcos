@@ -8,6 +8,7 @@ This assumes you know the basics of checking out a git repo. If you don't, pleas
     \*\* If you want to try running on Windows it may work, but I'm not going to support it
 - NodeJS
 - [Docker](https://docs.docker.com/compose/install/) (A way to see the logs of the node pod would be very helpful if you need to file a bug report)
+- [nvm](https://github.com/nvm-sh/nvm) would be helpful
 
 ### Configure server settings
 
@@ -17,6 +18,7 @@ This assumes you know the basics of checking out a git repo. If you don't, pleas
 
 ## Installing
 
+- `nvm install && nvm use` (Optional, but recomended)
 - `pnpm install`
 
 ### Ports
