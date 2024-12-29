@@ -80,7 +80,7 @@ jobs:
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag login --name-${{ matrix.node-version }} login --dir packages/login
+                  codecovcli --verbose do-upload --fail-on-error --flag login --name login-${{ matrix.node-version }}  --dir packages/login
             - name: Codecov upload nps coverageq
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
