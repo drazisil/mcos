@@ -3,15 +3,14 @@
  */
 
 import { EventEmitter } from "node:events";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "SubThread" });
+import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
 
 export class SubThread extends EventEmitter {
-	name: any;
-	log: Logger;
+	name: string;
+	log: ServerLogger;
 	loopInterval: number;
-	timer: any;
+	timer: NodeJS.Timeout | null;
 	/**
 	 * @param {string} name
 	 * @param {erverLogger} log
@@ -19,13 +18,14 @@ export class SubThread extends EventEmitter {
 	 */
 	constructor(
 		name: string,
-		log: Logger = defaultLogger,
+		log: ServerLogger = getServerLogger( "SubThread"),
 		loopInterval: number = 100,
 	) {
 		super();
 		this.name = name;
 		this.log = log;
 		this.loopInterval = loopInterval;
+		this.timer = null;
 		this.init();
 	}
 

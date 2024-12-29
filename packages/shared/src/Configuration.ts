@@ -1,4 +1,5 @@
 import type { Logger } from "pino";
+import { getServerLogger } from "../index.js";
 
 /**
  * @module shared/Configuration
@@ -13,10 +14,9 @@ export class Configuration {
 	logLevel!: string;
 	static instance: Configuration | undefined;
 
-
 	/**
 	 * Constructs a new Configuration instance.
-	 * 
+	 *
 	 * @param {Object} params - The configuration parameters.
 	 * @param {string} params.host - The host address.
 	 * @param {string} params.certificateFile - The path to the certificate file.
@@ -31,7 +31,7 @@ export class Configuration {
 		privateKeyFile,
 		publicKeyFile,
 		logLevel,
-		logger
+		logger,
 	}: {
 		host: string;
 		certificateFile: string;
@@ -94,24 +94,41 @@ export class Configuration {
 
 	/**
 	 * Returns the singleton instance of the Configuration class.
-	 * 
+	 *
 	 * @throws {Error} If the Configuration instance has not been initialized using newInstance.
 	 * @returns {Configuration} The singleton instance of the Configuration class.
 	 */
 	static getInstance(): Configuration {
 		if (typeof Configuration.instance === "undefined") {
-			throw new Error("Configuration needs to be initialized using newInstance");
+			throw new Error(
+				"Configuration needs to be initialized using newInstance",
+			);
 		}
 
 		return Configuration.instance;
 	}
 }
 
-/**
- * Get a singleton instance of Configuration
- *
- * @returns {Configuration}
- */
+function getEnvVariable(
+	name: string,
+	required: boolean,
+	defaultValue?: string,
+): string {
+	const value = process.env[name];
+	if (required && !value) {
+		const coreLogger = getServerLogger("core");
+		coreLogger.fatal(`Missing required environment variable: ${name}`);
+		process.exit(1);
+	}
+	return value || defaultValue || "";
+}
+
 export function getServerConfiguration(): Configuration {
-	return Configuration.getInstance();
+	return {
+		host: getEnvVariable("EXTERNAL_HOST", false, ""),
+		certificateFile: getEnvVariable("CERTIFICATE_FILE", true),
+		privateKeyFile: getEnvVariable("PRIVATE_KEY_FILE", true),
+		publicKeyFile: getEnvVariable("PUBLIC_KEY_FILE", true),
+		logLevel: getEnvVariable("MCO_LOG_LEVEL", false, "debug"),
+	};
 }

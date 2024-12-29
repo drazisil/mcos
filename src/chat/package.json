@@ -10,7 +10,7 @@
     "format": "npx @biomejs/biome format --write .",
     "test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage"
   },
-  "type": "commonjs",
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

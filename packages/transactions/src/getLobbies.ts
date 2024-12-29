@@ -2,8 +2,9 @@ import {  OldServerMessage } from "rusty-motors-shared";
 import { EntryFeePurseMessage, PurseEntry } from "./EntryFeePurseMessage.js";
 import { LobbyInfo, LobbyMessage } from "./LobbyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "transactionServer.getLobbies" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/getLobbies");
 
 /**
  * @param {MessageHandlerArgs} args

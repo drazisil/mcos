@@ -1,8 +1,9 @@
 import { putLenString } from "rusty-motors-nps";
 
 import { BaseSerializable } from "./BaseSerializable.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "MiniRiffList" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.MiniRiffList");
 
 
 const channelRecordSize = 40;

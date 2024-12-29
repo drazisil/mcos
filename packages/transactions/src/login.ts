@@ -6,8 +6,9 @@ import {
 	LoginPayload,
 	ServerPacket,
 } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.login" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/login");
 
 /**
  * @param {MessageHandlerArgs} args

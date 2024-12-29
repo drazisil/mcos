@@ -10,13 +10,12 @@ import {
 	fetchStateFromDatabase,
 	getEncryption,
 } from "rusty-motors-shared";
-import { OldServerMessage } from "rusty-motors-shared";
+import { OldServerMessage, getServerLogger } from "rusty-motors-shared";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 import { TClientConnectMessage } from "./TClientConnectMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import { fetchSessionKeyByCustomerId } from "rusty-motors-database";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.clientConnect" });
+import { DatabaseManager } from "rusty-motors-database";
+const defaultLogger = getServerLogger("clientConnect");
 
 /**
  * @param {MessageHandlerArgs} args
@@ -56,7 +55,14 @@ export async function clientConnect({
 
 	log.debug(`Looking up the session key for ${customerId}...`);
 
-	result = await fetchSessionKeyByCustomerId(customerId);
+	result = await DatabaseManager.fetchSessionKeyByCustomerId(customerId);
+
+	if (!result) {
+		log.error(`Session key not found for ${customerId}`);
+		throw new Error(`Session key not found
+		for customer ${customerId}`);
+	}
+
 	log.debug(`Session key found for ${customerId}`);
 
 	const newCommandEncryptionPair = createCommandEncryptionPair(

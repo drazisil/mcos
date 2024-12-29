@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { SerializedBufferOld } from "rusty-motors-shared";
+import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { NPSMessage } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { handleEncryptedNPSCommand } from "./handlers/encryptedCommand.js";
 import { handleTrackingPing } from "./handlers/handleTrackingPing.js";
 import { _npsRequestGameConnectServer } from "./handlers/requestConnectGameServer.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger( "PersonaServer" );
 
 
 /**
@@ -46,7 +47,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: SerializedBufferOld;
-		log: Logger;
+		log: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];
@@ -87,7 +88,7 @@ export async function receiveLobbyData({
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

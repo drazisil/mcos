@@ -3,8 +3,9 @@ import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { StockCar } from "./StockCar.js";
 import { StockCarInfoMessage } from "./StockCarInfoMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getStockCarInfo" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_getStockCarInfo");
 
 /**
  * @param {MessageHandlerArgs} args

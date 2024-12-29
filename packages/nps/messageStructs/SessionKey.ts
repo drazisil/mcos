@@ -1,7 +1,8 @@
 import { getAsHex, isOnlyOneSet } from "rusty-motors-nps";
 import { BaseSerializable } from "./BaseSerializable.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "SessionKey" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.SessionKey");
 
 export class SessionKey extends BaseSerializable {
 	private key: Buffer = Buffer.alloc(0);

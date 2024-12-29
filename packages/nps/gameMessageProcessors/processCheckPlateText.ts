@@ -3,12 +3,13 @@ import type { UserStatus } from "../messageStructs/UserStatus.js";
 import { getLenString } from "../src/utils/pureGet.js";
 import { sendNPSAck } from "../src/utils/sendNPSAck.js";
 import type { GameSocketCallback } from "./index.js";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processCheckPlateText" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.processCheckPlateText");
 
 export async function processCheckPlateText(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {

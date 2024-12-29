@@ -1,15 +1,15 @@
 import { Socket, createServer as createSocketServer } from "node:net";
-import { Configuration, getServerConfiguration } from "rusty-motors-shared";
+import { Configuration, getServerConfiguration, getServerLogger, ServerLogger } from "rusty-motors-shared";
 import { createInitialState } from "rusty-motors-shared";
 import { onSocketConnection } from "./index.js";
-import { WebRouter } from "./web.js";
+import { initializeRouteHandlers, processHttpRequest } from "./web.js";
 import type { GatewayOptions } from "./types.js";
 import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
 import { mcotsPortRouter } from "./mcotsPortRouter.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "GatewayServer" });
 import http from "node:http";
+import { HotkeyManager } from "./HotkeyManager.js";
+
 
 /**
  * Gateway server
@@ -17,7 +17,7 @@ import http from "node:http";
  */
 export class Gateway {
 	config: Configuration;
-	log: Logger;
+	log: ServerLogger;
 	timer: NodeJS.Timeout | null;
 	loopInterval: number;
 	status: string;
@@ -30,7 +30,7 @@ export class Gateway {
 		log,
 	}: {
 		incomingSocket: Socket;
-		log?: Logger;
+		log?: ServerLogger;
 	}) => void;
 	webServer: http.Server;
 	/**
@@ -39,7 +39,7 @@ export class Gateway {
 	 */
 	constructor({
 		config = getServerConfiguration(),
-		log = defaultLogger,
+		log = getServerLogger("Gateway"),
 		backlogAllowedCount = 0,
 		listeningPortList = [],
 		socketConnectionHandler = onSocketConnection,
@@ -60,7 +60,9 @@ export class Gateway {
 		this.activeServers = [];
 		this.socketconnection = socketConnectionHandler;
 
-		this.webServer = http.createServer(WebRouter.handleRequest);
+		initializeRouteHandlers();
+
+		this.webServer = http.createServer(processHttpRequest);
 	}
 
 	/**
@@ -88,6 +90,9 @@ export class Gateway {
 		});
 
 		this.status = "running";
+
+		new HotkeyManager();
+
 	}
 
 	/**

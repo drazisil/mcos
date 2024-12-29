@@ -6,8 +6,9 @@ import {
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getRacingHistoryRecords } from "./database/racingHistoryRecords.js";
 import { GenericReplyPayload } from "rusty-motors-shared-packets";
-import pino from "pino";
-const defaultLogger = pino({ name: "transactionServer._getPlayerRaceHistory" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_getPlayerRaceHistory");
 
 
 export async function _getPlayerRaceHistory({

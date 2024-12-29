@@ -15,12 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import {
 	SerializedBufferOld,
+	ServerLogger,
 	type ServiceResponse,
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import type { BufferSerializer } from "rusty-motors-shared-packets";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "LoginServer" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("receiveLoginData");
 
 /**
  * Receives login data and handles the login process.
@@ -41,7 +43,7 @@ export async function receiveLoginData({
 }: {
 	connectionId: string;
 	message: BufferSerializer;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<ServiceResponse> {
 	try {
 		log.debug(`[${connectionId}] Entering login module`);

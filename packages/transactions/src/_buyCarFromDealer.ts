@@ -3,9 +3,9 @@ import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
 
-import pino from "pino";
-const defaultLogger = pino({ name: "transactions._buyCarFromDealer" });
+import { getServerLogger } from "rusty-motors-shared";
 
+const defaultLogger = getServerLogger("handlers/_buyCarFromDealer");
 
 class PurchaseStockCarMessage extends ServerPacket {
     dealerId = 0;

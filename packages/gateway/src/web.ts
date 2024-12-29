@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import EventEmitter from "node:events";
 import http from "node:http";
 import { CastanetResponse } from "rusty-motors-patch";
 import { generateShardList } from "rusty-motors-shard";
@@ -24,6 +23,7 @@ import {
 	handleGetRegistry,
 } from "rusty-motors-shard";
 import { getServerConfiguration } from "rusty-motors-shared";
+import { WebHandler, WebHandlerResponse } from "./types";
 
 class AuthLoginResponse {
 	valid: boolean = false;
@@ -61,55 +61,63 @@ class AuthLoginResponse {
 	}
 }
 
-export class WebRouter {
-	/**
-	 * Handle a request
-	 *
-	 * @param {http.IncomingMessage} request The incoming request
-	 * @param {http.ServerResponse} response The response object
-	 */
-	static handleRequest(
-		request: http.IncomingMessage,
-		response: http.ServerResponse,
-	) {
-		const CastanetRoutes = [
-			"/games/EA_Seattle/MotorCity/UpdateInfo",
-			"/games/EA_Seattle/MotorCity/NPS",
-			"/games/EA_Seattle/MotorCity/MCO",
-		];
 
-		const url = new URL(
-			`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
-		);
+const routeHandlers: Map<string, WebHandler> = new Map();
 
-		if (url.pathname === "/") {
-			response.end("Hello, world!");
-		} else if (CastanetRoutes.includes(url.pathname)) {
-			response.setHeader(
-				CastanetResponse.header.type,
-				CastanetResponse.header.value,
-			);
-			response.end(CastanetResponse.body);
-		} else if (url.pathname === "/AuthLogin") {
-			handleAuthLogin(request, response);
-		} else if (url.pathname === "/ShardList/") {
-			const config = getServerConfiguration();
-			response.end(generateShardList(config.host));
-		} else if (url.pathname === "/cert") {
-			const config = getServerConfiguration();
-			response.end(handleGetCert(config));
-		} else if (url.pathname === "/key") {
-			const config = getServerConfiguration();
-			response.end(handleGetKey(config));
-		} else if (url.pathname === "/registry") {
-			const config = getServerConfiguration();
-			response.end(handleGetRegistry(config));
-		} else {
-			response.statusCode = 404;
-			response.end("Not found");
-		}
-	}
+export function initializeRouteHandlers() {
+	routeHandlers.set("/", handleRoot);
+	routeHandlers.set("/games/EA_Seattle/MotorCity/UpdateInfo", handleCastanet);
+	routeHandlers.set("/games/EA_Seattle/MotorCity/NPS", handleCastanet);
+	routeHandlers.set("/games/EA_Seattle/MotorCity/MCO", handleCastanet);
+	routeHandlers.set("/AuthLogin", handleAuthLogin);
+	routeHandlers.set("/ShardList/", handleShardList);
+	routeHandlers.set("/cert", () => {
+		return {
+			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=server.crt" },
+			body: handleGetCert(getServerConfiguration()),
+		};
+	});
+	routeHandlers.set("/key", () => {
+		return {
+			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=pub.key" },
+			body: handleGetKey(getServerConfiguration()),
+		};
+	});
+	routeHandlers.set("/registry", () => {
+		return {
+			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=server.reg" },
+			body: handleGetRegistry(getServerConfiguration()),
+		};
+	});
 }
+
+/**
+ * Handles the root path request.
+ *
+ * @returns The response headers and body for the root path request.
+ */
+function handleRoot(): WebHandlerResponse {
+	return {
+		headers: {"Content-Type": "text/plain"},
+		body: "Hello, world!",
+	};
+}
+
+/**
+ * Handles Castanet routes.
+ *
+ * @returns The response headers and body for Castanet routes.
+ */
+function handleCastanet(): WebHandlerResponse {
+	return {
+		headers: {
+			[CastanetResponse.header.type]: CastanetResponse.header.value,
+		},
+		body: CastanetResponse.body,
+	};
+}
+
+
 
 /**
  * Handles the authentication login process.
@@ -124,7 +132,7 @@ export class WebRouter {
 function handleAuthLogin(
 	request: http.IncomingMessage,
 	response: http.ServerResponse,
-): void {
+): WebHandlerResponse {
 	const url = new URL(
 		`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
 	);
@@ -148,8 +156,71 @@ function handleAuthLogin(
 		}
 	}
 
-	response.end(authResponse.formatResponse());
+	return {
+		headers: {"Content-Type": "text/plain"},
+		body: authResponse.formatResponse(),
+	}
 }
+
+/**
+ * Handles the shard list request.
+ *
+ * @returns The response headers and body for the shard list request.
+ */
+function handleShardList(): WebHandlerResponse {
+	const shardList = generateShardList(getServerConfiguration().host);
+	return {
+		headers: {"Content-Type": "text/plain"},
+		body: shardList,
+	};
+}
+
+
+
+
+/**
+ * Handles incoming HTTP requests and sends appropriate responses based on the request URL.
+ *
+ * @param request - The incoming HTTP request object.
+ * @param response - The HTTP response object to send data back to the client.
+ *
+ * The function processes the following routes:
+ * - `/`: Responds with "Hello, world!".
+ * - `/games/EA_Seattle/MotorCity/UpdateInfo`, `/games/EA_Seattle/MotorCity/NPS`, `/games/EA_Seattle/MotorCity/MCO`: Responds with predefined Castanet response headers and body.
+ * - `/AuthLogin`: Calls `handleAuthLogin` to process authentication login.
+ * - `/ShardList/`: Responds with a generated shard list based on server configuration.
+ * - `/cert`: Responds with a certificate based on server configuration.
+ * - `/key`: Responds with a key based on server configuration.
+ * - `/registry`: Responds with registry information based on server configuration.
+ * - Any other route: Responds with a 404 status code and "Not found" message.
+ */
+export function processHttpRequest(
+	request: http.IncomingMessage,
+	response: http.ServerResponse,
+) {
+
+	const url = new URL(
+		`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
+	);
+
+	if (routeHandlers.has(url.pathname)) {
+		const handler = routeHandlers.get(url.pathname);
+		if (handler) {
+			const { headers, body } = handler(request, response);
+			Object.entries(headers).forEach(([key, value]) => {
+				response.setHeader(key, value);
+			});
+			response.end(body);
+			return;
+		}
+	}
+
+	response.statusCode = 404;
+	response.end("Not found");
+}
+
+
+
 const UserAccounts = [
 	{
 		username: "new",

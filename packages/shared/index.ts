@@ -1,6 +1,9 @@
 export { SubThread } from "./src/SubThread.js";
 export { NetworkMessage } from "./src/NetworkMessage.js";
-export { Configuration, getServerConfiguration } from "./src/Configuration.js";
+export {
+	Configuration,
+	getServerConfiguration,
+} from "./src/Configuration.js";
 export { SerializedBuffer } from "./src/SerializedBuffer.js";
 export { SerializedBufferOld } from "./src/SerializedBufferOld.js";
 export { RawMessage } from "./src/RawMessage.js";
@@ -36,6 +39,8 @@ export type { OnDataHandler, ServiceResponse } from "./src/State.js";
 export { LegacyMessage } from "./src/LegacyMessage.js";
 export { NPSHeader } from "./src/NPSHeader.js";
 export * from "./src/interfaces.js";
+import * as Sentry from "@sentry/node";
+import pino from "pino";
 
 export interface KeypressEvent {
 	sequence: string;
@@ -105,3 +110,49 @@ export const cloth_brown = argbToInt(255, 117, 104, 68); //brown
 export const cloth_black = argbToInt(255, 68, 68, 68); //black
 export const cloth_grey = argbToInt(255, 146, 143, 137); //grey
 export const cloth_white = argbToInt(255, 255, 255, 255); //white
+
+interface Logger {
+	info: (msg: string, obj?: unknown) => void;
+	warn: (msg: string, obj?: unknown) => void;
+	error: (msg: string, obj?: unknown) => void;
+	fatal: (msg: string, obj?: unknown) => void;
+	debug: (msg: string, obj?: unknown) => void;
+	trace: (msg: string, obj?: unknown) => void;
+	child: (obj: unknown) => Logger;
+}
+
+type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
+
+export function getServerLogger(name?: string): Logger {
+	const loggerName = name || "core";
+	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
+	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
+	
+	if (!validLogLevels.includes(logLevel as LogLevel)) {
+		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
+	}
+
+	const logger = pino({ name: loggerName });
+	logger.level = logLevel;
+
+	return {
+		info: logger.info.bind(logger),
+		warn: logger.warn.bind(logger),
+		error: (msg: string, obj?: unknown) => {
+			if (obj instanceof Error) {
+				Sentry.captureException(obj);
+			} else if (obj) {
+				Sentry.captureException(new Error(msg), { extra: { context: obj } });
+			} else {
+				Sentry.captureException(new Error(msg));
+			}
+			logger.error({ msg, obj });
+		},
+		fatal: logger.fatal.bind(logger),
+		debug: logger.debug.bind(logger),
+		trace: logger.trace.bind(logger),
+		child: (obj) => logger.child(obj),
+	}
+}
+
+export type ServerLogger = Logger;

@@ -1,8 +1,8 @@
-import { SerializedBufferOld } from "rusty-motors-shared";
+import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "PersonaServer.receivePersonaData" });
+import { getServerLogger } from "rusty-motors-shared";
 
+const defaultLogger = getServerLogger("PersonaServer");
 
 /**
  * Selects a game persona and marks it as in use
@@ -23,7 +23,7 @@ export async function _selectGamePersona({
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];

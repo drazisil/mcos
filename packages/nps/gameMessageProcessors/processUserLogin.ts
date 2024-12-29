@@ -8,13 +8,13 @@ import type { GameSocketCallback } from "./index.js";
 
 import type { UserStatus } from "rusty-motors-nps";
 import { UserStatusManager, getCustomerId } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.processUserLogin" });
+import { getServerLogger } from "rusty-motors-shared";
 
+const defaultLogger = getServerLogger("nps.processUserLogin");
 
 export async function processUserLogin(
-	connectionId: string,
-	userStatus: UserStatus,
+	_connectionId: string,
+	_userStatus: UserStatus,
 	message: GameMessage,
 	socketCallback: GameSocketCallback,
 ): Promise<void> {
@@ -46,7 +46,7 @@ export async function processUserLogin(
 	// Update the user status
 	existingStatus.setPersonaId(personaId);
 
-	userStatus = existingStatus;
+	_userStatus = existingStatus;
 
 	defaultLogger.info(`LobbyLogin: ${message.toString()}`);
 

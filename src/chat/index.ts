@@ -10,8 +10,9 @@ import {
 } from "./inGameEmails.js";
 import { bufferToHexString } from "./toHexString.js";
 import * as Sentry from "@sentry/node";
-import pino from "pino";
-const defaultLogger = pino({ name: "chat.receiveChatData" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("chat");
 
 const handlers = new Map<number, (message: ChatMessage) => Buffer[]>();
 handlers.set(0x0524, handleReceiveEmailMessage);

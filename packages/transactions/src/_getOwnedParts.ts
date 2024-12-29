@@ -6,8 +6,9 @@ import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { PartsAssemblyMessage } from "./PartsAssemblyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "transactions.getOwnedParts" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("handlers/_getOwnedParts");
 
 export async function _getOwnedParts({
 	connectionId,

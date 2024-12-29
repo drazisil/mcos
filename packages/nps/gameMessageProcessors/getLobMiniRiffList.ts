@@ -4,12 +4,13 @@ import {
 	MiniRiffList,
 	getAsHex,
 } from "rusty-motors-nps";
-import pino from "pino";
-const defaultLogger = pino({ name: "nps.getLobMiniRiffList" });
+import { getServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("nps.getLobMiniRiffList");
 
 // Command id: 0x30c
 export async function getLobMiniRiffList(
-	commandId: number,
+	_commandId: number,
 	data: Buffer,
 ): Promise<Buffer> {
 	defaultLogger.debug("getLobMiniRiffList called");

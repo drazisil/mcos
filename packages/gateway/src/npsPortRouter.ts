@@ -7,9 +7,10 @@ import { receiveLobbyData } from "rusty-motors-lobby";
 import { receiveChatData } from "rusty-motors-chat";
 import { receivePersonaData } from "rusty-motors-personas";
 import { receiveLoginData } from "rusty-motors-login";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "gatewayServer.npsPortRouter" });
 import * as Sentry from "@sentry/node";
+import { getServerLogger, ServerLogger } from "rusty-motors-shared";
+
+const defaultLogger = getServerLogger("gateway.npsPortRouter");
 
 
 /**
@@ -23,7 +24,7 @@ export async function npsPortRouter({
 	log = defaultLogger,
 }: {
 	taggedSocket: TaggedSocket;
-	log?: Logger;
+	log?: ServerLogger;
 }): Promise<void> {
 	const { socket, id } = taggedSocket;
 

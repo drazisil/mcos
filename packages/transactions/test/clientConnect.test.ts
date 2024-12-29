@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { updateSessionKey } from "rusty-motors-database";
+import { DatabaseManager } from "rusty-motors-database";
 import { TClientConnectMessage } from "../src/TClientConnectMessage.js";
 import { clientConnect } from "../src/clientConnect.js";
 import { ServerLogger } from "rusty-motors-shared";
@@ -22,8 +22,9 @@ describe("clientConnect", () => {
 			info: () => vi.fn(),
 			trace: () => vi.fn(),
 			warn: () => vi.fn(),
+			child: () => log,
 		};
-		updateSessionKey(customerId, sessionKey, contextId, connectionId);
+		DatabaseManager.updateSessionKey(customerId, sessionKey, contextId, connectionId);
 
 		// act
 		try {

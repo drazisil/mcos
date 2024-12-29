@@ -1,19 +1,17 @@
-import { getServerConfiguration,  } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { UserInfo } from "../UserInfoMessage.js";
-import { updateUser } from "rusty-motors-database";
-import pino, { Logger } from "pino";
-const defaultLogger = pino({ name: "Lobby" });
+import { DatabaseManager } from "rusty-motors-database";
+import { ServerLogger, getServerLogger } from "rusty-motors-shared";
 
 
 export async function _setMyUserData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("handlers/_setMyUserData"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
-	log?: Logger;
+	log?: ServerLogger;
 }) {
 	try {
 		log.debug("Handling NPS_SET_MY_USER_DATA");
@@ -25,7 +23,7 @@ export async function _setMyUserData({
 		log.debug(`User ID: ${incomingMessage._userId}`);
 
 		// Update the user's data
-		updateUser({
+		DatabaseManager.updateUser({
 			userId: incomingMessage._userId,
 			userData: incomingMessage._userData,
 		});

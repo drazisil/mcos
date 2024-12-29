@@ -1,8 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-	fetchSessionKeyByCustomerId,
-	fetchSessionKeyByConnectionId,
-	updateUser,
+	DatabaseManager
 } from "rusty-motors-database";
 
 describe("Database", () => {
@@ -13,7 +11,7 @@ describe("Database", () => {
 			const customerId = 1234;
 			// act
 			try {
-				await fetchSessionKeyByCustomerId(customerId);
+				await DatabaseManager.fetchSessionKeyByCustomerId(customerId);
 			} catch (error) {
 				// assert
 				expect(error).toEqual(
@@ -30,7 +28,7 @@ describe("Database", () => {
 			const connectionId = "1234";
 			// act
 			try {
-				await fetchSessionKeyByConnectionId(connectionId);
+				await DatabaseManager.fetchSessionKeyByConnectionId(connectionId);
 			} catch (error) {
 				// assert
 				expect(error).toEqual(
@@ -52,7 +50,7 @@ describe("Database", () => {
 			};
 			// act + assert
 			expect(async () => {
-				await updateUser(userRecord);
+				await DatabaseManager.updateUser(userRecord);
 			}).not.toThrow();
 		});
 	});
