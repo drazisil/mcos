@@ -19,7 +19,7 @@ certs:
 	@echo "certs regenerated. remember to update pub.key for all clients"
 
 test:
-	@./scripts/run_tests.sh
+	@pnpx vitest
 
 
 
