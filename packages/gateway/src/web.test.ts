@@ -1,8 +1,13 @@
 import { describe, it, expect, vi } from "vitest";
 import http from "node:http";
-import { processHttpRequest } from "./web";
+import { processHttpRequest, initializeRouteHandlers } from "./web";
+import { before } from "node:test";
 
 describe("processHttpRequest", () => {
+	before(() => {
+		initializeRouteHandlers();
+	});
+
 	it("should respond with 'Hello, world!' for the root path", () => {
 		const request = {
 			url: "/",
