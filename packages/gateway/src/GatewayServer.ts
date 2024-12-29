@@ -2,7 +2,7 @@ import { Socket, createServer as createSocketServer } from "node:net";
 import { Configuration, getServerConfiguration, getServerLogger, ServerLogger } from "rusty-motors-shared";
 import { createInitialState } from "rusty-motors-shared";
 import { onSocketConnection } from "./index.js";
-import { WebRouter } from "./web.js";
+import { initializeRouteHandlers, processHttpRequest } from "./web.js";
 import type { GatewayOptions } from "./types.js";
 import { addPortRouter } from "./portRouters.js";
 import { npsPortRouter } from "./npsPortRouter.js";
@@ -60,7 +60,9 @@ export class Gateway {
 		this.activeServers = [];
 		this.socketconnection = socketConnectionHandler;
 
-		this.webServer = http.createServer(WebRouter.handleRequest);
+		initializeRouteHandlers();
+
+		this.webServer = http.createServer(processHttpRequest);
 	}
 
 	/**
