@@ -8,7 +8,6 @@ on:
         
 
 env:
-    MCO_LOG_LEVEL: warn
     PRIVATE_KEY_FILE: data/private_key.pem # These secrets are stored in the repository and are safe to "leak"
     CERTIFICATE_FILE: data/mcouniverse.crt # These secrets are stored in the repository and are safe to "leak"
     PUBLIC_KEY_FILE: data/pub.key # These secrets are stored in the repository and are safe to "leak"
