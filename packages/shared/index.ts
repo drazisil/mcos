@@ -120,13 +120,27 @@ interface Logger {
 
 export function getServerLogger(name?: string): Logger {
 	const loggerName = name || "core";
+	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
+	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
+	
+	if (logLevel && !validLogLevels.includes(logLevel as any)) {
+		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
+	}
+
 	const logger = pino({ name: loggerName });
-	logger.level = process.env["MCO_LOG_LEVEL"] || "debug";
+	logger.level = logLevel;
+
 	return {
 		info: logger.info.bind(logger),
 		warn: logger.warn.bind(logger),
 		error: (msg: string, obj?: any) => {
-			Sentry.captureException(obj);
+			if (obj instanceof Error) {
+				Sentry.captureException(obj);
+			} else if (obj) {
+				Sentry.captureException(new Error(msg), { extra: { context: obj } });
+			} else {
+				Sentry.captureException(new Error(msg));
+			}
 			logger.error({ msg, obj });
 		},
 		fatal: logger.fatal.bind(logger),
