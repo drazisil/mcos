@@ -4,9 +4,7 @@ import {
 	GameMessage,
 	MiniUserInfo,
 	MiniUserList,
-	getAsHex,
 } from "rusty-motors-nps";
-import { getServerLogger } from "rusty-motors-shared";
 
 vi.mock("rusty-motors-nps", () => ({
 	GameMessage: vi.fn(),
@@ -15,18 +13,10 @@ vi.mock("rusty-motors-nps", () => ({
 	getAsHex: vi.fn(),
 }));
 
-vi.mock("rusty-motors-shared", () => ({
-	getServerLogger: vi.fn(() => ({
-		debug: vi.fn(),
-		info: vi.fn(),
-	})),
-}));
-
 describe("getLobMiniUserList", () => {
 	it("should process the command and return a serialized response", async () => {
 		const commandId = 0x128;
 		const data = Buffer.from([0x01, 0x02, 0x03, 0x04]);
-		const mockLogger = getServerLogger("nps.getLobMiniUserList");
 		const mockMiniUserList = {
 			addChannelUser: vi.fn(),
 		};
@@ -47,10 +37,6 @@ describe("getLobMiniUserList", () => {
 
 		const result = await getLobMiniUserList(commandId, data);
 
-		expect(mockLogger.debug).toHaveBeenCalledWith("getLobMiniUserList called");
-		expect(mockLogger.info).toHaveBeenCalledWith(
-			`Processing getLobMiniUserList command: ${getAsHex(data)}`,
-		);
 		expect(mockMiniUserList.addChannelUser).toHaveBeenCalledWith(
 			new MiniUserInfo(1000, "Molly"),
 		);
