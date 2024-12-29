@@ -10,7 +10,7 @@
 # include .env // Disabled for now
 
 all:
-	@npm install
+	@pnpm install
 
 certs:
 	@openssl req -x509 -extensions v3_req -config data/mcouniverse.cnf -newkey rsa:1024 -nodes -keyout ./data/private_key.pem -out ./data/mcouniverse.pem -days 365
@@ -45,8 +45,8 @@ docker-init:
 
 
 clean:
-	@rm -rf node_modules
-	@rm -rf dist
+	@rm -rf ./**/node_modules -v
+	@rm -rf dist -v
 
 migration-up:
 	vendor/goose --dir ./migrations up

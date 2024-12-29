@@ -109,51 +109,26 @@ export class Configuration {
 	}
 }
 
-const requiredEnvVariables = [
-	{
-		name: "EXTERNAL_HOST",
-		description: "The external host to bind to",
-		required: true,
-	},
-	{
-		name: "CERTIFICATE_FILE",
-		description: "The path to the certificate file",
-		required: true,
-	},
-	{
-		name: "PRIVATE_KEY_FILE",
-		description: "The path to the private key file",
-		required: true,
-	},
-	{
-		name: "PUBLIC_KEY_FILE",
-		description: "The path to the public key file",
-		required: true,
-	},
-	{
-		name: "MCO_LOG_LEVEL",
-		description: "The log level",
-		required: false,
-		default: "debug",
-	},
-];
+function getEnvVariable(
+	name: string,
+	required: boolean,
+	defaultValue?: string,
+): string {
+	const value = process.env[name];
+	if (required && !value) {
+		const coreLogger = getServerLogger("core");
+		coreLogger.fatal(`Missing required environment variable: ${name}`);
+		process.exit(1);
+	}
+	return value || defaultValue || "";
+}
 
 export function getServerConfiguration(): Configuration {
-	const coreLogger = getServerLogger("core");
-	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
-
-	requiredEnvVariables.forEach((envVar) => {
-		if (envVar.required && !process.env[envVar.name]) {
-			coreLogger.fatal(`Missing required environment variable: ${envVar.name}`);
-			process.exit(1);
-		}
-	});
-
 	return {
-		host: process.env["EXTERNAL_HOST"] || "",
-		certificateFile: process.env["CERTIFICATE_FILE"]!,
-		privateKeyFile: process.env["PRIVATE_KEY_FILE"]!,
-		publicKeyFile: process.env["PUBLIC_KEY_FILE"]!,
-		logLevel,
+		host: getEnvVariable("EXTERNAL_HOST", false, ""),
+		certificateFile: getEnvVariable("CERTIFICATE_FILE", true),
+		privateKeyFile: getEnvVariable("PRIVATE_KEY_FILE", true),
+		publicKeyFile: getEnvVariable("PUBLIC_KEY_FILE", true),
+		logLevel: getEnvVariable("MCO_LOG_LEVEL", false, "debug"),
 	};
 }
