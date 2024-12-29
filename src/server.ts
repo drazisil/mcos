@@ -16,7 +16,7 @@
 
 import * as Sentry from "@sentry/node";
 import { Gateway } from "rusty-motors-gateway";
-import { getServerLogger, verifyLegacyCipherSupport, validateEnvVariables } from "rusty-motors-shared";
+import { getServerLogger, verifyLegacyCipherSupport, getServerConfiguration } from "rusty-motors-shared";
 
 const coreLogger = getServerLogger( "core");
 
@@ -28,7 +28,7 @@ try {
 }
 
 try {
-	const config = validateEnvVariables();
+	const config = getServerConfiguration();
 	const sanitizedConfig = { ...config, certificateFile: '[REDACTED]', privateKeyFile: '[REDACTED]', publicKeyFile: '[REDACTED]' };
 	coreLogger.debug(`Pre-flight checks passed. Starting server with config: ${JSON.stringify(sanitizedConfig)}`);
 

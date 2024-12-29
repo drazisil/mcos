@@ -14,10 +14,9 @@ export class Configuration {
 	logLevel!: string;
 	static instance: Configuration | undefined;
 
-
 	/**
 	 * Constructs a new Configuration instance.
-	 * 
+	 *
 	 * @param {Object} params - The configuration parameters.
 	 * @param {string} params.host - The host address.
 	 * @param {string} params.certificateFile - The path to the certificate file.
@@ -32,7 +31,7 @@ export class Configuration {
 		privateKeyFile,
 		publicKeyFile,
 		logLevel,
-		logger
+		logger,
 	}: {
 		host: string;
 		certificateFile: string;
@@ -95,13 +94,15 @@ export class Configuration {
 
 	/**
 	 * Returns the singleton instance of the Configuration class.
-	 * 
+	 *
 	 * @throws {Error} If the Configuration instance has not been initialized using newInstance.
 	 * @returns {Configuration} The singleton instance of the Configuration class.
 	 */
 	static getInstance(): Configuration {
 		if (typeof Configuration.instance === "undefined") {
-			throw new Error("Configuration needs to be initialized using newInstance");
+			throw new Error(
+				"Configuration needs to be initialized using newInstance",
+			);
 		}
 
 		return Configuration.instance;
@@ -109,24 +110,36 @@ export class Configuration {
 }
 
 const requiredEnvVariables = [
-	{ name: "EXTERNAL_HOST", description: "The external host to bind to", required: true, default: "" },
-	{ name: "CERTIFICATE_FILE", description: "The path to the certificate file", required: true, default: "" },
-	{ name: "PRIVATE_KEY_FILE", description: "The path to the private key file", required: true, default: "" },
-	{ name: "PUBLIC_KEY_FILE", description: "The path to the public key file", required: true, default: "" },
-	{ name: "MCO_LOG_LEVEL", description: "The log level", required: false, default: "debug" },
+	{
+		name: "EXTERNAL_HOST",
+		description: "The external host to bind to",
+		required: true,
+	},
+	{
+		name: "CERTIFICATE_FILE",
+		description: "The path to the certificate file",
+		required: true,
+	},
+	{
+		name: "PRIVATE_KEY_FILE",
+		description: "The path to the private key file",
+		required: true,
+	},
+	{
+		name: "PUBLIC_KEY_FILE",
+		description: "The path to the public key file",
+		required: true,
+	},
+	{
+		name: "MCO_LOG_LEVEL",
+		description: "The log level",
+		required: false,
+		default: "debug",
+	},
 ];
 
-interface coreConfig {
-	host: string;
-	certificateFile: string;
-	privateKeyFile: string;
-	publicKeyFile: string;
-	logLevel: string;
-}
-
-
-export function validateEnvVariables(): coreConfig {
-	const coreLogger = getServerLogger( "core");
+export function getServerConfiguration(): Configuration {
+	const coreLogger = getServerLogger("core");
 	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
 
 	requiredEnvVariables.forEach((envVar) => {
@@ -142,14 +155,5 @@ export function validateEnvVariables(): coreConfig {
 		privateKeyFile: process.env["PRIVATE_KEY_FILE"]!,
 		publicKeyFile: process.env["PUBLIC_KEY_FILE"]!,
 		logLevel,
-	}
-}
-
-/**
- * Get a singleton instance of Configuration
- *
- * @returns {Configuration}
- */
-export function getServerConfiguration(): Configuration {
-	return validateEnvVariables();
+	};
 }
