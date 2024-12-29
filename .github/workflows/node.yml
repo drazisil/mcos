@@ -51,79 +51,12 @@ jobs:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
                   codecovcli do-upload --report-type test_results --file mcos.junit.xml
-            - name: Codecov upload cli coverage
+            - name: Codecov upload coverage
               if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
               env:
                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag cli --name cli-${{ matrix.node-version }} --dir packages/cli
-            - name: Codecov upload database coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag database --name database-${{ matrix.node-version }} --dir packages/database
-            - name: Codecov upload gateway coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag gateway --name gateway-${{ matrix.node-version }} --dir packages/gateway
-            - name: Codecov upload lobby coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag lobby --name lobby-${{ matrix.node-version }} --dir packages/lobby
-            - name: Codecov upload login coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag login --name login-${{ matrix.node-version }}  --dir packages/login
-            - name: Codecov upload nps coverageq
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag nps --name nps-${{ matrix.node-version }} --dir packages/nps
-            - name: Codecov upload patch coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag patch --name patch-${{ matrix.node-version }} --dir packages/patch
-            - name: Codecov upload persona coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag persona --name persona-${{ matrix.node-version }} --dir packages/persona
-            - name: Codecov upload shard coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag shard --name shard-${{ matrix.node-version }} --dir packages/shard
-            - name: Codecov upload shared coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag shared --name shared-${{ matrix.node-version }} --dir packages/shared
-            - name: Codecov upload shared-packets coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag shared-packets --name shared-packets-${{ matrix.node-version }} --dir packages/shared-packets
-            - name: Codecov  upload transactions coverage
-              if: ${{ always() }} # using always() to always run this step because i am uploading test results and coverage in one step
-              env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-              run: |
-                  codecovcli --verbose do-upload --fail-on-error --flag transactions --name transactions-${{ matrix.node-version }} --dir packages/transactions
-
+                  codecovcli --verbose do-upload --fail-on-error --name ${{ matrix.node-version }}
             - uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
               with:
                   name: coverage_${{ matrix.node-version }}
