@@ -18,8 +18,8 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0(typescript@5.7.2)
       '@dotenvx/dotenvx':
-        specifier: ^1.28.0
-        version: 1.28.0
+        specifier: ^1.32.0
+        version: 1.32.0
       '@fastify/sensible':
         specifier: ^6.0.1
         version: 6.0.1
@@ -1252,8 +1252,8 @@ packages:
   '@databases/with-container@2.1.1':
     resolution: {integrity: sha512-iHsOn/6ElWuGpcytgNh9ZAvFd78G0ikOMWj0DtMTB4fXVqRA5uYZpLpLv/fvwL895xT7VTbVA6HV3YoY0yuQUg==}
 
-  '@dotenvx/dotenvx@1.28.0':
-    resolution: {integrity: sha512-JJ9HgYBuvZpFvepGMnTj6/NQQX/Ska1N30GVln0Mw+wuL6oXZMOR2t/XrkSBjnjYr2rCiWtgDtTt8FajTJcbiA==}
+  '@dotenvx/dotenvx@1.32.0':
+    resolution: {integrity: sha512-oQaGYijYfQx6pY9D+FQ08gUOckF1R0RSVK7Jqk+Ma2RyeceoMIawQl1KoogRaJ12i0SmyVWhiGyQxDU01/k13g==}
     hasBin: true
 
   '@ecies/ciphers@0.2.1':
@@ -7686,7 +7686,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@dotenvx/dotenvx@1.28.0':
+  '@dotenvx/dotenvx@1.32.0':
     dependencies:
       commander: 11.1.0
       dotenv: 16.4.5
