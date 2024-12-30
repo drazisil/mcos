@@ -17,6 +17,8 @@ export default defineConfig({
                 "bin/**/*.ts",
                 "interfaces",
                 "vite.config.ts",
+                "instrument.mjs",
+                "commitlint.config.js",
                 ...coverageConfigDefaults.exclude,
             ],
             reporter: ["lcov", "cobertura"],
