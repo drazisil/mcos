@@ -76,7 +76,7 @@
     "@tsconfig/node-lts": "^22.0.1",
     "@tsconfig/node20": "^20.1.4",
     "@types/chai": "5.0.1",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.2",
     "@types/sinon": "17.0.3",
     "@types/sinon-chai": "4.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
