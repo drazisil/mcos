@@ -118,7 +118,7 @@ interface Logger {
 	fatal: (msg: string, obj?: unknown) => void;
 	debug: (msg: string, obj?: unknown) => void;
 	trace: (msg: string, obj?: unknown) => void;
-	child: (obj: unknown) => Logger;
+	child: (obj: pino.Bindings) => Logger;
 }
 
 type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
@@ -151,7 +151,7 @@ export function getServerLogger(name?: string): Logger {
 		fatal: logger.fatal.bind(logger),
 		debug: logger.debug.bind(logger),
 		trace: logger.trace.bind(logger),
-		child: (obj) => logger.child(obj),
+		child: (obj: pino.Bindings) => logger.child(obj),
 	}
 }
 

@@ -16,7 +16,7 @@ export class HotkeyManager {
 			process.stdin.setRawMode(true);
 		}
 
-		process.stdin.on("keypress", (str, key) => {
+		process.stdin.on("keypress", (_str, key) => {
 			this.handleKeypress(key);
 		});
 

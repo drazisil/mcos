@@ -1,9 +1,9 @@
 import {
 	GameMessage,
-	ProfileList,
+	// ProfileList,
 	SerializableData,
 	getDWord,
-	getGameProfilesForCustomerId,
+	// getGameProfilesForCustomerId,
 } from "rusty-motors-nps";
 import type { GameSocketCallback } from "./index.js";
 
@@ -23,11 +23,11 @@ export async function processFirstBuddy(
 
 	defaultLogger.info(`GetFirstBuddy profile: ${profileId}`);
 
-	// Look up the profiles for the customer ID
-	const _profiles = getGameProfilesForCustomerId(profileId);
+	// TO: Look up the profiles for the customer ID
+	// const _profiles = getGameProfilesForCustomerId(profileId);
 
-	// Create a new NPSList of profiles
-	const _list = new ProfileList();
+	// TO: Create a new NPSList of profiles
+	// const _list = new ProfileList();
 
 	const outMessage = new GameMessage(257);
 	outMessage.header.setId(0x614);

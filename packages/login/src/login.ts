@@ -1,12 +1,12 @@
 import { DatabaseManager } from "rusty-motors-database";
 import {
-	SerializedBufferOld,
 	getServerConfiguration,
 	NetworkMessage,
 } from "rusty-motors-shared";
 import { userRecords } from "./internal.js";
 import { NPSUserStatus } from "./NPSUserStatus.js";
 import { ServerLogger, getServerLogger } from "rusty-motors-shared";
+import { GamePacket } from "rusty-motors-shared-packets";
 
 
 /**
@@ -27,11 +27,11 @@ export async function login({
 	log = getServerLogger( "LoginServer"),
 }: {
 	connectionId: string;
-	message: SerializedBufferOld;
+	message: GamePacket;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
-	messages: SerializedBufferOld[];
+	messages: GamePacket[];
 }> {
 	const data = message.serialize();
 
@@ -104,8 +104,8 @@ export async function login({
 		`[${connectionId}] Outbound message: ${outboundMessage.toHexString()}`,
 	);
 
-	const outboundMessage2 = new SerializedBufferOld();
-	outboundMessage2._doDeserialize(outboundMessage.serialize());
+	const outboundMessage2 = new GamePacket();
+	outboundMessage2.deserialize(outboundMessage.serialize());
 
 	log.debug(
 		`[${connectionId}] Outbound message2: ${outboundMessage2.toHexString()}`,

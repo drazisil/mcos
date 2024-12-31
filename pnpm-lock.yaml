@@ -360,6 +360,9 @@ importers:
       pino-pretty:
         specifier: ^13.0.0
         version: 13.0.0
+      rusty-motors-shared-packets:
+        specifier: workspace:1.0.0-next.0
+        version: link:../shared-packets
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8

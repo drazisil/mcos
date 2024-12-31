@@ -45,7 +45,7 @@ docker-init:
 
 
 clean:
-	@rm -rf ./**/node_modules -v
+	@rm -rf */**/node_modules -v
 	@rm -rf dist -v
 
 migration-up:

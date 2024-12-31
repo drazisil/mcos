@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { ServerLogger, type UserRecordMini } from "rusty-motors-shared";
-import { SerializedBufferOld } from "rusty-motors-shared";
 import { login } from "./login.js";
+import { GamePacket } from "rusty-motors-shared-packets";
 
 
 export const userRecords: UserRecordMini[] = [
@@ -32,31 +32,31 @@ export const userRecords: UserRecordMini[] = [
 	},
 ];
 
+
 /**
- * Array of supported message handlers
- *
- * @type {{
- *  opCode: number,
- * name: string,
- * handler: (args: {
- * connectionId: string,
- * message: SerializedBufferOld,
- * log: import("pino").Logger,
- * }) => Promise<{
- * connectionId: string,
- * messages: SerializedBufferOld[],
- * }>}[]}
+ * An array of message handlers for processing different types of messages.
+ * Each handler is associated with an operation code (opCode) and a name.
+ * 
+ * @type {Array<{opCode: number, name: string, handler: function}>}
+ * 
+ * @property {number} opCode - The operation code that identifies the type of message.
+ * @property {string} name - The name of the message handler.
+ * @property {function} handler - The function that processes the message. It takes an object with the following properties:
+ * @property {string} handler.args.connectionId - The ID of the connection.
+ * @property {GamePacket} handler.args.message - The message to be processed.
+ * @property {ServerLogger} handler.args.log - The logger for server logging.
+ * @returns {Promise<{connectionId: string, messages: GamePacket[]}>} - A promise that resolves to an object containing the connection ID and an array of messages.
  */
 export const messageHandlers: {
 	opCode: number;
 	name: string;
 	handler: (args: {
 		connectionId: string;
-		message: SerializedBufferOld;
+		message: GamePacket;
 		log: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
-		messages: SerializedBufferOld[];
+		messages: GamePacket[];
 	}>;
 }[] = [
 	{

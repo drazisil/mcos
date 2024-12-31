@@ -6,7 +6,7 @@ import { getServerLogger } from "rusty-motors-shared";
 const defaultLogger = getServerLogger("nps.MiniRiffList");
 
 
-const channelRecordSize = 40;
+// const channelRecordSize = 40;
 
 export class MiniRiffInfo extends BaseSerializable {
 	riffName: string; // 32 bytes - max length

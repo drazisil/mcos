@@ -1,38 +1,37 @@
 import {
-	SerializedBufferOld,
 	NPSMessage,
 	ServerLogger,
 } from "rusty-motors-shared";
 import { messageHandlers } from "./internal.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { GamePacket } from "rusty-motors-shared-packets";
 
 const defaultLogger = getServerLogger("LoginServer");
 
 /**
- * Entry and exit point of the Login service
+ * Handles the reception of login data, deserializes the incoming message, and processes it.
  *
- * @export
- * @param {object} args
- * @param {string} args.connectionId
- * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.connectionId - The ID of the connection.
+ * @param {GamePacket} params.message - The serialized message buffer.
+ * @param {ServerLogger} [params.log=defaultLogger] - Optional logger instance.
  * @returns {Promise<{
  *  connectionId: string,
- * messages: SerializedBufferOld[],
- * }>}
+ *  messages: GamePacket[],
+ * }>} - The response from the login data handler.
+ * @throws {Error} - Throws an error if there is an issue processing the login data.
  */
-
 export async function handleLoginData({
 	connectionId,
 	message,
 	log = defaultLogger,
 }: {
 	connectionId: string;
-	message: SerializedBufferOld;
+	message: GamePacket;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
-	messages: SerializedBufferOld[];
+	messages: GamePacket[];
 }> {
 	log.debug(`[${connectionId}] Entering handleLoginData`);
 

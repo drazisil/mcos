@@ -19,27 +19,24 @@ import {
 	type ServiceResponse,
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
-import type { BufferSerializer } from "rusty-motors-shared-packets";
+import { BufferSerializer, GamePacket } from "rusty-motors-shared-packets";
 import { getServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("receiveLoginData");
 
 /**
- * Receives login data and handles the login process.
+ * Handles the reception of login data, deserializes the incoming message, and processes it.
  *
- * @param {Object} options - The options for receiving login data.
- * @param {string} options.connectionId - The connection ID.
- * @param {NPSMessage} options.message - The login message.
- * @param {import("pino").Logger} [options.log] - The logger instance.
- *
- * @returns {Promise<import("../../shared/State.js").ServiceResponse>} The response from the login process.
- *
- * @throws {Error} If there was an error in the login service.
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.connectionId - The ID of the connection.
+ * @param {BufferSerializer} params.message - The serialized message buffer.
+ * @param {ServerLogger} [params.log=getServerLogger("receiveLoginData")] - Optional logger instance.
+ * @returns {Promise<ServiceResponse>} - The response from the login data handler.
+ * @throws {Error} - Throws an error if there is an issue processing the login data.
  */
 export async function receiveLoginData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("receiveLoginData"),
 }: {
 	connectionId: string;
 	message: BufferSerializer;
@@ -51,12 +48,17 @@ export async function receiveLoginData({
 		incomingPacket._doDeserialize(message.serialize());
 		const response = await handleLoginData({
 			connectionId,
-			message: incomingPacket,
+			message: DeserializeBufferToGamePacket(incomingPacket),
 			log,
 		});
 		log.debug(
 			`[${connectionId}] Exiting login module ${response.messages.length} messages`,
 		);
+
+		// @ts-ignore-next-line - This is a temporary workaround for the old serialization format
+		response.messages = GamePacketArrayToBufferSerializerArray(response.messages);
+
+		// @ts-ignore-next-line - This is a temporary workaround for the old serialization format
 		return response;
 	} catch (error) {
 		const err = new Error(
@@ -65,4 +67,24 @@ export async function receiveLoginData({
 		);
 		throw err;
 	}
+}
+
+function GamePacketArrayToBufferSerializerArray(
+	packets: GamePacket[],
+): BufferSerializer[] {
+	let bufferSerializers: BufferSerializer[] = [];
+	for (const packet of packets) {
+		const bufferSerializer = new BufferSerializer();
+		bufferSerializer.deserialize(packet.serialize());
+		bufferSerializers.push(bufferSerializer);
+	}
+	return bufferSerializers;
+}
+
+function DeserializeBufferToGamePacket(
+	serializedBuffer: SerializedBufferOld,
+): GamePacket {
+	const packet = new GamePacket();
+	packet.deserialize(serializedBuffer.serialize());
+	return packet;
 }
