@@ -1,9 +1,6 @@
 import type { TaggedSocket } from "./socketUtility.js";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("gateway.portRouters");
-
-
 type PortRouter = (portRouterArgs: {
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;
@@ -40,7 +37,7 @@ export function addPortRouter(port: number, router: PortRouter) {
 
 async function notFoundRouter({
 	taggedSocket,
-	log = defaultLogger,
+	log = getServerLogger("gateway.notFoundRouter"),
 }: {
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;

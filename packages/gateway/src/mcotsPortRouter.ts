@@ -7,9 +7,6 @@ import { receiveTransactionsData } from "rusty-motors-transactions";
 import * as Sentry from "@sentry/node";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("gateway.mcotsPortRouter");
-
-
 /**
  * Handles the routing of messages for the MCOTS (Motor City Online Transaction Server) ports.
  *
@@ -18,7 +15,7 @@ const defaultLogger = getServerLogger("gateway.mcotsPortRouter");
 
 export async function mcotsPortRouter({
 	taggedSocket,
-	log = defaultLogger,
+	log = getServerLogger("gateway.mcotsPortRouter"),
 }: {
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;
@@ -78,7 +75,7 @@ async function routeInitialMessage(
 	id: string,
 	port: number,
 	initialPacket: ServerPacket,
-	log = defaultLogger,
+	log = getServerLogger("gateway.mcotsPortRouter/routeInitialMessage"),
 ): Promise<Buffer> {
 	// Route the initial message to the appropriate handler
 	// Messages may be encrypted, this will be handled by the handler

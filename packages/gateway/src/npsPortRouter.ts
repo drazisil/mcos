@@ -10,9 +10,6 @@ import { receiveLoginData } from "rusty-motors-login";
 import * as Sentry from "@sentry/node";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("gateway.npsPortRouter");
-
-
 /**
  * Handles routing for the NPS (Network Play System) ports.
  *
@@ -21,7 +18,7 @@ const defaultLogger = getServerLogger("gateway.npsPortRouter");
 
 export async function npsPortRouter({
 	taggedSocket,
-	log = defaultLogger,
+	log = getServerLogger("gateway.npsPortRouter"),
 }: {
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;
@@ -53,7 +50,7 @@ export async function npsPortRouter({
 			await routeInitialMessage(id, port, initialPacket)
 				.then((response) => {
 					// Send the response back to the client
-					log.debug(`[${id}] Sending response: ${response.toString("hex")}`);
+					log.debug(`[${id}] Sending response to socket: ${response.toString("hex")}`);
 					socket.write(response);
 				})
 				.catch((error) => {
@@ -80,17 +77,34 @@ export async function npsPortRouter({
 	});
 }
 
+/**
+ * Parses the initial message from a buffer and returns a `GamePacket` object.
+ *
+ * @param data - The buffer containing the initial message data.
+ * @returns A `GamePacket` object deserialized from the buffer.
+ */
 function parseInitialMessage(data: Buffer): GamePacket {
 	const initialPacket = new GamePacket();
 	initialPacket.deserialize(data);
 	return initialPacket;
 }
 
+/**
+ * Routes the initial message to the appropriate handler based on the port number.
+ * Handles different types of packets such as lobby data, login data, chat data, and persona data.
+ * Logs the routing process and the number of responses sent back to the client.
+ *
+ * @param id - The connection ID of the client.
+ * @param port - The port number to determine the type of packet.
+ * @param initialPacket - The initial packet received from the client.
+ * @param log - The logger to use for logging messages.
+ * @returns A promise that resolves to a Buffer containing the serialized responses.
+ */
 async function routeInitialMessage(
 	id: string,
 	port: number,
 	initialPacket: GamePacket,
-	log = defaultLogger,
+	log = getServerLogger("gateway.npsPortRouter/routeInitialMessage"),
 ): Promise<Buffer> {
 	// Route the initial message to the appropriate handler
 	// Messages may be encrypted, this will be handled by the handler

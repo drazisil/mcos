@@ -12,9 +12,6 @@ import { handleGetMiniUserList } from "./handleGetMiniUserList.js";
 import { handleSendMiniRiffList } from "./handleSendMiniRiffList.js";
 import { getServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("Lobby");
-
-
 /**
  * Array of supported command handlers
  *
@@ -58,7 +55,7 @@ export const messageHandlers: {
 async function encryptCmd({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "lobby.encryptCmd"),
 }: {
 	connectionId: string;
 	message: LegacyMessage | MessageBufferOld;
@@ -106,7 +103,7 @@ async function encryptCmd({
 async function decryptCmd({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "lobby.decryptCmd"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -185,7 +182,7 @@ const npsCommandHandlers: NpsCommandHandler[] = [
 async function handleCommand({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "lobby.handleCommand"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -234,7 +231,7 @@ async function handleCommand({
 export async function handleEncryptedNPSCommand({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "lobby.handleEncryptedNPSCommand"),
 }: {
 	connectionId: string;
 	message: SerializedBufferOld;

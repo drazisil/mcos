@@ -64,7 +64,7 @@ export interface RaceLobbyRecord {
 export interface ServiceArgs {
 	connectionId: string;
 	message: SerializedBufferOld;
-	log: ServerLogger;
+	log?: ServerLogger;
 }
 
 export interface KeypressEvent {

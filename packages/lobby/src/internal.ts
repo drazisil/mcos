@@ -23,9 +23,6 @@ import { _npsRequestGameConnectServer } from "./handlers/requestConnectGameServe
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger( "PersonaServer" );
-
-
 /**
  * Array of supported message handlers
  *
@@ -47,7 +44,7 @@ export const messageHandlers: {
 	handler: (args: {
 		connectionId: string;
 		message: SerializedBufferOld;
-		log: ServerLogger;
+		log?: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
 		messages: SerializedBufferOld[];
@@ -84,7 +81,7 @@ export const messageHandlers: {
 export async function receiveLobbyData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "lobby.receiveLobbyData" ),
 }: {
 	connectionId: string;
 	message: BufferSerializer;
@@ -135,7 +132,6 @@ export async function receiveLobbyData({
 		const result = await supportedHandler.handler({
 			connectionId,
 			message: buff,
-			log,
 		});
 		log.debug(`Returning with ${result.messages.length} messages`);
 		log.debug("Leaving receiveLobbyData");
