@@ -21,7 +21,8 @@ certs:
 test:
 	@pnpx vitest
 
-
+build:
+	@pnpm run build
 
 
 start:
