@@ -9,51 +9,61 @@
 # before running the tests.
 # include .env // Disabled for now
 
-all:
-	@pnpm install
+.DEFAULT_GOAL := help
 
-certs:
+.PHONY: help
+certs: ## Generate new certs
 	@openssl req -x509 -extensions v3_req -config data/mcouniverse.cnf -newkey rsa:1024 -nodes -keyout ./data/private_key.pem -out ./data/mcouniverse.pem -days 365
 	@openssl rsa -in ./data/private_key.pem -outform DER -pubout | xxd -ps -c 300 | tr -d '\n' > ./data/pub.key
 	@cp ./data/mcouniverse.pem  ./data/private_key.pem ./services/sslProxy/
 	@echo "certs regenerated. remember to update pub.key for all clients"
 
-test:
+.PHONY: test
+test: ## Run tests
 	@pnpx vitest
 
-build:
+.PHONY: build
+build: ## Build the project
 	@pnpm run build
 
-
-start:
+.PHONY: start
+start: ## Start the project
 	@pnpx tsx --import ./instrument.mjs --openssl-legacy-provider --env-file=.env src/server.ts
 
-prod_node:
+.PHONY: prod_node
+prod_node: ## Start the project in production mode
 	docker-compose --file docker-compose.yml up -d --build
 
-up:
+.PHONY: up
+up: ## Start the project in development mode
 	docker compose up -d --build
 
-down:
+.PHONY: down
+down: ## Stop the project
 	docker-compose down
 
-enable-node:
+.PHONY: enable-node
+enable-node: ## Enable node to bind to port 80
 	@sudo setcap cap_net_bind_service=+ep $(which node)
 
-docker-init:
+.PHONY: docker-init
+docker-init: ## Start the project in docker
 	mkdir -p log/mcos
 	@npm run start:docker -s
 
-
-clean:
+.PHONY: clean
+clean: ## Clean the project
 	@rm -rf */**/node_modules -v
 	@rm -rf dist -v
 
-migration-up:
+.PHONY: migration-up
+migration-up: ## Run migrations
 	vendor/goose --dir ./migrations up
 
-install:
+.PHONY: install
+install: ## Install dependencies and run migrations
 	@pnpm install
 	npx dotenvx run -- make migration-up
 
-.PHONY: all certs test build start prod_node up down enable-node docker-init clean install
+help: ## Display this help
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
