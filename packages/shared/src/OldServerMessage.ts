@@ -35,7 +35,12 @@ export class OldServerMessage extends SerializedBufferOld {
 	}
 
 	/**
-	 * @deprecated
+	 * Serializes the current message into a buffer.
+	 * 
+	 * This method allocates a new buffer with a size equal to the sum of the header length and 2 bytes.
+	 * It then serializes the header and data into this buffer.
+	 * 
+	 * @returns {Buffer} The serialized buffer containing the header and data.
 	 */
 	override serialize() {
 		const buffer = Buffer.alloc(this._header.length + 2);
