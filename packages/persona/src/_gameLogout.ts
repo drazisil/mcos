@@ -2,8 +2,6 @@ import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import { getServerLogger } from "rusty-motors-shared";
 
-const defaultLogger = getServerLogger("PersonaServer");
-
 
 /**
  * Handle game logout
@@ -20,7 +18,7 @@ const defaultLogger = getServerLogger("PersonaServer");
 export async function _gameLogout({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "persona._gameLogout"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -29,7 +27,6 @@ export async function _gameLogout({
 	connectionId: string;
 	messages: SerializedBufferOld[];
 }> {
-	log.debug(`[${connectionId}] _gameLogout`);
 	const requestPacket = message;
 	log.debug(`[${connectionId}] _npsLogoutGameUser request: ${requestPacket.toHexString()}`);
 

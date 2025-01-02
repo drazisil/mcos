@@ -34,7 +34,7 @@ import {
 	type BufferSerializer,
 } from "rusty-motors-shared-packets";
 import { _MSG_STRING } from "./_MSG_STRING.js";
-const defaultLogger = getServerLogger( "transactionServer" );
+
 
 
 /**
@@ -45,7 +45,7 @@ const defaultLogger = getServerLogger( "transactionServer" );
 async function processInput({
 	connectionId,
 	inboundMessage,
-	log = defaultLogger,
+	log = getServerLogger( "transactionServer"),
 }: {
 	connectionId: string;
 	inboundMessage: ServerPacket;
@@ -71,7 +71,6 @@ async function processInput({
 			const responsePackets = await result.handler({
 				connectionId,
 				packet,
-				log,
 			});
 			return responsePackets;
 		} catch (error) {
@@ -100,7 +99,7 @@ async function processInput({
 export async function receiveTransactionsData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger( "transactionServer.receiveTransactionsData"),
 }: {
 	connectionId: string;
 	message: BufferSerializer;
@@ -109,7 +108,6 @@ export async function receiveTransactionsData({
 	connectionId: string;
 	messages: SerializedBufferOld[];
 }> {
-	log.debug(`[${connectionId}] Entering transaction module`);
 
 	// Normalize the message
 
@@ -143,7 +141,6 @@ export async function receiveTransactionsData({
 			encryptionSettings,
 			inboundMessage,
 			state,
-			log,
 			connectionId,
 		);
 	} else {
@@ -186,7 +183,6 @@ export async function receiveTransactionsData({
 				encryptionSettings,
 				outboundMessage,
 				state,
-				log,
 				connectionId,
 			);
 			outboundMessages.push(encryptedMessage);
@@ -221,7 +217,7 @@ export async function receiveTransactionsData({
  * @param encryptionSettings - The encryption settings to use for decryption.
  * @param inboundMessage - The message to be decrypted.
  * @param state - The current state of the server.
- * @param log - The logger instance to use for logging. Defaults to a server logger with the name "transactionServer.decryptMessage".
+ * @param log - The logger to use for logging. Defaults to a logger named "transactionServer.decryptMessage".
  * @param connectionId - The ID of the connection associated with the message.
  * @returns The decrypted message as a `ServerPacket`.
  * @throws Will throw an error if the message cannot be decrypted.
@@ -230,8 +226,8 @@ function decryptMessage(
 	encryptionSettings: McosEncryption,
 	inboundMessage: ServerPacket,
 	state: State,
-	log: ServerLogger = defaultLogger,
 	connectionId: string,
+	log: ServerLogger = getServerLogger("transactionServer.decryptMessage"),
 ): ServerPacket {
 	try {
 		const decryptedMessage = encryptionSettings.dataEncryption.decrypt(
@@ -267,8 +263,8 @@ function encryptOutboundMessage(
 	encryptionSettings: McosEncryption,
 	unencryptedMessage: ServerPacket,
 	state: State,
-	log: ServerLogger,
 	connectionId: string,
+	log = getServerLogger("transactionServer.encryptOutboundMessage"),
 ): ServerPacket {
 	try {
 		const encryptedMessage = encryptionSettings.dataEncryption.encrypt(
