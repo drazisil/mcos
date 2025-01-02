@@ -15,8 +15,7 @@ export class LegacyMessage extends SerializableMixin(AbstractSerializable) {
 	}
 
 	/**
-	 * @param {Buffer} buffer
-	 * @returns {LegacyMessage}
+	 * @deprecated Use `deserialize` instead
 	 */
 	override _doDeserialize(buffer: Buffer): LegacyMessage {
 		this._header._doDeserialize(buffer);
@@ -32,10 +31,21 @@ export class LegacyMessage extends SerializableMixin(AbstractSerializable) {
 		this._header.id = id;
 	}
 
+	/**
+	 * Deserializes the given buffer and updates the current instance with the deserialized data.
+	 *
+	 * @param buffer - The buffer containing the serialized data.
+	 * @returns The current instance with the deserialized data.
+	 */
 	deserialize(buffer: Buffer) {
-		return this._doDeserialize(buffer);
+		this._header._doDeserialize(buffer);
+		this.setBuffer(buffer.subarray(this._header._size));
+		return this;
 	}
 
+	/**
+	 * @deprecated Use serialize instead
+	 */
 	override _doSerialize() {
 		const buffer = Buffer.alloc(this._header.length);
 		this._header._doSerialize().copy(buffer);
@@ -44,7 +54,10 @@ export class LegacyMessage extends SerializableMixin(AbstractSerializable) {
 	}
 
 	serialize() {
-		return this._doSerialize();
+		const buffer = Buffer.alloc(this._header.length);
+		this._header._doSerialize().copy(buffer);
+		super.data.copy(buffer, this._header._size);
+		return buffer;
 	}
 
 	/**
