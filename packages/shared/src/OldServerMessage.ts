@@ -1,5 +1,8 @@
+import { IServerMessage } from "rusty-motors-shared-packets";
 import { SerializedBufferOld } from "./SerializedBufferOld.js";
 import { serverHeader } from "./serverHeader.js";
+
+
 
 /**
  * A server message is a message that is passed between the server and the client. It has an 11 byte header. @see {@link serverHeader}
@@ -7,7 +10,7 @@ import { serverHeader } from "./serverHeader.js";
  * @mixin {SerializableMixin}
  * @deprecated
  */
-export class OldServerMessage extends SerializedBufferOld {
+export class OldServerMessage extends SerializedBufferOld implements IServerMessage {
 	_header: serverHeader;
 	_msgNo: number;
 	constructor() {
@@ -74,5 +77,9 @@ export class OldServerMessage extends SerializedBufferOld {
 
 	override toHexString() {
 		return this.serialize().toString("hex");
+	}
+
+	get sequenceNumber(): number {
+		return this._header.sequence;
 	}
 }

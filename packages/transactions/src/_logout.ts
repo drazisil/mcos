@@ -20,7 +20,7 @@ export async function _logout({
 	pReply.msgNo = 101;
 	pReply.msgReply = 106;
 	const rPacket = new OldServerMessage();
-	rPacket._header.sequence = packet._header.sequence + 1;
+	rPacket._header.sequence = packet.sequenceNumber + 1;
 	rPacket._header.flags = 8;
 	rPacket.setBuffer(pReply.serialize());
 

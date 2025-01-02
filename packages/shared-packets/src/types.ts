@@ -28,3 +28,22 @@ export enum MessageSources {
 	GAME_SERVER = "GAME_SERVER",
 	TRANSACTION_SERVER = "TRANSACTION_SERVER",
 }
+
+export interface IServerMessage {
+	/**
+	 * The message content, excluding the header.
+	 */
+	get data(): Buffer;
+	/**
+	 * The message sequence number.
+	 */
+	get sequenceNumber(): number;
+	/**
+	 * Serialize the message to a buffer.
+	 */
+	serialize(): Buffer;
+	/**
+	 * Serialize the message to a hex string.
+	 */
+	toHexString(): string;
+}

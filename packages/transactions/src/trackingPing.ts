@@ -19,7 +19,7 @@ export async function trackingPing({
 	pReply.msgNo = 101;
 	pReply.msgReply = 440;
 	const rPacket = new OldServerMessage();
-	rPacket._header.sequence = packet._header.sequence;
+	rPacket._header.sequence = packet.sequenceNumber;
 	rPacket._header.flags = 8;
 
 	rPacket.setBuffer(pReply.serialize());

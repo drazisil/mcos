@@ -29,7 +29,7 @@ export async function _getGameUrls({
 	gameUrlsMessage.addURL(url1);
 
 	const responsePacket = new OldServerMessage();
-	responsePacket._header.sequence = packet._header.sequence;
+	responsePacket._header.sequence = packet.sequenceNumber;
 	responsePacket._header.flags = 8;
 
 	responsePacket.setBuffer(gameUrlsMessage.serialize());

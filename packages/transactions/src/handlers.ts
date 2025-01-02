@@ -14,8 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { OldServerMessage, ServerLogger  } from "rusty-motors-shared";
-import { ServerMessage } from "rusty-motors-shared";
+import { ServerLogger  } from "rusty-motors-shared";
 import { _getArcadeCarInfo } from "./_getArcadeCarInfo.js";
 import { _getGameUrls } from "./_getGameUrls.js";
 import { _getOwnedParts } from "./_getOwnedParts.js";
@@ -31,16 +30,17 @@ import { getLobbies } from "./getLobbies.js";
 import { login } from "./login.js";
 import { trackingPing } from "./trackingPing.js";
 import { _buyCarFromDealer } from "./_buyCarFromDealer.js";
+import { IServerMessage } from "rusty-motors-shared-packets";
 
 export interface MessageHandlerArgs {
 	connectionId: string;
-	packet: OldServerMessage;
+	packet: IServerMessage;
 	log?: ServerLogger;
 }
 
 export interface MessageHandlerResult {
 	connectionId: string;
-	messages: OldServerMessage[] | ServerMessage[];
+	messages: IServerMessage[];
 }
 
 export interface MessageHandler {

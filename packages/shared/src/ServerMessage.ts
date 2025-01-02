@@ -92,4 +92,8 @@ export class ServerMessage extends SerializedBuffer {
 	toHexString(): string {
 		return this.serialize().toString("hex");
 	}
+
+	get sequenceNumber(): number {
+		return this._sequence;
+	}
 }

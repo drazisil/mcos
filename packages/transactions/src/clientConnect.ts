@@ -99,7 +99,7 @@ export async function clientConnect({
 
 	const responsePacket = new OldServerMessage();
 	responsePacket.setBuffer(pReply.serialize());
-	responsePacket._header.sequence = packet._header.sequence;
+	responsePacket._header.sequence = packet.sequenceNumber;
 
 	log.debug(`Response: ${responsePacket.serialize().toString("hex")}`);
 

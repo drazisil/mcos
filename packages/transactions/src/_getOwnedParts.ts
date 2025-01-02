@@ -32,7 +32,7 @@ export async function _getOwnedParts({
 	ownedPartsMessage._msgNo = 175;
 
 	const responsePacket = new OldServerMessage();
-	responsePacket._header.sequence = packet._header.sequence;
+	responsePacket._header.sequence = packet.sequenceNumber;
 	responsePacket._header.flags = 8;
 
 	responsePacket.setBuffer(ownedPartsMessage.serialize());

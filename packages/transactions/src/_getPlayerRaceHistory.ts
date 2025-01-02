@@ -55,7 +55,7 @@ export async function _getPlayerRaceHistory({
 	playerRacingHistoryMessage._expectMore = false;
 
 	const responsePacket = new ServerMessage(
-		packet._header.sequence,
+		packet.sequenceNumber,
 		8,
 		playerRacingHistoryMessage.serialize(),
 	);

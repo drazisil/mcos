@@ -21,7 +21,7 @@ async function _getLobbies({
 
 	// Create new response packet
 	const lobbiesResponsePacket = new OldServerMessage();
-	lobbiesResponsePacket._header.sequence = packet._header.sequence;
+	lobbiesResponsePacket._header.sequence = packet.sequenceNumber;
 	lobbiesResponsePacket._header.flags = 8;
 
 	const lobbyResponse = new LobbyMessage();
@@ -56,7 +56,7 @@ async function _getLobbies({
 	defaultLogger.debug(`[${connectionId}] Sending purseEntryResponse: ${perseEntryResponse.toString()}`);
 
 	const perseEntriesResponsePacket = new OldServerMessage();
-	perseEntriesResponsePacket._header.sequence = packet._header.sequence;
+	perseEntriesResponsePacket._header.sequence = packet.sequenceNumber;
 	perseEntriesResponsePacket._header.flags = 8;
 
 	perseEntriesResponsePacket.setBuffer(perseEntryResponse.serialize());
