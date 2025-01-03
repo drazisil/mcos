@@ -28,7 +28,7 @@ function main() {
 
 	try {
 		verifyLegacyCipherSupport();
-		if (!databaseService().connected) {
+		if (!databaseService.isDatabaseConnected) {
 			coreLogger.fatal("Database connection failed. Exiting.");
 			process.exit(1);
 		}
