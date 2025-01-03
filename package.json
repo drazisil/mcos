@@ -17,7 +17,7 @@
     "format:all": "pnpm run -r --stream format",
     "test:root": "vitest run --coverage test",
     "test:packages": "pnpm run -r --stream test",
-    "test": "pnpm run test:root && pnpm run test:all",
+    "test": "make test",
     "types:db": "pnpm --filter=rusty-motors-database run types:db",
     "types": "dotenvx run -- pnpm run types:db",
     "migrate": "pg-migrations apply --directory migrations    ",

@@ -17,11 +17,16 @@
 import * as Sentry from "@sentry/node";
 import { Gateway } from "rusty-motors-gateway";
 import { getServerLogger, verifyLegacyCipherSupport, getServerConfiguration } from "rusty-motors-shared";
+import { databaseService } from "./database";
 
 const coreLogger = getServerLogger( "core");
 
 try {
 	verifyLegacyCipherSupport();
+	if (!databaseService().connected) {
+		coreLogger.fatal("Database connection failed. Exiting.");
+		process.exit(1);
+	}
 } catch (err) {
 	coreLogger.fatal(`Error in core server: ${String(err)}`);
 	process.exit(1);
