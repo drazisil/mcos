@@ -9,7 +9,7 @@ const defaultLogger = getServerLogger("PersonaServer");
  * @param {object} args
  * @param {string} args.connectionId
  * @param {LegacyMessage} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "LoginServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],

@@ -15,7 +15,7 @@ import { GamePacket } from "rusty-motors-shared-packets";
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "LoginServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],

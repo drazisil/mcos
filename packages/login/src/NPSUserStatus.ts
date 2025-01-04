@@ -1,7 +1,7 @@
 import { privateDecrypt } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-import { Configuration, ServerLogger,  } from "rusty-motors-shared";
+import { Configuration, getServerLogger, ServerLogger,  } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 
 const SESSION_KEY_START = 52;
@@ -45,12 +45,12 @@ export class NPSUserStatus extends LegacyMessage {
 	 *
 	 * @param {Buffer} packet
 	 * @param {Configuration} config
-	 * @param {import("pino").Logger} log
+	 * @param {Serverogger} log
 	 */
 	constructor(packet: Buffer, config: Configuration, log: ServerLogger) {
 		super();
 		this._config = config;
-		this.log = log;
+		this.log = getServerLogger("NPSUserStatus");
 		log.debug("Constructing NPSUserStatus");
 		this._header._doDeserialize(packet);
 		this.sessionKey = "";

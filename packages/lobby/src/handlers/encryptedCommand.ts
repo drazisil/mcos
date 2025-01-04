@@ -21,7 +21,7 @@ import { getServerLogger } from "rusty-motors-shared";
  * handler: (args: {
  * connectionId: string,
  * message: SerializedBufferOld,
- * log: import("pino").Logger,
+ * log: ServerLogger,
  * }) => Promise<{
  * connectionId: string,
  * messages: SerializedBufferOld[],
@@ -94,7 +94,7 @@ async function encryptCmd({
  * @param {object} args
  * @param {string} args.connectionId
  * @param {LegacyMessage} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "Lobby" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "Lobby" })]
  * @returns {Promise<{
  *  connectionId: string,
  * message: LegacyMessage,
@@ -173,7 +173,7 @@ const npsCommandHandlers: NpsCommandHandler[] = [
  * @param {object} args
  * @param {string} args.connectionId
  * @param {LegacyMessage} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "Lobby" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "Lobby" })]
  * @return {Promise<{
  * connectionId: string,
  * message: MessageBuffer | LegacyMessage,
@@ -221,7 +221,7 @@ async function handleCommand({
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "Lobby" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "Lobby" })]
   * @returns {Promise<{
 *  connectionId: string,
 * messages: SerializedBufferOld[],

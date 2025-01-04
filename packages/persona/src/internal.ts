@@ -30,9 +30,6 @@ import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
 import { getServerLogger } from "rusty-motors-shared";
 
 
-const defaultLogger = getServerLogger("PersonaServer");
-
-
 /**
  * Array of supported message handlers
  *
@@ -42,7 +39,7 @@ const defaultLogger = getServerLogger("PersonaServer");
  * handler: (args: {
  * connectionId: string,
  * message: LegacyMessage,
- * log: import("pino").Logger,
+ * log: ServerLogger,
  * }) => Promise<{
  * connectionId: string,
  * messages: SerializedBufferOld[],
@@ -152,7 +149,7 @@ async function getPersonasByCustomerId(
  * TODO: Store in a database, instead of being hard-coded
  *
  * @param {number} customerId
- * @return {Promise<import("../../interfaces/index.js").PersonaRecord[]>}
+ * @return {Promise<PersonaRecord[]>}
  */
 async function getPersonaMapsByCustomerId(
 	customerId: number,
@@ -172,7 +169,7 @@ async function getPersonaMapsByCustomerId(
  * @param {object} args
  * @param {string} args.connectionId
  * @param {LegacyMessage} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "LoginServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],
@@ -181,7 +178,7 @@ async function getPersonaMapsByCustomerId(
 async function getPersonaMaps({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("PersonaServer/_getPersonaMaps"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -266,7 +263,7 @@ async function getPersonaMaps({
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "PersonaServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "PersonaServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],
@@ -276,7 +273,7 @@ async function getPersonaMaps({
 export async function receivePersonaData({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("PersonaServer/receivePersonaData"),
 }: {
 	connectionId: string;
 	message: BufferSerializer;

@@ -38,7 +38,7 @@ export class ConsoleThread extends SubThread {
 		ConsoleThread._instance = this;
 	}
 
-	/** @param {import("../interfaces/index.js").KeypressEvent} key */
+	/** @param {KeypressEvent} key */
 	handleKeypressEvent(
 		key: import("../shared/src/interfaces.js").KeypressEvent,
 	) {

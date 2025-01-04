@@ -38,7 +38,6 @@ describe("NPSUserStatus", () => {
 		const npsUserStatus = new NPSUserStatus(packet, config, log);
 		npsUserStatus.extractSessionKeyFromPacket(rawPacket);
 
-		expect(log.debug).toHaveBeenCalledWith("Extracting key");
 		expect(readFileSync).toHaveBeenCalledWith("path/to/private/key");
 		// expect(privateDecrypt).toHaveBeenCalledWith({ key: privateKey }, Buffer.from("a".repeat(256), "utf8"));
 		expect(npsUserStatus.sessionKey.length).toBe(expectedSessionKey.length);
@@ -61,9 +60,6 @@ describe("NPSUserStatus", () => {
 
 		expect(() => npsUserStatus.extractSessionKeyFromPacket(rawPacket)).toThrow(
 			"Error decrypting session key",
-		);
-		expect(log.fatal).toHaveBeenCalledWith(
-			"Error decrypting session key: Decryption error",
 		);
 	});
 });
