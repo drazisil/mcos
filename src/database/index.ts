@@ -9,6 +9,7 @@ export type DatabaseService = {
     get isDatabaseConnected(): boolean;
     registerUser(username: string, password: string, customerId: string): void;
     findUser(username: string, password: string): UserRecordMini;
+    getAllUsers(): UserRecordMini[];
     updateSession(customerId: string, contextId: string, userId: number): void;
 }
 
@@ -67,7 +68,8 @@ function findUser(database: DatabaseSync, username: string, password: string): U
     const query = database.prepare(
         `SELECT * FROM user WHERE username = ? AND password = ?`,
     );
-    const user = query.get(username, password) as UserRecordMini | null;
+    const hashedPassword = generatePasswordHash(password);
+    const user = query.get(username, hashedPassword) as UserRecordMini | null;
     if (user == null) {
         throw new Error("User not found");
     }
@@ -76,6 +78,14 @@ function findUser(database: DatabaseSync, username: string, password: string): U
         userId: user.userId,
         contextId: user.contextId,
     }
+}
+
+function getAllUsers(database: DatabaseSync): UserRecordMini[] {
+    const query = database.prepare(
+        `SELECT * FROM user`,
+    );
+    const users = query.all() as UserRecordMini[];
+    return users;
 }
 
 function updateSession(database: DatabaseSync, customerId: string, contextId: string, userId: number) {
@@ -123,6 +133,10 @@ function initializeDatabaseService(): DatabaseService {
 		findUser: (username, password) => {
             ensureDatabaseIsReady(databaseInstance);
             return findUser(databaseInstance, username, password);
+        },
+        getAllUsers: () => {
+            ensureDatabaseIsReady(databaseInstance);
+            return getAllUsers(databaseInstance);
         },
         updateSession: (customerId, contextId, userId) => {
             ensureDatabaseIsReady(databaseInstance);
