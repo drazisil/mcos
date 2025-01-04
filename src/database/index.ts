@@ -1,15 +1,23 @@
+import {createHash} from "node:crypto"
 import { DatabaseSync } from "node:sqlite";
 import { getServerLogger } from "rusty-motors-shared";
+import type { UserRecordMini } from "rusty-motors-shared";
 
 const DATABASE_PATH = process.env["DATABASE_PATH"] ?? "data/lotus.db";
 
 export type DatabaseService = {
     get isDatabaseConnected(): boolean;
     registerUser(username: string, password: string, customerId: string): void;
-    updateData(key: number, value: string): void;
+    findUser(username: string, password: string): UserRecordMini;
 }
 
 let databaseInstance: DatabaseSync | null = null;
+
+function generatePasswordHash(password: string): string {
+    const hash = createHash("sha256");
+    hash.update(password);
+    return hash.digest("hex");
+}
 
 function initializeDatabase(database: DatabaseSync) {
 	database.exec(`
@@ -17,6 +25,13 @@ function initializeDatabase(database: DatabaseSync) {
         username TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         customerId TEXT NOT NULL
+    ) STRICT
+    `);
+    database.exec(`
+        CREATE TABLE IF NOT EXISTS session(
+        id TEXT UNIQUE NOT NULL,
+        customerId TEXT NOT NULL
+        userId INTEGER NOT NULL
     ) STRICT
     `);
 }
@@ -31,7 +46,8 @@ function registerNewUser(
 		`INSERT INTO user (username, password, customerId) VALUES (?, ?, ?  )`,
 	);
 	try {
-		insert.run(username, password, customerId);
+        const hashedPassword = generatePasswordHash(password);
+		insert.run(username, hashedPassword, customerId);
 	} catch (error: unknown) {
 		if (error instanceof Error === false) {
 			const err = new Error("Unknown error");
@@ -47,9 +63,19 @@ function registerNewUser(
 	}
 }
 
-function updateData(database: DatabaseSync, key: number, value: string) {
-	const update = database.prepare(`UPDATE data SET value = ? WHERE key = ?`);
-	update.run(value, key);
+function findUser(database: DatabaseSync, username: string, password: string): UserRecordMini {
+    const query = database.prepare(
+        `SELECT * FROM user WHERE username = ? AND password = ?`,
+    );
+    const user = query.get(username, password) as UserRecordMini | null;
+    if (user == null) {
+        throw new Error("User not found");
+    }
+    return {
+        customerId: user.customerId,
+        userId: user.userId,
+        contextId: user.contextId,
+    }
 }
 
 
@@ -78,10 +104,10 @@ function initializeDatabaseService(): DatabaseService {
 			ensureDatabaseIsReady(databaseInstance);
 			return registerNewUser(databaseInstance, username, password, customerId);
 		},
-		updateData: (key, value) => {
-			ensureDatabaseIsReady(databaseInstance);
-			updateData(databaseInstance, key, value);
-		},
+		findUser: (username, password) => {
+            ensureDatabaseIsReady(databaseInstance);
+            return findUser(databaseInstance, username, password);
+        },
 	};
 }
 
