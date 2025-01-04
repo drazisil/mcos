@@ -32,12 +32,12 @@ export async function npsPortRouter({
 		socket.end();
 		return;
 	}
-	log.debug(`[${taggedSocket.id}] NPS port router started for port ${port}`);
+	log.debug(`[${id}] NPS port router started for port ${port}`);
 
 	if (port === 7003) {
 		// Sent ok to login packet
 		log.debug(`[${id}] Sending ok to login packet`);
-		taggedSocket.socket.write(Buffer.from([0x02, 0x30, 0x00, 0x00]));
+		socket.write(Buffer.from([0x02, 0x30, 0x00, 0x00]));
 	}
 
 	// Handle the socket connection here
@@ -69,7 +69,7 @@ export async function npsPortRouter({
 	});
 
 	socket.on("end", () => {
-		log.debug(`[${id}] Socket closed`);
+		log.debug(`[${id}] Socket closed by client for port ${port}`);
 	});
 
 	socket.on("error", (error) => {
