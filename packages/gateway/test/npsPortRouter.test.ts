@@ -99,7 +99,7 @@ describe("npsPortRouter", () => {
 			expect(error).toBeUndefined();
 		});
 
-		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed");
+		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed by client for port 7003");
 	});
 
 	it("should log socket error event", async () => {
