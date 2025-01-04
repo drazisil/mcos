@@ -78,7 +78,7 @@ function findUser(database: DatabaseSync, username: string, password: string): U
     }
 }
 
-function updateSssion(database: DatabaseSync, customerId: string, contextId: string, userId: number) {
+function updateSession(database: DatabaseSync, customerId: string, contextId: string, userId: number) {
     const insert = database.prepare(
         `INSERT OR REPLACE INTO session (contextId, customerId, userId) VALUES (?, ?, ?)`,
     );
@@ -126,7 +126,7 @@ function initializeDatabaseService(): DatabaseService {
         },
         updateSession: (customerId, contextId, userId) => {
             ensureDatabaseIsReady(databaseInstance);
-            return updateSssion(databaseInstance, customerId, contextId, userId);
+            return updateSession(databaseInstance, customerId, contextId, userId);
         }
 	};
 }
