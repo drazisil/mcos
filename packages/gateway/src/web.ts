@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import http from "node:http";
-import { CastanetResponse } from "rusty-motors-patch";
+import { CastanetResponse } from "./CastanetResponse";
 import { generateShardList } from "rusty-motors-shard";
 import {
 	handleGetCert,

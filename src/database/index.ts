@@ -1,7 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { getServerLogger } from "rusty-motors-shared";
 
-const DATABASE_PATH = "data/lotus.db";
+const DATABASE_PATH = process.env["DATABASE_PATH"] ?? "data/lotus.db";
 
 export type DatabaseService = {
     get isDatabaseConnected(): boolean;
