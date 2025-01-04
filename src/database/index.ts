@@ -13,10 +13,9 @@ export type DatabaseService = {
 
 let databaseInstance: DatabaseSync | null = null;
 
-function generatePasswordHash(password: string): string {
-    const hash = createHash("sha256");
-    hash.update(password);
-    return hash.digest("hex");
+function generatePasswordHash(password: string, saltRounds = 10): string {
+    const hash = hashSync(password, saltRounds);
+    return hash;    
 }
 
 function initializeDatabase(database: DatabaseSync) {
