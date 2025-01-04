@@ -49,7 +49,6 @@
     "rusty-motors-gateway": "link:packages/gateway",
     "rusty-motors-lobby": "link:packages/lobby",
     "rusty-motors-login": "link:packages/login",
-    "rusty-motors-mcots": "link:packages/mcots",
     "rusty-motors-nps": "link:packages/nps",
     "rusty-motors-personas": "link:packages/persona",
     "rusty-motors-shard": "link:packages/shard",
