@@ -86,9 +86,6 @@ importers:
       rusty-motors-transactions:
         specifier: link:packages/transactions
         version: link:packages/transactions
-      sqlite:
-        specifier: ^5.1.1
-        version: 5.1.1
       ts-node:
         specifier: 10.9.2
         version: 10.9.2(@types/node@22.10.3)(typescript@5.7.2)
@@ -5507,9 +5504,6 @@ packages:
   split@1.0.1:
     resolution: {integrity: sha512-mTyOoPbrivtXnwnIxZRFYRrPNtEFKlpB2fvjSnCQUiAA6qAZzqwna5envK4uk6OIeP17CsdF3rSBGYVBsU0Tkg==}
 
-  sqlite@5.1.1:
-    resolution: {integrity: sha512-oBkezXa2hnkfuJwUo44Hl9hS3er+YFtueifoajrgidvqsJRQFpc5fKoAkAor1O5ZnLoa28GBScfHXs8j0K358Q==}
-
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
 
@@ -6161,7 +6155,7 @@ snapshots:
     dependencies:
       adminjs: 7.8.13(@tiptap/extension-text-style@2.8.0(@tiptap/core@2.1.13(@tiptap/pm@2.1.13)))(@types/react@18.3.11)(debug@4.4.0)
       escape-regexp: 0.0.1
-      sequelize: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
+      sequelize: 6.37.5(pg@8.13.1)
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -11736,6 +11730,29 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  sequelize@6.37.5(pg@8.13.1):
+    dependencies:
+      '@types/debug': 4.1.12
+      '@types/validator': 13.12.2
+      debug: 4.4.0(supports-color@5.5.0)
+      dottie: 2.0.6
+      inflection: 1.13.4
+      lodash: 4.17.21
+      moment: 2.30.1
+      moment-timezone: 0.5.46
+      pg-connection-string: 2.7.0
+      retry-as-promised: 7.0.4
+      semver: 7.6.3
+      sequelize-pool: 7.1.0
+      toposort-class: 1.0.1
+      uuid: 8.3.2
+      validator: 13.12.0
+      wkx: 0.5.0
+    optionalDependencies:
+      pg: 8.13.1
+    transitivePeerDependencies:
+      - supports-color
+
   set-blocking@2.0.0: {}
 
   set-cookie-parser@2.7.0: {}
@@ -11850,8 +11867,6 @@ snapshots:
   split@1.0.1:
     dependencies:
       through: 2.3.8
-
-  sqlite@5.1.1: {}
 
   stackback@0.0.2: {}
 
