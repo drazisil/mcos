@@ -21,7 +21,7 @@ import {
 	verifyLegacyCipherSupport,
 	getServerConfiguration,
 } from "rusty-motors-shared";
-import { databaseService } from "rusty-motors-database";
+import { databaseService } from "./database";
 
 function main() {
 	const coreLogger = getServerLogger("core");

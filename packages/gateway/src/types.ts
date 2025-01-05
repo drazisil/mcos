@@ -27,5 +27,4 @@ export type WebHandlerResponse = {
 export type WebHandler = (
 	request: http.IncomingMessage,
 	response: http.ServerResponse,
-	match: RegExpMatchArray | null,
 ) => WebHandlerResponse;

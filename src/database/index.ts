@@ -1,27 +1,15 @@
-import { compareSync, hashSync } from "bcrypt";
+import { hashSync } from "bcrypt";
 import { DatabaseSync } from "node:sqlite";
 import { getServerLogger } from "rusty-motors-shared";
+import type { UserRecordMini } from "rusty-motors-shared";
 
 const DATABASE_PATH = process.env["DATABASE_PATH"] ?? "data/lotus.db";
-
-export type User = {
-	username: string;
-	password: string;
-	customerId: string;
-};
-
-export type Session = {
-	contextId: string;
-	customerId: string;
-	userId: number;
-};
 
 export type DatabaseService = {
 	get isDatabaseConnected(): boolean;
 	registerUser(username: string, password: string, customerId: string): void;
-	findUser(username: string, password: string): User;
-	getUser(username: string): User | null;
-	getAllUsers(): User[];
+	findUser(username: string, password: string): UserRecordMini;
+	getAllUsers(): UserRecordMini[];
 	updateSession(customerId: string, contextId: string, userId: number): void;
 };
 
@@ -92,46 +80,25 @@ function findUser(
 	database: DatabaseSync,
 	username: string,
 	password: string,
-): User {
+): UserRecordMini {
 	const query = database.prepare(
-		`SELECT id, username, password, customerId FROM user WHERE username = ?`,
+		`SELECT * FROM user WHERE username = ? AND password = ?`,
 	);
-	const user = query.get(username) as User | null;
+	const hashedPassword = generatePasswordHash(password);
+	const user = query.get(username, hashedPassword) as UserRecordMini | null;
 	if (user == null) {
 		throw new Error("User not found");
 	}
-
-	if (compareSync(password, user.password) === false) {
-		getServerLogger("database").warn(`Password mismatch for user ${username}`);
-		throw new Error("Password mismatch");
-	}
-
 	return {
-		username: user.username,
-		password: "",
 		customerId: user.customerId,
+		userId: user.userId,
+		contextId: user.contextId,
 	};
 }
 
-function getUser(database: DatabaseSync, username: string): User | null {
-	const query = database.prepare(
-		`SELECT id, username, password, customerId FROM user WHERE username = ?`,
-	);
-	const user = query.get(username) as User | null;
-	if (user == null) {
-		return null;
-	}
-
-	return {
-		username: user.username,
-		password: "",
-		customerId: user.customerId,
-	};
-}
-
-function getAllUsers(database: DatabaseSync): User[] {
+function getAllUsers(database: DatabaseSync): UserRecordMini[] {
 	const query = database.prepare(`SELECT * FROM user`);
-	const users = query.all() as User[];
+	const users = query.all() as UserRecordMini[];
 	return users;
 }
 
@@ -184,10 +151,6 @@ function initializeDatabaseService(): DatabaseService {
 		findUser: (username, password) => {
 			ensureDatabaseIsReady(databaseInstance);
 			return findUser(databaseInstance, username, password);
-		},
-		getUser: (username) => {
-			ensureDatabaseIsReady(databaseInstance);
-			return getUser(databaseInstance, username);
 		},
 		getAllUsers: () => {
 			ensureDatabaseIsReady(databaseInstance);
