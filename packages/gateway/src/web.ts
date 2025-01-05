@@ -22,7 +22,8 @@ import {
 	handleGetKey,
 	handleGetRegistry,
 } from "rusty-motors-shard";
-import { getServerConfiguration } from "rusty-motors-shared";
+import { getServerConfiguration, getServerLogger } from "rusty-motors-shared";
+import { databaseService } from "rusty-motors-database";
 import { WebHandler, WebHandlerResponse } from "./types";
 
 class AuthLoginResponse {
@@ -61,34 +62,102 @@ class AuthLoginResponse {
 	}
 }
 
-
 const routeHandlers: Map<string, WebHandler> = new Map();
 
 export function initializeRouteHandlers() {
-	routeHandlers.set("/", handleRoot);
-	routeHandlers.set("/games/EA_Seattle/MotorCity/UpdateInfo", handleCastanet);
-	routeHandlers.set("/games/EA_Seattle/MotorCity/NPS", handleCastanet);
-	routeHandlers.set("/games/EA_Seattle/MotorCity/MCO", handleCastanet);
-	routeHandlers.set("/AuthLogin", handleAuthLogin);
-	routeHandlers.set("/ShardList/", handleShardList);
-	routeHandlers.set("/cert", () => {
+	routeHandlers.set("^/$", handleRoot);
+	routeHandlers.set("^/games/EA_Seattle/MotorCity/UpdateInfo$", handleCastanet);
+	routeHandlers.set("^/games/EA_Seattle/MotorCity/NPS$", handleCastanet);
+	routeHandlers.set("^/games/EA_Seattle/MotorCity/MCO$", handleCastanet);
+	routeHandlers.set("^/AuthLogin$", handleAuthLogin);
+	routeHandlers.set("^/ShardList/$", handleShardList);
+	routeHandlers.set("^/cert$", generateCertificateResponse);
+	routeHandlers.set("^/key$", generatePublicKeyResponse);
+	routeHandlers.set("^/registry$", generateRegistryResponse);
+	routeHandlers.set("^/user/([a-zA-Z0-9]+)$", handleUser);
+	routeHandlers.set("^/users$", handleUsers);
+}
+
+function handleUsers(
+	_request: http.IncomingMessage,
+	_response: http.ServerResponse,
+): WebHandlerResponse {
+	try {
+		const users = databaseService.getAllUsers();
+		obscureUserPasswords(users);
 		return {
-			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=server.crt" },
-			body: handleGetCert(getServerConfiguration()),
+			headers: { "Content-Type": "text/plain" },
+			body: JSON.stringify(users),
 		};
-	});
-	routeHandlers.set("/key", () => {
+	} catch (error) {
+		getServerLogger("gateway").error("Error retrieving users", error);
 		return {
-			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=pub.key" },
-			body: handleGetKey(getServerConfiguration()),
+			headers: { "Content-Type": "text/plain" },
+			body: "Error retrieving users",
 		};
-	});
-	routeHandlers.set("/registry", () => {
+	}
+}
+
+function obscureUserPasswords(users: import("/home/drazisil/gh/server/packages/database/databaseService").User[]) {
+	for (const user of users) {
+		user.password = "***";
+	}
+}
+
+function handleUser(
+	_request: http.IncomingMessage,
+	_response: http.ServerResponse,
+	match: RegExpMatchArray | null,
+): WebHandlerResponse {
+	const username = match?.[1];
+	if (username === undefined) {
 		return {
-			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=server.reg" },
-			body: handleGetRegistry(getServerConfiguration()),
+			headers: { "Content-Type": "text/plain" },
+			body: "Invalid username provided",
 		};
-	});
+	}
+	const user = databaseService.getUser(username);
+	if (user !== null) {
+		return {
+			headers: { "Content-Type": "text/plain" },
+			body: JSON.stringify(user),
+		};
+	}
+
+	return {
+		headers: { "Content-Type": "text/plain" },
+		body: "User not found",
+	};
+}
+
+function generateRegistryResponse(): WebHandlerResponse {
+	return {
+		headers: {
+			"Content-Type": "octet-stream",
+			"Content-Disposition": "attachment; filename=server.reg",
+		},
+		body: handleGetRegistry(getServerConfiguration()),
+	};
+}
+
+function generatePublicKeyResponse(): WebHandlerResponse {
+	return {
+		headers: {
+			"Content-Type": "octet-stream",
+			"Content-Disposition": "attachment; filename=pub.key",
+		},
+		body: handleGetKey(getServerConfiguration()),
+	};
+}
+
+function generateCertificateResponse(): WebHandlerResponse {
+	return {
+		headers: {
+			"Content-Type": "octet-stream",
+			"Content-Disposition": "attachment; filename=server.crt",
+		},
+		body: handleGetCert(getServerConfiguration()),
+	};
 }
 
 /**
@@ -98,7 +167,7 @@ export function initializeRouteHandlers() {
  */
 function handleRoot(): WebHandlerResponse {
 	return {
-		headers: {"Content-Type": "text/plain"},
+		headers: { "Content-Type": "text/plain" },
 		body: "Hello, world!",
 	};
 }
@@ -116,8 +185,6 @@ function handleCastanet(): WebHandlerResponse {
 		body: CastanetResponse.body,
 	};
 }
-
-
 
 /**
  * Handles the authentication login process.
@@ -147,19 +214,19 @@ function handleAuthLogin(
 		"https://winehq.com",
 	);
 
-	const user = retrieveUserAccount(username, password);
+	const customerId = retrieveUserAccount(username, password);
 
-	if (user !== null) {
-		const ticket = generateTicket(user.customerId);
+	if (customerId !== null) {
+		const ticket = generateTicket(customerId);
 		if (ticket !== "") {
 			authResponse = AuthLoginResponse.createValid(ticket);
 		}
 	}
-
+	getServerLogger("gateway").info(`User ${username} logged in`);
 	return {
-		headers: {"Content-Type": "text/plain"},
+		headers: { "Content-Type": "text/plain" },
 		body: authResponse.formatResponse(),
-	}
+	};
 }
 
 /**
@@ -170,13 +237,10 @@ function handleAuthLogin(
 function handleShardList(): WebHandlerResponse {
 	const shardList = generateShardList(getServerConfiguration().host);
 	return {
-		headers: {"Content-Type": "text/plain"},
+		headers: { "Content-Type": "text/plain" },
 		body: shardList,
 	};
 }
-
-
-
 
 /**
  * Handles incoming HTTP requests and sends appropriate responses based on the request URL.
@@ -198,15 +262,15 @@ export function processHttpRequest(
 	request: http.IncomingMessage,
 	response: http.ServerResponse,
 ) {
-
 	const url = new URL(
 		`http://${process.env["HOST"] ?? "localhost"}${request.url}`,
 	);
 
-	if (routeHandlers.has(url.pathname)) {
-		const handler = routeHandlers.get(url.pathname);
-		if (handler) {
-			const { headers, body } = handler(request, response);
+	for (const [path, handler] of routeHandlers) {
+		const regex = new RegExp(`^${path}$`);
+		const match = url.pathname.match(regex);
+		if (match) {
+			const { headers, body } = handler(request, response, match);
 			Object.entries(headers).forEach(([key, value]) => {
 				response.setHeader(key, value);
 			});
@@ -218,23 +282,6 @@ export function processHttpRequest(
 	response.statusCode = 404;
 	response.end("Not found");
 }
-
-
-
-const UserAccounts = [
-	{
-		username: "new",
-		ticket: "5213dee3a6bcdb133373b2d4f3b9962758",
-		password: "new",
-		customerId: "123456",
-	},
-	{
-		username: "admin",
-		ticket: "d316cd2dd6bf870893dfbaaf17f965884e",
-		password: "admin",
-		customerId: "654321",
-	},
-];
 
 const AuthTickets = [
 	{
@@ -266,15 +313,20 @@ function generateTicket(customerId: string): string {
  *
  * @param username - The username of the account to retrieve.
  * @param password - The password of the account to retrieve.
- * @returns An object containing the username, ticket, and customerId if the account is found, or null if not.
+ * @returns the Customer ID, or null if the user account is not found.
  */
 function retrieveUserAccount(
 	username: string,
 	password: string,
-): { username: string; ticket: string; customerId: string } | null {
-	const customer = UserAccounts.find(
-		(account) => account.username === username && account.password === password,
-	);
-
-	return customer ?? null;
-}
+): string | null {
+try {
+		const user = databaseService.findUser(username, password);
+		if (user !== null) {
+			return user.customerId;
+		}
+		return null;
+	
+} catch (error) {
+	getServerLogger("gateway").error("Error retrieving user", error);
+	return null;
+}}
