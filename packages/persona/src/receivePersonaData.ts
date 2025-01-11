@@ -48,7 +48,7 @@ export async function receivePersonaData({
 	if (typeof supportedHandler === "undefined") {
 		// We do not yet support this message code
 		throw Error(
-			`[connectionId}] UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`,
+			`[${connectionId}] UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`,
 		);
 	}
 
