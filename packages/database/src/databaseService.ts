@@ -2,51 +2,25 @@ import { hashSync } from "bcrypt";
 import { DatabaseSync } from "node:sqlite";
 import { getServerLogger } from "rusty-motors-shared";
 import type { UserRecordMini } from "rusty-motors-shared";
-
-// Constants
-const DATABASE_PATH = process.env["DATABASE_PATH"] ?? "data/lotus.db";
-
-// SQL Queries
-const SQL = {
-	CREATE_USER_TABLE: `
-        CREATE TABLE IF NOT EXISTS user(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        customerId TEXT NOT NULL
-    ) STRICT`,
-	CREATE_SESSION_TABLE: `
-        CREATE TABLE IF NOT EXISTS session(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        contextId TEXT UNIQUE NOT NULL,
-        customerId TEXT NOT NULL,
-        userId INTEGER NOT NULL,
-        FOREIGN KEY(userId) REFERENCES user(id)
-    ) STRICT`,
-	INSERT_USER:
-		"INSERT INTO user (username, password, customerId) VALUES (?, ?, ?)",
-	FIND_USER: "SELECT * FROM user WHERE username = ? AND password = ?",
-	GET_ALL_USERS: "SELECT * FROM user",
-	UPDATE_SESSION:
-		"INSERT OR REPLACE INTO session (contextId, customerId, userId) VALUES (?, ?, ?)",
-} as const;
+import { SQL, DATABASE_PATH } from "./databaseConstrants";
 
 // Database Service Interface
 export interface DatabaseService {
-	isDatabaseConnected: () => boolean;
-	registerUser: (
-		username: string,
-		password: string,
-		customerId: string,
-	) => void;
-	findUser: (username: string, password: string) => UserRecordMini;
-	getAllUsers: () => UserRecordMini[];
-	updateSession: (
-		customerId: string,
-		contextId: string,
-		userId: number,
-	) => void;
-}
+		isDatabaseConnected: () => boolean;
+		registerUser: (
+			username: string,
+			password: string,
+			customerId: number,
+		) => void;
+		findUser: (username: string, password: string) => UserRecordMini;
+		getAllUsers: () => UserRecordMini[];
+		updateSession: (
+			customerId: number,
+			contextId: string,
+			userId: number,
+		) => void;
+		findSessionByContext: (contextId: string) => UserRecordMini | undefined;
+	}
 
 // Database Implementation
 export const DatabaseImpl = {
@@ -91,7 +65,7 @@ export const DatabaseImpl = {
 		database: DatabaseSync,
 		username: string,
 		password: string,
-		customerId: string,
+		customerId: number,
 	) {
 		const logger = getServerLogger("database");
 		const hashedPassword = this.generatePasswordHash(password);
@@ -132,7 +106,7 @@ export const DatabaseImpl = {
 		}
 		return {
 			customerId: user.customerId,
-			userId: user.userId,
+			profileId: user.profileId,
 			contextId: user.contextId,
 		};
 	},
@@ -157,12 +131,21 @@ export const DatabaseImpl = {
 	 */
 	updateSession(
 		database: DatabaseSync,
-		customerId: string,
+		customerId: number,
 		contextId: string,
-		userId: number,
+		profileId: number,
 	) {
 		const insert = database.prepare(SQL.UPDATE_SESSION);
-		insert.run(contextId, customerId, userId);
+		insert.run(contextId, customerId, profileId);
+	},
+
+	findSessionByContext(
+		database: DatabaseSync,
+		contextId: string,
+	): UserRecordMini | undefined {
+		const query = database.prepare(SQL.FIND_SESSION_BY_CONTEXT);
+		const user = query.get(contextId) as UserRecordMini | undefined;
+		return user;
 	},
 
 	/**
@@ -177,6 +160,7 @@ export const DatabaseImpl = {
 			findUser: (...args) => this.findUser(db, ...args),
 			getAllUsers: () => this.getAllUsers(db),
 			updateSession: (...args) => this.updateSession(db, ...args),
+			findSessionByContext: (...args) => this.findSessionByContext(db, ...args),
 		};
 	},
 } as const;
@@ -192,11 +176,32 @@ function initializeDatabaseService(): DatabaseService {
 	if (databaseInstance === null) {
 		databaseInstance = new DatabaseSync(DATABASE_PATH);
 		DatabaseImpl.initializeDatabase(databaseInstance);
-		DatabaseImpl.registerNewUser(databaseInstance, "admin", "admin", "654321");
+		DatabaseImpl.registerNewUser(databaseInstance, "admin", "admin", 5551212);
+		DatabaseImpl.updateSession(
+			databaseInstance,
+			1212555,
+			"5213dee3a6bcdb133373b2d4f3b9962758",
+			1,
+		);
+		DatabaseImpl.updateSession(
+			databaseInstance,
+			5551212,
+			"d316cd2dd6bf870893dfbaaf17f965884e",
+			2,
+		);
 		getServerLogger("database").info("Database initialized");
 	}
 
 	return DatabaseImpl.createDatabaseService(databaseInstance);
+}
+
+
+export function findCustomerByContext(
+	contextId: string,
+): UserRecordMini | undefined {
+	const database = initializeDatabaseService();
+	const user = database.findSessionByContext(contextId);
+	return user;
 }
 
 // Exported Database Service Instance

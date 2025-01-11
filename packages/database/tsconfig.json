@@ -5,5 +5,5 @@
 		"composite": true,
 		"resolveJsonModule": true
 	},
-	"include": ["index.ts", "src", "src/__generated__/schema.json"]
+	"include": ["index.ts", "src/**/*.ts", "src/__generated__/schema.json"]
 }

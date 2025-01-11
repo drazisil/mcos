@@ -45,10 +45,10 @@ export interface GameMessageOpCode {
 }
 
 export interface UserRecordMini {
-	contextId: string;
-	customerId: number;
-	userId: number;
-}
+		contextId: string;
+		customerId: number;
+		profileId: number;
+	}
 
 /**
  * @exports
