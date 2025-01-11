@@ -23,7 +23,13 @@ import {
 	handleGetRegistry,
 } from "rusty-motors-shard";
 import { getServerConfiguration } from "rusty-motors-shared";
-import { WebHandler, WebHandlerResponse } from "./types";
+
+type WebHandlerResponse = {
+	headers: Record<string, string>;
+	body: string | Buffer;
+};
+
+type WebHandler = (request: http.IncomingMessage, response: http.ServerResponse) => WebHandlerResponse;
 
 class AuthLoginResponse {
 	valid: boolean = false;
