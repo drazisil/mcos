@@ -16,7 +16,7 @@
 
 import { Socket } from "node:net";
 import { randomUUID } from "node:crypto";
-import { tagSocketWithId } from "./socketUtility.js";
+import { tagSocket } from "./socketUtility.js";
 import { getPortRouter } from "./portRouters.js";
 import * as Sentry from "@sentry/node";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
@@ -44,7 +44,7 @@ export function onSocketConnection({
 		throw Error("localPort or remoteAddress is undefined");
 	}
 
-	const socketWithId = tagSocketWithId(
+	const socketWithId = tagSocket(
 		incomingSocket,
 		Date.now(),
 		randomUUID(),

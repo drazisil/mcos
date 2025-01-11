@@ -14,7 +14,10 @@ describe("mcotsPortRouter", () => {
 			end: vi.fn(),
 			on: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 try {
 			await mcotsPortRouter({ taggedSocket });
@@ -34,7 +37,10 @@ try {
 				}
 			}),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-mcots" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id-mcots",
+		};
 
 		const mockServerPacket = {
 			deserialize: vi.fn(),
@@ -63,7 +69,10 @@ try {
 				}
 			}),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 	try {
 				await mcotsPortRouter({ taggedSocket });
@@ -82,7 +91,10 @@ try {
 			}),
 		};
 
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 try {
 			await mcotsPortRouter({ taggedSocket});

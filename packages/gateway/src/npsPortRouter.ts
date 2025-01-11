@@ -23,7 +23,7 @@ export async function npsPortRouter({
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;
 }): Promise<void> {
-	const { socket, id } = taggedSocket;
+	const { rawSocket: socket, connectionId: id } = taggedSocket;
 
 	const port = socket.localPort || 0;
 

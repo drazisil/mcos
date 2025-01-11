@@ -1,10 +1,5 @@
-import type { TaggedSocket } from "./socketUtility.js";
-import { getServerLogger, ServerLogger } from "rusty-motors-shared";
-
-type PortRouter = (portRouterArgs: {
-	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
-}) => Promise<void>;
+import type { PortRouter, PortRouterArgs } from "./types.js";
+import { getServerLogger } from "rusty-motors-shared";
 
 /**
  * A map that associates port numbers with their corresponding router functions.
@@ -38,16 +33,13 @@ export function addPortRouter(port: number, router: PortRouter) {
 async function notFoundRouter({
 	taggedSocket,
 	log = getServerLogger("gateway.notFoundRouter"),
-}: {
-	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
-}) {
-	taggedSocket.socket.on("error", (error) => {
-		console.error(`[${taggedSocket.id}] Socket error: ${error}`);
+}: PortRouterArgs) {
+	taggedSocket.rawSocket.on("error", (error) => {
+		console.error(`[${taggedSocket.connectionId}] Socket error: ${error}`);
 	});
-	taggedSocket.socket.end();
+	taggedSocket.rawSocket.end();
 	log.error(
-		`[${taggedSocket.id}] No router found for port ${taggedSocket.socket.localPort}`,
+		`[${taggedSocket.connectionId}] No router found for port ${taggedSocket.rawSocket.localPort}`,
 	);
 }
 /**
