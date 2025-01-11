@@ -1,4 +1,4 @@
-import { DatabaseManager } from "rusty-motors-database";
+import { databaseManager } from "rusty-motors-database";
 import {
 	getServerConfiguration,
 	NetworkMessage,
@@ -64,7 +64,7 @@ export async function login({
 	}
 
 	// Save sessionkey in database under customerId
-	await DatabaseManager.updateSessionKey(
+	await databaseManager.updateSessionKey(
 		userRecord.customerId,
 		sessionKey ?? "",
 		contextId,

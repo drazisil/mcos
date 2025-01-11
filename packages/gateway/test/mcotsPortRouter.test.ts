@@ -3,6 +3,19 @@ import { mcotsPortRouter } from "../src/mcotsPortRouter.js";
 import type { TaggedSocket } from "../src/socketUtility.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 
+vi.mock("rusty-motors-database", () => ({
+	databaseManager: {
+		updateSessionKey: vi.fn(),
+		fetchSessionKeyByConnectionId: vi.fn(),
+		fetchSessionKeyByCustomerId: vi.fn(),
+		updateUser: vi.fn(),
+	},
+}));
+
+vi.mocked(
+	await import("rusty-motors-database"),
+).databaseManager;
+
 describe("mcotsPortRouter", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();

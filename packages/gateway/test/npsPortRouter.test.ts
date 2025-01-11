@@ -5,6 +5,19 @@ import { GamePacket } from "rusty-motors-shared-packets";
 import { ServerLogger } from "rusty-motors-shared";
 import { Socket } from "node:net";
 
+vi.mock("rusty-motors-database", () => ({
+	databaseManager: {
+		updateSessionKey: vi.fn(),
+		fetchSessionKeyByConnectionId: vi.fn(),
+		fetchSessionKeyByCustomerId: vi.fn(),
+		updateUser: vi.fn(),
+	},
+}));
+
+vi.mocked(
+	await import("rusty-motors-database"),
+).databaseManager;
+
 describe("npsPortRouter", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();

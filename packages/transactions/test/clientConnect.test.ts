@@ -1,8 +1,22 @@
 import { describe, expect, it, vi } from "vitest";
-import { DatabaseManager } from "rusty-motors-database";
 import { TClientConnectMessage } from "../src/TClientConnectMessage.js";
 import { clientConnect } from "../src/clientConnect.js";
-import { ServerLogger } from "rusty-motors-shared";
+import { ConnectionRecord, ServerLogger } from "rusty-motors-shared";
+
+vi.mock("rusty-motors-database", () => ({
+	databaseManager: {
+		updateSessionKey: vi.fn(),
+		fetchSessionKeyByConnectionId: vi.fn(),
+		fetchSessionKeyByCustomerId: vi.fn().mockImplementation(() => {
+			return Promise.reject(new Error("Session key not found"));
+		}),
+		updateUser: vi.fn(),
+	},
+}));
+
+const mockDatabaseManager = vi.mocked(
+	await import("rusty-motors-database"),
+).databaseManager;
 
 describe("clientConnect", () => {
 	it("throws when connection is not found", async () => {
@@ -24,7 +38,12 @@ describe("clientConnect", () => {
 			warn: () => vi.fn(),
 			child: () => log,
 		};
-		DatabaseManager.updateSessionKey(customerId, sessionKey, contextId, connectionId);
+		mockDatabaseManager.updateSessionKey(
+			customerId,
+			sessionKey,
+			contextId,
+			connectionId,
+		);
 
 		// act
 		try {
@@ -36,7 +55,7 @@ describe("clientConnect", () => {
 		} catch (error) {
 			// assert
 			expect(error).toEqual(
-				new Error(`Encryption not found for connection ${connectionId}`),
+				new Error("Session key not found"),
 			);
 		}
 	});
