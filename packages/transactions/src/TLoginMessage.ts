@@ -79,7 +79,7 @@ export class TLoginMessage extends OldServerMessage {
 	/**
 	 * @param {Buffer} buffer
 	 */
-	deserialize(buffer: Buffer) {
+	override deserialize(buffer: Buffer) {
 		let offset = 0;
 		this._header._doDeserialize(buffer);
 		offset += this._header._size;

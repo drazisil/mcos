@@ -13,7 +13,8 @@
 		"lint": "npx @biomejs/biome lint --write .",
 		"format": "npx @biomejs/biome format --write .",
 		"test": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage",
-		"test:crypto": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage"
+		"test:crypto": "pnpm node --openssl-legacy-provider node_modules/vitest/vitest.mjs run --coverage",
+        "build": "tsc"
 	},
 	"keywords": [],
 	"author": "",
