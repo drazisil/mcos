@@ -45,7 +45,7 @@ import { _MSG_STRING } from "./_MSG_STRING.js";
 async function processInput({
 	connectionId,
 	inboundMessage,
-	log = getServerLogger( "transactionServer"),
+	log = getServerLogger( "transactionServer.processInput"),
 }: {
 	connectionId: string;
 	inboundMessage: ServerPacket;
@@ -90,7 +90,7 @@ async function processInput({
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "transactionServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "transactionServer" })]
  * @returns {Promise<{
  *     connectionId: string,
  *    messages: SerializedBufferOld[]

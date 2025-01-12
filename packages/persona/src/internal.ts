@@ -25,12 +25,8 @@ import { _gameLogout } from "./_gameLogout.js";
 import { _getFirstBuddy } from "./_getFirstBuddy.js";
 import { _selectGamePersona } from "./_selectGamePersona.js";
 import { validatePersonaName } from "./handlers/validatePersonaName.js";
-import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
 import { getServerLogger } from "rusty-motors-shared";
-
-
-const defaultLogger = getServerLogger("PersonaServer");
 
 
 /**
@@ -42,7 +38,7 @@ const defaultLogger = getServerLogger("PersonaServer");
  * handler: (args: {
  * connectionId: string,
  * message: LegacyMessage,
- * log: import("pino").Logger,
+ * log: ServerLogger,
  * }) => Promise<{
  * connectionId: string,
  * messages: SerializedBufferOld[],
@@ -152,7 +148,7 @@ async function getPersonasByCustomerId(
  * TODO: Store in a database, instead of being hard-coded
  *
  * @param {number} customerId
- * @return {Promise<import("../../interfaces/index.js").PersonaRecord[]>}
+ * @return {Promise<PersonaRecord[]>}
  */
 async function getPersonaMapsByCustomerId(
 	customerId: number,
@@ -172,7 +168,7 @@ async function getPersonaMapsByCustomerId(
  * @param {object} args
  * @param {string} args.connectionId
  * @param {LegacyMessage} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "LoginServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],
@@ -181,7 +177,7 @@ async function getPersonaMapsByCustomerId(
 async function getPersonaMaps({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("PersonaServer/_getPersonaMaps"),
 }: {
 	connectionId: string;
 	message: LegacyMessage;
@@ -256,68 +252,6 @@ async function getPersonaMaps({
 	} catch (error) {
 		const err = Error(`Error serializing personaMapsMsg`);
 		err.cause = error;
-		throw err;
-	}
-}
-
-/**
- *
- *
- * @param {object} args
- * @param {string} args.connectionId
- * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "PersonaServer" })]
- * @returns {Promise<{
- *  connectionId: string,
- * messages: SerializedBufferOld[],
- * }>}
- * @throws {Error} Unknown code was received
- */
-export async function receivePersonaData({
-	connectionId,
-	message,
-	log = defaultLogger,
-}: {
-	connectionId: string;
-	message: BufferSerializer;
-	log?: ServerLogger;
-}): Promise<{
-	connectionId: string;
-	messages: SerializedBufferOld[];
-}> {
-	const data = message.serialize();
-	log.debug(`[${connectionId}] Entering receivePersonaData`);
-	log.debug(`[${connectionId}] Received persona data: ${data.toString("hex")}`);
-
-	// The packet needs to be an NPSMessage
-	const inboundMessage = new LegacyMessage();
-	inboundMessage._doDeserialize(message.serialize());
-
-	const supportedHandler = messageHandlers.find((h) => {
-		return h.opCode === inboundMessage._header.id;
-	});
-
-	if (typeof supportedHandler === "undefined") {
-		// We do not yet support this message code
-		throw Error(
-			`[connectionId}] UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`,
-		);
-	}
-
-	try {
-		const result = await supportedHandler.handler({
-			connectionId,
-			message: inboundMessage,
-			log,
-		});
-		log.debug(
-			`[${connectionId}] Returning with ${result.messages.length} messages`,
-		);
-		return result;
-	} catch (error) {
-		const err = Error(`[${connectionId}] Error handling persona data`, {
-			cause: error,
-		});
 		throw err;
 	}
 }

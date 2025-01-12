@@ -2,6 +2,21 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { npsPortRouter } from "../src/npsPortRouter.js";
 import type { TaggedSocket } from "../src/socketUtility.js";
 import { GamePacket } from "rusty-motors-shared-packets";
+import { ServerLogger } from "rusty-motors-shared";
+import { Socket } from "node:net";
+
+vi.mock("rusty-motors-database", () => ({
+	databaseManager: {
+		updateSessionKey: vi.fn(),
+		fetchSessionKeyByConnectionId: vi.fn(),
+		fetchSessionKeyByCustomerId: vi.fn(),
+		updateUser: vi.fn(),
+	},
+}));
+
+vi.mocked(
+	await import("rusty-motors-database"),
+).databaseManager;
 
 describe("npsPortRouter", () => {
 	beforeEach(() => {
@@ -14,7 +29,11 @@ describe("npsPortRouter", () => {
 			end: vi.fn(),
 			on: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket as unknown as Socket,
+			connectionId: "test-id",
+			connectedAt: Date.now(),
+		};
 
 		try {
 			await npsPortRouter({ taggedSocket });
@@ -31,7 +50,11 @@ describe("npsPortRouter", () => {
 			write: vi.fn(),
 			on: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket as unknown as Socket,
+			connectionId: "test-id-nps",
+			connectedAt: Date.now(),
+		};
 
 		await npsPortRouter({ taggedSocket }).catch((error) => {
 			expect(error).toBeUndefined();
@@ -58,7 +81,11 @@ describe("npsPortRouter", () => {
 			}),
 		};
 
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-nps" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket as unknown as Socket,
+			connectionId: "test-id-nps",
+			connectedAt: Date.now(),
+		};
 
 		const mockGamePacket = {
 			deserialize: vi.fn(),
@@ -93,13 +120,17 @@ describe("npsPortRouter", () => {
 			error: vi.fn(),
 			debug: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket as unknown as Socket,
+			connectionId: "test-id",
+			connectedAt: Date.now(),
+		};
 
-		await npsPortRouter({ taggedSocket, log: mockLogger }).catch((error) => {
+		await npsPortRouter({ taggedSocket, log: mockLogger as unknown as ServerLogger }).catch((error) => {
 			expect(error).toBeUndefined();
 		});
 
-		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed");
+		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed by client for port 7003");
 	});
 
 	it("should log socket error event", async () => {
@@ -111,19 +142,24 @@ describe("npsPortRouter", () => {
 				}
 			}),
 			write: vi.fn(),
-		};
-		const mockLogger = {
+		} as unknown as Socket;
+		const mockLogger: ServerLogger = {
 			error: vi.fn(),
 			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			fatal: vi.fn(),
+			trace: vi.fn(),
+			child: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
-
-		try {
-		
-			await npsPortRouter({ taggedSocket, log: mockLogger });
-		} catch (error) {
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+			connectedAt: Date.now(),
+		};
+		await npsPortRouter({ taggedSocket, log: mockLogger }).catch((error) => {
 			expect(error).toBeUndefined();
-		}
+		});
 
 		expect(mockLogger.error).toHaveBeenCalledWith(
 			"[test-id] Socket error: Error: Test error",

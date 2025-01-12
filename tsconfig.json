@@ -1,8 +1,8 @@
 {
 	"extends": "./tsconfig.base.json",
-    "compilerOptions": {
+	"compilerOptions": {
 		"incremental": true,
-        "composite": true
+		"composite": true
 	},
-	"include": ["src/server.ts"]
+	"include": ["src/server.ts", "src/database/databaseService.ts"]
 }

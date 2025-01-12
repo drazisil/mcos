@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import http from "node:http";
-import { CastanetResponse } from "rusty-motors-patch";
+import { CastanetResponse } from "./CastanetResponse";
 import { generateShardList } from "rusty-motors-shard";
 import {
 	handleGetCert,
@@ -23,7 +23,13 @@ import {
 	handleGetRegistry,
 } from "rusty-motors-shard";
 import { getServerConfiguration } from "rusty-motors-shared";
-import { WebHandler, WebHandlerResponse } from "./types";
+
+type WebHandlerResponse = {
+	headers: Record<string, string>;
+	body: string | Buffer;
+};
+
+type WebHandler = (request: http.IncomingMessage, response: http.ServerResponse) => WebHandlerResponse;
 
 class AuthLoginResponse {
 	valid: boolean = false;

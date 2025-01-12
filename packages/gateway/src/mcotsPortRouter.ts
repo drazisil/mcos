@@ -20,7 +20,7 @@ export async function mcotsPortRouter({
 	taggedSocket: TaggedSocket;
 	log?: ServerLogger;
 }): Promise<void> {
-	const { socket, id } = taggedSocket;
+	const { rawSocket: socket, connectionId: id } = taggedSocket;
 
 	const port = socket.localPort || 0;
 
@@ -30,7 +30,7 @@ export async function mcotsPortRouter({
 		return;
 	}
 
-	log.debug(`[${taggedSocket.id}] MCOTS port router started for port ${port}`);
+	log.debug(`[${id}] MCOTS port router started for port ${port}`);
 
 	// Handle the socket connection here
 	socket.on("data", async (data) => {
@@ -57,7 +57,7 @@ export async function mcotsPortRouter({
 	});
 
 	socket.on("end", () => {
-		log.debug(`[${id}] Socket closed`);
+		log.debug(`[${id}] Socket closed by client for port ${port}`);
 	});
 
 	socket.on("error", (error) => {

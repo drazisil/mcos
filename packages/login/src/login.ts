@@ -1,9 +1,5 @@
-import { DatabaseManager } from "rusty-motors-database";
-import {
-	getServerConfiguration,
-	NetworkMessage,
-} from "rusty-motors-shared";
-import { userRecords } from "./internal.js";
+import { databaseManager, findCustomerByContext } from "rusty-motors-database";
+import { getServerConfiguration, NetworkMessage } from "rusty-motors-shared";
 import { NPSUserStatus } from "./NPSUserStatus.js";
 import { ServerLogger, getServerLogger } from "rusty-motors-shared";
 import { GamePacket } from "rusty-motors-shared-packets";
@@ -15,7 +11,7 @@ import { GamePacket } from "rusty-motors-shared-packets";
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "LoginServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "LoginServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],
@@ -51,10 +47,7 @@ export async function login({
 	userStatus.dumpPacket();
 
 	// Load the customer record by contextId
-	// TODO: #1175 Move customer records from being hard-coded to database records
-	const userRecord = userRecords.find((r) => {
-		return r.contextId === contextId;
-	});
+	const userRecord = findCustomerByContext(contextId);
 
 	if (typeof userRecord === "undefined") {
 		// We were not able to locate the user's record
@@ -64,7 +57,7 @@ export async function login({
 	}
 
 	// Save sessionkey in database under customerId
-	await DatabaseManager.updateSessionKey(
+	await databaseManager.updateSessionKey(
 		userRecord.customerId,
 		sessionKey ?? "",
 		contextId,
@@ -85,7 +78,7 @@ export async function login({
 	let offset = 0;
 	dataBuffer.writeInt32BE(userRecord.customerId, offset);
 	offset += 4;
-	dataBuffer.writeInt32BE(userRecord.userId, offset);
+	dataBuffer.writeInt32BE(userRecord.profileId, offset);
 	offset += 4;
 	dataBuffer.writeInt8(0, offset); // isCacheHit
 	offset += 1;
@@ -121,3 +114,6 @@ export async function login({
 	);
 	return response;
 }
+
+
+

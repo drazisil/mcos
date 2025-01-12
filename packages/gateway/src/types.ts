@@ -1,11 +1,15 @@
-import type { Socket } from "net";
+import type { TaggedSocket } from "./socketUtility.js";
 import type { Configuration, ServerLogger } from "rusty-motors-shared";
-import http from "node:http";
+import type { Socket } from "node:net";
 
-/**
- * Options for the GatewayServer.
- */
-export type GatewayOptions = {
+export type PortRouterArgs = {
+	taggedSocket: TaggedSocket;
+	log?: ServerLogger;
+};
+
+export type PortRouter = (portRouterArgs: PortRouterArgs) => Promise<void>;
+
+export interface GatewayOptions {
 	config?: Configuration;
 	log?: ServerLogger;
 	backlogAllowedCount?: number;
@@ -13,18 +17,5 @@ export type GatewayOptions = {
 	socketConnectionHandler?: ({
 		incomingSocket,
 		log,
-	}: {
-		incomingSocket: Socket;
-		log?: ServerLogger;
-	}) => void;
-};
-
-export type WebHandlerResponse = {
-	headers: { [key: string]: string };
-	body: unknown;
-};
-
-export type WebHandler = (
-	request: http.IncomingMessage,
-	response: http.ServerResponse,
-) => WebHandlerResponse;
+	}: { incomingSocket: Socket; log?: ServerLogger }) => void;
+}

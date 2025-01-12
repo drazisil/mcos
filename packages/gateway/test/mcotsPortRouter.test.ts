@@ -3,6 +3,19 @@ import { mcotsPortRouter } from "../src/mcotsPortRouter.js";
 import type { TaggedSocket } from "../src/socketUtility.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 
+vi.mock("rusty-motors-database", () => ({
+	databaseManager: {
+		updateSessionKey: vi.fn(),
+		fetchSessionKeyByConnectionId: vi.fn(),
+		fetchSessionKeyByCustomerId: vi.fn(),
+		updateUser: vi.fn(),
+	},
+}));
+
+vi.mocked(
+	await import("rusty-motors-database"),
+).databaseManager;
+
 describe("mcotsPortRouter", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
@@ -14,7 +27,10 @@ describe("mcotsPortRouter", () => {
 			end: vi.fn(),
 			on: vi.fn(),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 try {
 			await mcotsPortRouter({ taggedSocket });
@@ -34,7 +50,10 @@ try {
 				}
 			}),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id-mcots" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id-mcots",
+		};
 
 		const mockServerPacket = {
 			deserialize: vi.fn(),
@@ -63,7 +82,10 @@ try {
 				}
 			}),
 		};
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 	try {
 				await mcotsPortRouter({ taggedSocket });
@@ -82,7 +104,10 @@ try {
 			}),
 		};
 
-		const taggedSocket: TaggedSocket = { socket: mockSocket, id: "test-id" };
+		const taggedSocket: TaggedSocket = {
+			rawSocket: mockSocket,
+			connectionId: "test-id",
+		};
 
 try {
 			await mcotsPortRouter({ taggedSocket});

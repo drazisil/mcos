@@ -14,24 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { ServerLogger, type UserRecordMini } from "rusty-motors-shared";
+import { ServerLogger } from "rusty-motors-shared";
 import { login } from "./login.js";
 import { GamePacket } from "rusty-motors-shared-packets";
-
-
-export const userRecords: UserRecordMini[] = [
-	{
-		contextId: "5213dee3a6bcdb133373b2d4f3b9962758",
-		customerId: 0x0012808b,
-		userId: 0x00000002,
-	},
-	{
-		contextId: "d316cd2dd6bf870893dfbaaf17f965884e",
-		customerId: 0x0054b46c,
-		userId: 0x00000001,
-	},
-];
-
 
 /**
  * An array of message handlers for processing different types of messages.

@@ -32,7 +32,7 @@ import { getServerLogger } from "rusty-motors-shared";
  * handler: (args: {
  * connectionId: string,
  * message: SerializedBufferOld,
- * log: import("pino").Logger,
+ * log: ServerLogger,
  * }) => Promise<{
  * connectionId: string,
  * messages: SerializedBufferOld[],
@@ -71,7 +71,7 @@ export const messageHandlers: {
  * @param {object} args
  * @param {string} args.connectionId
  * @param {SerializedBufferOld} args.message
- * @param {import("pino").Logger} [args.log=getServerLogger({ name: "PersonaServer" })]
+ * @param {ServerLogger} [args.log=getServerLogger({ name: "PersonaServer" })]
  * @returns {Promise<{
  *  connectionId: string,
  * messages: SerializedBufferOld[],

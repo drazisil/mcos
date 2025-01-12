@@ -13,16 +13,19 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-import { NPSMessage } from "rusty-motors-shared";
+import { NPSMessage, ServerLogger } from "rusty-motors-shared";
 
 /**
  * Selects a game persona and marks it as in use
  * @param {NPSMessage} requestPacket
- * @param {import("pino").Logger} log
+ * @param {ServerLogger} log
  * @returns {Promise<NPSMessage>}
  */
-export async function handleSelectGamePersona(requestPacket, log) {
+
+export async function handleSelectGamePersona(
+	requestPacket: NPSMessage,
+	log: ServerLogger,
+): Promise<NPSMessage> {
 	log.debug("_npsSelectGamePersona...");
 
 	log.debug(

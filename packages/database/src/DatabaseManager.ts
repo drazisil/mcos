@@ -116,14 +116,14 @@ export function getDatabase(): Sequelize {
 	return database;
 }
 
-interface DatabaseManager {
+export interface DatabaseManager {
 	updateUser: typeof updateUser;
 	fetchSessionKeyByCustomerId: typeof fetchSessionKeyByCustomerId;
 	updateSessionKey: typeof updateSessionKey;
 	fetchSessionKeyByConnectionId: typeof fetchSessionKeyByConnectionId;
 }
 
-export const DatabaseManager: DatabaseManager = {
+export const databaseManager: DatabaseManager = {
 	updateUser,
 	fetchSessionKeyByCustomerId,
 	updateSessionKey,
