@@ -158,10 +158,10 @@ importers:
         version: 8.19.1(eslint@9.18.0(jiti@2.4.2))(typescript@5.7.3)
       '@vitest/coverage-v8':
         specifier: ^2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       '@vitest/ui':
-        specifier: ^1.6.0
-        version: 1.6.0(vitest@2.1.8)
+        specifier: ^2.1.8
+        version: 2.1.8(vitest@2.1.8)
       eslint:
         specifier: ^9.18.0
         version: 9.18.0(jiti@2.4.2)
@@ -209,7 +209,7 @@ importers:
         version: 5.4.11(@types/node@22.10.5)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/cli:
     dependencies:
@@ -219,10 +219,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/database:
     dependencies:
@@ -241,10 +241,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/gateway:
     dependencies:
@@ -257,10 +257,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/lobby:
     dependencies:
@@ -276,10 +276,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/login:
     dependencies:
@@ -292,10 +292,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/nps:
     dependencies:
@@ -308,10 +308,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/persona:
     dependencies:
@@ -324,10 +324,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/shard:
     dependencies:
@@ -337,10 +337,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/shared:
     dependencies:
@@ -359,10 +359,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/shared-packets:
     dependencies:
@@ -372,10 +372,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   packages/transactions:
     dependencies:
@@ -385,10 +385,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))
+        version: 2.1.8(vitest@2.1.8)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   src/chat:
     dependencies:
@@ -398,7 +398,7 @@ importers:
     devDependencies:
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+        version: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
 packages:
 
@@ -2959,13 +2959,10 @@ packages:
   '@vitest/spy@2.1.8':
     resolution: {integrity: sha512-5swjf2q95gXeYPevtW0BLk6H8+bPlMb4Vw/9Em4hFxDcaOxS+e0LOX4yqNxoHzMR2akEB2xfpnWUzkZokmgWDg==}
 
-  '@vitest/ui@1.6.0':
-    resolution: {integrity: sha512-k3Lyo+ONLOgylctiGovRKy7V4+dIN2yxstX3eY5cWFXH6WP+ooVX79YSyi0GagdTQzLmT43BF27T0s6dOIPBXA==}
+  '@vitest/ui@2.1.8':
+    resolution: {integrity: sha512-5zPJ1fs0ixSVSs5+5V2XJjXLmNzjugHRyV11RqxYVR+oMcogZ9qTuSfKW+OcTV0JeFNznI83BNylzH6SSNJ1+w==}
     peerDependencies:
-      vitest: 1.6.0
-
-  '@vitest/utils@1.6.0':
-    resolution: {integrity: sha512-21cPiuGMoMZwiOHa2i4LXkMkMkCGzA+MVFV70jRwHo95dL4x/ts5GZhML1QWuy7yfp3WzK3lRvZi3JnXTYqrBw==}
+      vitest: 2.1.8
 
   '@vitest/utils@2.1.8':
     resolution: {integrity: sha512-dwSoui6djdwbfFmIgbIjX2ZhIoG7Ex/+xpxyiEgIGzjliY8xGkcpITKTlp6B4MgtGkF2ilvm97cPM96XZaAgcA==}
@@ -4171,9 +4168,6 @@ packages:
     resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
     engines: {node: '>=18'}
 
-  get-func-name@2.0.2:
-    resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
-
   get-intrinsic@1.2.4:
     resolution: {integrity: sha512-5uYhsJH8VJBTv7oslg4BznJYhDoRI6waYCxMmCdnTrcCrHA/fCFKoTFz2JKKE0HdDFUF7/oQuhzumXJK7paBRQ==}
     engines: {node: '>= 0.4'}
@@ -4913,9 +4907,6 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
-
-  loupe@2.3.7:
-    resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
 
   loupe@3.1.2:
     resolution: {integrity: sha512-23I4pFZHmAemUnz8WZXbYRSKYj801VDaNv9ETuMh7IrMc7VuVVSo+Z9iLE3ni30+U48iDWfi30d3twAXBYmnCg==}
@@ -6136,9 +6127,9 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  sirv@2.0.4:
-    resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
-    engines: {node: '>= 10'}
+  sirv@3.0.0:
+    resolution: {integrity: sha512-BPwJGUeDaDCHihkORDchNyyTvWFhcusy1XMmhEVTQTwGeybFbp8YEmB+njbPnth1FibULBSBVwCQni25XlCUDg==}
+    engines: {node: '>=18'}
 
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -8810,7 +8801,7 @@ snapshots:
       minimatch: 9.0.3
       tsconfig-paths: 4.2.0
       vite: 5.4.11(@types/node@22.10.5)
-      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -9888,7 +9879,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitest/coverage-v8@2.1.8(vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)))':
+  '@vitest/coverage-v8@2.1.8(vitest@2.1.8)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -9902,7 +9893,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
+      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
     transitivePeerDependencies:
       - supports-color
 
@@ -9940,23 +9931,16 @@ snapshots:
     dependencies:
       tinyspy: 3.0.2
 
-  '@vitest/ui@1.6.0(vitest@2.1.8)':
+  '@vitest/ui@2.1.8(vitest@2.1.8)':
     dependencies:
-      '@vitest/utils': 1.6.0
-      fast-glob: 3.3.2
+      '@vitest/utils': 2.1.8
       fflate: 0.8.2
       flatted: 3.3.1
       pathe: 1.1.2
-      picocolors: 1.1.1
-      sirv: 2.0.4
-      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8))
-
-  '@vitest/utils@1.6.0':
-    dependencies:
-      diff-sequences: 29.6.3
-      estree-walker: 3.0.3
-      loupe: 2.3.7
-      pretty-format: 29.7.0
+      sirv: 3.0.0
+      tinyglobby: 0.2.10
+      tinyrainbow: 1.2.0
+      vitest: 2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8)
 
   '@vitest/utils@2.1.8':
     dependencies:
@@ -11376,8 +11360,6 @@ snapshots:
 
   get-east-asian-width@1.2.0: {}
 
-  get-func-name@2.0.2: {}
-
   get-intrinsic@1.2.4:
     dependencies:
       es-errors: 1.3.0
@@ -12104,10 +12086,6 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
-
-  loupe@2.3.7:
-    dependencies:
-      get-func-name: 2.0.2
 
   loupe@3.1.2: {}
 
@@ -13378,7 +13356,7 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  sirv@2.0.4:
+  sirv@3.0.0:
     dependencies:
       '@polka/url': 1.0.0-next.28
       mrmime: 2.0.0
@@ -13938,7 +13916,7 @@ snapshots:
       '@types/node': 22.10.5
       fsevents: 2.3.3
 
-  vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@1.6.0(vitest@2.1.8)):
+  vitest@2.1.8(@types/node@22.10.5)(@vitest/ui@2.1.8):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.8(@types/node@22.10.5))
@@ -13962,7 +13940,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.10.5
-      '@vitest/ui': 1.6.0(vitest@2.1.8)
+      '@vitest/ui': 2.1.8(vitest@2.1.8)
     transitivePeerDependencies:
       - less
       - lightningcss
