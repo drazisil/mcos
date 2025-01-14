@@ -2,7 +2,7 @@ import { BytableBase } from "./BytableBase";
 import { BytableObject } from "./types";
 
 export class BytableContainer extends BytableBase implements BytableObject {
-	private value_: string = "";
+	private value_: string | number | Buffer = "";
 	private nullTerminated: boolean = false;
 	private length: number = 0;
 	private name_: string = "";
@@ -25,13 +25,13 @@ export class BytableContainer extends BytableBase implements BytableObject {
 	 * @returns void
 	 * @throws Error if the container is null terminated and the value is an empty string
 	 */
-	setValue(value: string) {
-		if (this.nullTerminated && value.length === 0) {
-			throw new Error("Cannot set empty string in null-terminated container");
-		} else {
-			this.value_ = value;
-			this.length = this.value_.length;
+	setValue(value: string | number | Buffer) {
+		this.validateValue(value);
+		if (this.nullTerminated && typeof value === "string") {
+			this.validateString(value);
 		}
+		this.value_ = value;
+		this.length = this.getByteLength(value);
 	}
 
 	getValue() {
@@ -73,27 +73,27 @@ export class BytableContainer extends BytableBase implements BytableObject {
 	}
 
 
+
 	/**
 	 * Serialize the container.
-     * If the container is null terminated, the value is appended with a null terminator.
-     * If the container is not null terminated, the length is prefixed to the value.
 	 * @returns Buffer - The serialized container.
-     * @throws Error if the container is null terminated and the value is an empty string
 	 */
-	override serialize() {
+    override serialize() {
+        const value = this.toBuffer(this.value_);
 			if (this.nullTerminated) {
-			if (this.value_.length === 0) {
-				throw new Error("Cannot serialize empty string in null-terminated container");
-			} else {
-				return Buffer.from(this.value_ + "\0");
-			}
+                return value.length === 0 ? Buffer.from("\0") : Buffer.concat([value, Buffer.from("\0")]);
 			} else {
 				const lengthPrefix = Buffer.alloc(2);
 				lengthPrefix.writeUInt16BE(this.length, 0);
-				return Buffer.concat([lengthPrefix, Buffer.from(this.value_)]);
+				return Buffer.concat([lengthPrefix, value]);
 			}
 	}
 
+	/**
+	 * Deserialize the container.
+	 * @param buffer - The buffer to deserialize.
+	 * @returns void
+	 */
 	override deserialize(buffer: Buffer) {
 		const offset = 0;
 		if (this.nullTerminated) {

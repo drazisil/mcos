@@ -10,15 +10,24 @@ export class Bytable extends BytableBase implements BytableObject {
 	}
 
 	static fromBuffer(buffer: Buffer, offset: number) {
+		if (!buffer || offset < 0 || offset >= buffer.length) {
+			throw new Error("Invalid buffer or offset");
+		}
 		const bytable = new this(buffer.subarray(offset));
 		return bytable;
 	}
 
 	override serialize() {
+		if (!this.buffer || this.buffer.byteLength === 0) {
+			throw new Error('Cannot serialize empty buffer');
+		}
 		return Buffer.from(this.buffer.buffer);
 	}
 
 	override deserialize(buffer: Buffer) {
+		if (!buffer || buffer.length === 0) {
+			throw new Error('Cannot deserialize empty buffer');
+		}
 		this.buffer = new DataView(Uint8Array.from(buffer).buffer);
 	}
 
@@ -45,7 +54,11 @@ export class Bytable extends BytableBase implements BytableObject {
 		return this.value_;
 	}
 
+
+
 	setValue(value: string | number | Buffer) {
+		this.validateValue(value);
 		this.value_ = value;
 	}
 }
+

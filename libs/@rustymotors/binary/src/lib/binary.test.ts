@@ -42,8 +42,9 @@ describe("Binary Message Parsing", () => {
 
 		it("should retrieve field values by name", () => {
 			const sessionKey = message.getFieldValueByName("SessionKey");
-			expect(sessionKey).toBeDefined();
-			// Add specific value checks based on your expected data
+			expect(sessionKey).toBe(
+				"228AA31B7CB50F23493259270A8B3D0523354F1F296A12440DEA49B501E8C63FD8A9AAE1CF540BB3555BE6472FAB20D620640B99FEE87AA97326980B104023A1A25B3E651E4A44E4E9BB13AE6D00382305DCC6905CA5902645D32F18A6DAD4D346970E1D9119DBE467F7336DC3C3DD9A0CD9BF7A19EE31261D9EDAFA194DED8F",
+			);
 		});
 
 		it("should serialize back to the original hex string", () => {
@@ -100,11 +101,10 @@ describe("Binary Message Parsing", () => {
 				container.setNullTerminated(true);
 			});
 
-			it("should throw error when serializing empty string", () => {  
+			it("should return a single null terminator when serializing empty string", () => {
 				container.setNullTerminated(true);
-				expect(() => container.serialize()).toThrowError(
-					"Cannot serialize empty string in null-terminated container",
-				);
+				const serialized = container.serialize();
+				expect(serialized.toString("hex")).toBe("00");
 			});
 
 			it("should serialize without length prefix", () => {
@@ -143,10 +143,10 @@ describe("Binary Message Parsing", () => {
 				expect(container.getValue()).toBe("");
 			});
 
-			it("should throw error when setting empty string in null-terminated mode", () => {
+			it("should throw error when setting empty buffer in null-terminated mode", () => {
 				container.setNullTerminated(true);
-				expect(() => container.setValue("")).toThrowError(
-					"Cannot set empty string in null-terminated container",
+				expect(() => container.setValue(Buffer.alloc(0))).toThrowError(
+					"Cannot set empty buffer",
 				);
 			});
 		});
