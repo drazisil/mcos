@@ -1,5 +1,3 @@
-import { Bytable } from "./Bytable";
-
 export class BytableBase {
 		protected buffer: DataView;
 
@@ -15,7 +13,7 @@ export class BytableBase {
 			return this.buffer.getUint16(offset, littleEndian);
 		}
 
-		getUint32(this: Bytable, offset: number, littleEndian: boolean = false) {
+		getUint32(this: BytableBase, offset: number, littleEndian: boolean = false) {
 			return this.buffer.getUint32(offset, littleEndian);
 		}
 
@@ -24,6 +22,9 @@ export class BytableBase {
 		}
 
 		deserialize(this: BytableBase, buffer: Buffer) {
+			if (buffer.length === 0) {
+				throw new Error("Cannot deserialize empty buffer");
+			}
 			this.buffer = new DataView(Uint8Array.from(buffer).buffer);
 		}
 
