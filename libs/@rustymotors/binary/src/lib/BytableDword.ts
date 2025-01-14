@@ -1,21 +1,38 @@
 import { Bytable } from "./Bytable";
 
 export class BytableDword extends Bytable {
-	static override fromBuffer(buffer: Buffer, offset: number) {
-		const dword = new this(buffer.subarray(offset, offset + 4));
-		return dword;
-	}
+		private static validateBufferLength(
+			buffer: Buffer,
+			minLength: number,
+			offset: number = 0,
+		) {
+			if (buffer.length < offset + minLength) {
+				throw new Error("Cannot deserialize buffer with insufficient length");
+			}
+		}
 
-	override get json() {
-		return {
-			name: this.name,
-			value: this.buffer.getUint32(0, true),
-			valueString: Buffer.from(this.buffer.buffer).toString("utf-8"),
-			serializeSize: this.serializeSize,
-		};
-	}
+		static override fromBuffer(buffer: Buffer, offset: number) {
+			BytableDword.validateBufferLength(buffer, 4, offset);
+			const dword = new BytableDword(buffer.subarray(offset, offset + 4));
 
-	override toString() {
-		return this.buffer.toString();
+			return dword;
+		}
+
+		override deserialize(buffer: Buffer) {
+			BytableDword.validateBufferLength(buffer, 4);
+			super.deserialize(buffer.subarray(0, 4));
+		}
+
+		override get json() {
+			return {
+				name: this.name,
+				value: this.buffer.getUint32(0, true),
+				valueString: Buffer.from(this.buffer.buffer).toString("utf-8"),
+				serializeSize: this.serializeSize,
+			};
+		}
+
+		override toString() {
+			return this.buffer.toString();
+		}
 	}
-}

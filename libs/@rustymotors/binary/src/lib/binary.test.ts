@@ -161,6 +161,11 @@ describe("Binary Message Parsing", () => {
 	});
 
 	describe("BytableDword", () => {
+        it("should throw error when deserializing buffer with insufficient length", () => {
+            const dword = new BytableDword(Buffer.alloc(3));
+            expect(() => dword.deserialize(Buffer.alloc(3))).toThrowError("Cannot deserialize buffer with insufficient length");
+        });
+
 		it("should correctly parse 32-bit values", () => {
 			const dword = BytableDword.fromBuffer(testBuffer, testBuffer.length - 4);
 			expect(dword.serializeSize).toBe(4);
