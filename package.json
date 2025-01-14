@@ -82,15 +82,15 @@
         "@tsconfig/node20": "^20.1.4",
         "@types/bcrypt": "^5.0.2",
         "@types/chai": "5.0.1",
-        "@types/node": "^22.10.5",
+        "@types/node": "^22.10.6",
         "@types/sinon": "17.0.3",
         "@types/sinon-chai": "4.0.0",
-        "@typescript-eslint/eslint-plugin": "^8.19.1",
-        "@typescript-eslint/parser": "^8.19.1",
+        "@typescript-eslint/eslint-plugin": "^8.20.0",
+        "@typescript-eslint/parser": "^8.20.0",
         "@vitest/coverage-v8": "^2.1.8",
         "@vitest/ui": "^2.1.8",
         "eslint": "^9.18.0",
-        "eslint-config-prettier": "^9.1.0",
+        "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-prettier": "5.2.1",
         "globals": "^15.14.0",
         "husky": "^9.1.7",
@@ -130,7 +130,7 @@
             "pre-commit": "lint-staged"
         }
     },
-    "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
+    "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
     "pnpm": {
         "overrides": {
             "tinymce": "^7.6.0"
