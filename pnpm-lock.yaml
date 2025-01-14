@@ -51,8 +51,8 @@ importers:
         specifier: ^2.30.1
         version: 2.30.1
       pino-debug:
-        specifier: ^2.0.0
-        version: 2.0.0(debug@4.4.0)
+        specifier: ^3.0.0
+        version: 3.0.0(debug@4.4.0)
       rusty-motors-chat:
         specifier: link:src/chat
         version: link:src/chat
@@ -4087,9 +4087,6 @@ packages:
     resolution: {integrity: sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==}
     hasBin: true
 
-  flatstr@1.0.12:
-    resolution: {integrity: sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==}
-
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
@@ -5461,8 +5458,8 @@ packages:
   pino-abstract-transport@2.0.0:
     resolution: {integrity: sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw==}
 
-  pino-debug@2.0.0:
-    resolution: {integrity: sha512-n6Rrr2s6LhGSJH5tuz4NwgtH1KvGVrq2swIDiWhfrntCAg8P7fFB9uQo3r0zOuXdVUYIijtLOxi8OZhW7B+kqg==}
+  pino-debug@3.0.0:
+    resolution: {integrity: sha512-+bKRk1PWw0Qtb8pZGSOJt8oL2cW9Teikw1U7sha2A9xcM2HeF8aQ8ckfi02IIsEyNimpxantNSCpRy/02W0hBg==}
     peerDependencies:
       debug: '>=2'
 
@@ -5470,15 +5467,8 @@ packages:
     resolution: {integrity: sha512-cQBBIVG3YajgoUjo1FdKVRX6t9XPxwB9lcNJVD5GCnNM4Y6T12YYx8c6zEejxQsU0wrg9TwmDulcE9LR7qcJqA==}
     hasBin: true
 
-  pino-std-serializers@3.2.0:
-    resolution: {integrity: sha512-EqX4pwDPrt3MuOAAUBMU0Tk5kR/YcCM5fNPEzgCO2zJ5HfX0vbiH9HbJglnyeQsN96Kznae6MWD47pZB5avTrg==}
-
   pino-std-serializers@7.0.0:
     resolution: {integrity: sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==}
-
-  pino@6.14.0:
-    resolution: {integrity: sha512-iuhEDel3Z3hF9Jfe44DPXR8l07bhjuFY3GMHIXbjnY9XcafbyDDwl2sN2vw2GjMPf5Nkoe+OFao7ffn9SXaKDg==}
-    hasBin: true
 
   pino@9.6.0:
     resolution: {integrity: sha512-i85pKRCt4qMjZ1+L7sy2Ag4t1atFcdbEt76+7iRJn1g2BvsnRMGu9p8pivl9fs63M2kF/A0OacFZhTub+m/qMg==}
@@ -5593,9 +5583,6 @@ packages:
 
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
-
-  process-warning@1.0.0:
-    resolution: {integrity: sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q==}
 
   process-warning@4.0.0:
     resolution: {integrity: sha512-/MyYDxttz7DfGMMHiysAsFE4qF+pQYAA8ziO/3NcRVrQ5fSk+Mns4QZA/oRPFzvcqNoVJXQNWNAsdwBXLUkQKw==}
@@ -6150,9 +6137,6 @@ packages:
   slice-ansi@7.1.0:
     resolution: {integrity: sha512-bSiSngZ/jWeX93BqeIAbImyTbEihizcwNjFoRUIY/T1wWQsfsm2Vw1agPKylXvQTU7iASGdHhyqRlqQzfz+Htg==}
     engines: {node: '>=18'}
-
-  sonic-boom@1.4.1:
-    resolution: {integrity: sha512-LRHh/A8tpW7ru89lrlkU4AszXt1dbwSjVWguGrmlxE7tawVmDBlI1PILMkXAxJTwqhgsEeTHzj36D5CmHgQmNg==}
 
   sonic-boom@4.1.0:
     resolution: {integrity: sha512-NGipjjRicyJJ03rPiZCJYjwlsuP2d1/5QUviozRXC7S3WdVWNK5e3Ojieb9CCyfhq2UC+3+SRd9nG3I2lPRvUw==}
@@ -11332,8 +11316,6 @@ snapshots:
 
   flat@5.0.2: {}
 
-  flatstr@1.0.12: {}
-
   flatted@3.3.1: {}
 
   follow-redirects@1.15.9(debug@4.4.0):
@@ -12688,10 +12670,10 @@ snapshots:
     dependencies:
       split2: 4.2.0
 
-  pino-debug@2.0.0(debug@4.4.0):
+  pino-debug@3.0.0(debug@4.4.0):
     dependencies:
       debug: 4.4.0(supports-color@5.5.0)
-      pino: 6.14.0
+      pino: 9.6.0
 
   pino-pretty@13.0.0:
     dependencies:
@@ -12709,19 +12691,7 @@ snapshots:
       sonic-boom: 4.1.0
       strip-json-comments: 3.1.1
 
-  pino-std-serializers@3.2.0: {}
-
   pino-std-serializers@7.0.0: {}
-
-  pino@6.14.0:
-    dependencies:
-      fast-redact: 3.5.0
-      fast-safe-stringify: 2.1.1
-      flatstr: 1.0.12
-      pino-std-serializers: 3.2.0
-      process-warning: 1.0.0
-      quick-format-unescaped: 4.0.4
-      sonic-boom: 1.4.1
 
   pino@9.6.0:
     dependencies:
@@ -12831,8 +12801,6 @@ snapshots:
   proc-log@3.0.0: {}
 
   process-nextick-args@2.0.1: {}
-
-  process-warning@1.0.0: {}
 
   process-warning@4.0.0: {}
 
@@ -13425,11 +13393,6 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 5.0.0
-
-  sonic-boom@1.4.1:
-    dependencies:
-      atomic-sleep: 1.0.0
-      flatstr: 1.0.12
 
   sonic-boom@4.1.0:
     dependencies:
