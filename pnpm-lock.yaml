@@ -214,7 +214,7 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       tslib:
-        specifier: ^2.3.0
+        specifier: ^2.8.1
         version: 2.8.1
       tsx:
         specifier: 4.19.2
@@ -235,7 +235,7 @@ importers:
   libs/@rustymotors/binary:
     dependencies:
       tslib:
-        specifier: ^2.3.0
+        specifier: ^2.8.1
         version: 2.8.1
 
   packages/cli:
