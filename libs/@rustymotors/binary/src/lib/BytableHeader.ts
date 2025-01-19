@@ -89,8 +89,8 @@ export class BytableHeader extends Bytable {
 		super.deserialize(buffer);
 		this.setMessageId(this.getUint16(0));
 		this.setMessageLength(this.getUint16(2));
-		// Skipping the version bytes
 
+		// If the length is less than 12, there is no room for the message, so we assume version 0
 		if (buffer.byteLength >= 12 && this.getUint16(4) === 257) {
 			this.setMessageVersion(1);
 		} else {
