@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import {
-	SerializedBufferOld,
 	ServerLogger,
 	type ServiceResponse,
 } from "rusty-motors-shared";
 import { handleLoginData } from "./handleLoginData.js";
 import { BufferSerializer, GamePacket } from "rusty-motors-shared-packets";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
 
 /**
@@ -39,16 +39,14 @@ export async function receiveLoginData({
 	log = getServerLogger("receiveLoginData"),
 }: {
 	connectionId: string;
-	message: BufferSerializer;
+	message: BytableMessage;
 	log?: ServerLogger;
 }): Promise<ServiceResponse> {
 	try {
 		log.debug(`[${connectionId}] Entering login module`);
-		const incomingPacket = new SerializedBufferOld();
-		incomingPacket._doDeserialize(message.serialize());
 		const response = await handleLoginData({
 			connectionId,
-			message: DeserializeBufferToGamePacket(incomingPacket),
+			message,
 			log,
 		});
 		log.debug(
@@ -81,10 +79,3 @@ function GamePacketArrayToBufferSerializerArray(
 	return bufferSerializers;
 }
 
-function DeserializeBufferToGamePacket(
-	serializedBuffer: SerializedBufferOld,
-): GamePacket {
-	const packet = new GamePacket();
-	packet.deserialize(serializedBuffer.serialize());
-	return packet;
-}

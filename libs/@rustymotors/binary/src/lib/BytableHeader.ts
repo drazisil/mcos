@@ -9,7 +9,7 @@ export class BytableHeader extends Bytable {
 	protected data_: Buffer = Buffer.alloc(0);
 
 	static override fromBuffer(buffer: Buffer, offset: number) {
-		const header = new this(buffer.subarray(offset, offset + 4));
+		const header = new this();
 		header.deserialize(buffer.subarray(offset));
 
 		return header;
@@ -77,11 +77,8 @@ export class BytableHeader extends Bytable {
 		const buffer = Buffer.alloc(this.serializeSize);
 		buffer.writeUInt16BE(this.messageId, 0);
 		buffer.writeUInt16BE(this.messageLength, 2);
-		buffer.writeUInt16BE(
-			this.messageVersion === 0 ? 0 : 257,
-			4,
-		);
 		if (this.messageVersion !== 0) {
+			buffer.writeUInt16BE(257, 4);
 			buffer.writeUInt16BE(this.reserved, 6);
 			buffer.writeUInt32BE(this.checksum, 8);
 		}
@@ -92,7 +89,14 @@ export class BytableHeader extends Bytable {
 		super.deserialize(buffer);
 		this.setMessageId(this.getUint16(0));
 		this.setMessageLength(this.getUint16(2));
-		this.setMessageVersion(this.getUint16(4) === 0 ? 0 : 1);
+		// Skipping the version bytes
+
+		if (buffer.byteLength >= 12 && this.getUint16(4) === 257) {
+			this.setMessageVersion(1);
+		} else {
+			this.setMessageVersion(0);
+		}
+
 		if (this.messageVersion === 1) {
 			this.setReserved(this.getUint16(6));
 			this.setChecksum(this.getUint32(8));

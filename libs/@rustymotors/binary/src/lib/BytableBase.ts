@@ -1,9 +1,5 @@
 export class BytableBase {
-		protected buffer: DataView;
-
-		constructor(buffer: Buffer) {
-			this.buffer = new DataView(Uint8Array.from(buffer).buffer);
-		}
+		protected buffer: DataView = new DataView(new ArrayBuffer(0));
 
 		getUint16(
 			this: BytableBase,

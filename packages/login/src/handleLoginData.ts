@@ -5,6 +5,7 @@ import {
 import { messageHandlers } from "./internal.js";
 import { getServerLogger } from "rusty-motors-shared";
 import { GamePacket } from "rusty-motors-shared-packets";
+import { BytableMessage } from "@rustymotors/binary";
 
 const defaultLogger = getServerLogger("LoginServer");
 
@@ -27,7 +28,7 @@ export async function handleLoginData({
 	log = defaultLogger,
 }: {
 	connectionId: string;
-	message: GamePacket;
+	message: BytableMessage;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;

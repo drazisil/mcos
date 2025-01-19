@@ -17,6 +17,7 @@
 import { ServerLogger } from "rusty-motors-shared";
 import { login } from "./login.js";
 import { GamePacket } from "rusty-motors-shared-packets";
+import { BytableMessage } from "@rustymotors/binary";
 
 /**
  * An array of message handlers for processing different types of messages.
@@ -37,7 +38,7 @@ export const messageHandlers: {
 	name: string;
 	handler: (args: {
 		connectionId: string;
-		message: GamePacket;
+		message: BytableMessage;
 		log: ServerLogger;
 	}) => Promise<{
 		connectionId: string;

@@ -12,7 +12,7 @@ describe("Binary Message Parsing", () => {
 
     describe("BytableBase", () => {
         it("should throw error when deserializing empty buffer", () => {
-            const base = new BytableBase(Buffer.alloc(0));
+            const base = new BytableBase();
             expect(() => base.deserialize(Buffer.alloc(0))).toThrowError("Cannot deserialize empty buffer");
         });
     });
@@ -72,7 +72,7 @@ describe("Binary Message Parsing", () => {
 			let container: BytableContainer;
 
 			beforeEach(() => {
-				container = new BytableContainer(Buffer.alloc(0));
+				container = new BytableContainer();
 				container.setNullTerminated(false);
 			});
 
@@ -105,7 +105,7 @@ describe("Binary Message Parsing", () => {
 			let container: BytableContainer;
 
 			beforeEach(() => {
-				container = new BytableContainer(Buffer.alloc(0));
+				container = new BytableContainer();
 				container.setNullTerminated(true);
 			});
 
@@ -142,7 +142,7 @@ describe("Binary Message Parsing", () => {
 			let container: BytableContainer;
 
 			beforeEach(() => {
-				container = new BytableContainer(Buffer.alloc(0));
+				container = new BytableContainer();
 			});
 
 			it("should handle empty strings", () => {
@@ -162,7 +162,7 @@ describe("Binary Message Parsing", () => {
 
 	describe("BytableDword", () => {
         it("should throw error when deserializing buffer with insufficient length", () => {
-            const dword = new BytableDword(Buffer.alloc(3));
+            const dword = new BytableDword();
             expect(() => dword.deserialize(Buffer.alloc(3))).toThrowError("Cannot deserialize buffer with insufficient length");
         });
 

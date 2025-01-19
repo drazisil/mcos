@@ -3,6 +3,7 @@ import { getServerConfiguration, NetworkMessage } from "rusty-motors-shared";
 import { NPSUserStatus } from "./NPSUserStatus.js";
 import { ServerLogger, getServerLogger } from "rusty-motors-shared";
 import { GamePacket } from "rusty-motors-shared-packets";
+import { BytableMessage } from "@rustymotors/binary";
 
 
 /**
@@ -23,7 +24,7 @@ export async function login({
 	log = getServerLogger( "LoginServer"),
 }: {
 	connectionId: string;
-	message: GamePacket;
+	message: BytableMessage;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;

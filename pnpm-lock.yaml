@@ -234,6 +234,15 @@ importers:
 
   libs/@rustymotors/binary:
     dependencies:
+      '@mikro-orm/core':
+        specifier: ^6.4.3
+        version: 6.4.3
+      rusty-motors-shared:
+        specifier: workspace:1.0.0-next.0
+        version: link:../../../packages/shared
+      rusty-motors-shared-packets:
+        specifier: workspace:1.0.0-next.0
+        version: link:../../../packages/shared-packets
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -278,6 +287,9 @@ importers:
       '@fastify/sensible':
         specifier: ^6.0.2
         version: 6.0.2
+      '@rustymotors/binary':
+        specifier: workspace:^
+        version: link:../../libs/@rustymotors/binary
       fastify:
         specifier: ^5.2.1
         version: 5.2.1
@@ -313,6 +325,9 @@ importers:
       '@fastify/sensible':
         specifier: ^6.0.2
         version: 6.0.2
+      '@rustymotors/binary':
+        specifier: workspace:^
+        version: link:../../libs/@rustymotors/binary
       fastify:
         specifier: ^5.2.1
         version: 5.2.1

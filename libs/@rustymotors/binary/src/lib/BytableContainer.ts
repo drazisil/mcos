@@ -12,7 +12,7 @@ export class BytableContainer extends BytableBase implements BytableObject {
 		nullTerminated: boolean = false,
 		length: number = 0,
 	) {
-		const container = new this(buffer);
+		const container = new this();
 		container.setNullTerminated(nullTerminated);
 		container.setLength(length);
 		container.deserialize(buffer.subarray(offset));

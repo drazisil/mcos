@@ -9,6 +9,7 @@ import { receivePersonaData } from "rusty-motors-personas";
 import { receiveLoginData } from "rusty-motors-login";
 import * as Sentry from "@sentry/node";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
 /**
  * Handles routing for the NPS (Network Play System) ports.
@@ -46,17 +47,22 @@ export async function npsPortRouter({
 			log.debug(`[${id}] Received data: ${data.toString("hex")}`);
 			const initialPacket = parseInitialMessage(data);
 			log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
-			log.debug(`[${id}] initial Packet(hex): ${initialPacket.toHexString()}`);
+			log.debug(`[${id}] initial Packet(hex): ${initialPacket.toString()}`);
 			await routeInitialMessage(id, port, initialPacket)
 				.then((response) => {
 					// Send the response back to the client
-					log.debug(`[${id}] Sending response to socket: ${response.toString("hex")}`);
+					log.debug(
+						`[${id}] Sending response to socket: ${response.toString("hex")}`,
+					);
 					socket.write(response);
 				})
 				.catch((error) => {
-					throw new Error(`[${id}] Error routing initial nps message: ${error}`, {
-						cause: error,
-					});
+					throw new Error(
+						`[${id}] Error routing initial nps message: ${error}`,
+						{
+							cause: error,
+						},
+					);
 				});
 		} catch (error) {
 			if (error instanceof RangeError) {
@@ -67,11 +73,11 @@ export async function npsPortRouter({
 			}
 		}
 	});
-
+	
 	socket.on("end", () => {
 		log.debug(`[${id}] Socket closed by client for port ${port}`);
 	});
-
+	
 	socket.on("error", (error) => {
 		log.error(`[${id}] Socket error: ${error}`);
 	});
@@ -79,14 +85,31 @@ export async function npsPortRouter({
 
 /**
  * Parses the initial message from a buffer and returns a `GamePacket` object.
- *
- * @param data - The buffer containing the initial message data.
- * @returns A `GamePacket` object deserialized from the buffer.
- */
-function parseInitialMessage(data: Buffer): GamePacket {
-	const initialPacket = new GamePacket();
-	initialPacket.deserialize(data);
-	return initialPacket;
+*
+* @param data - The buffer containing the initial message data.
+* @returns A `GamePacket` object deserialized from the buffer.
+*/
+function parseInitialMessage(data: Buffer): BytableMessage {
+	try {
+		const message = new BytableMessage(0);
+
+		// There are a few messages here that need special handling due to length
+		const id = data.readUInt16BE(0);
+		if ([0x1101].includes(id)) {
+			message.setVersion(0)
+		}
+		message.setSerializeOrder([{ name: "data", field: "Raw" }]);
+		message.deserialize(data);
+		return message;
+	} catch (error) {
+		const err = new Error(`Error parsing initial message: ${error}`, {
+			cause: error,
+		});
+		getServerLogger("gateway.npsPortRouter/parseInitialMessage").error(
+			(err as Error).message,
+		);
+		throw err;
+	}
 }
 
 /**
@@ -103,21 +126,23 @@ function parseInitialMessage(data: Buffer): GamePacket {
 async function routeInitialMessage(
 	id: string,
 	port: number,
-	initialPacket: GamePacket,
+	initialPacket: BytableMessage,
 	log = getServerLogger("gateway.npsPortRouter/routeInitialMessage"),
 ): Promise<Buffer> {
 	// Route the initial message to the appropriate handler
 	// Messages may be encrypted, this will be handled by the handler
 
-	log.debug(
-		`Routing message for port ${port}: ${initialPacket.toHexString()}`,
-	);
+	log.debug(`Routing message for port ${port}: ${initialPacket.toString()}`);
+
+	const packet = new GamePacket();
+	packet.deserialize(initialPacket.serialize());
+
 	let responses: SerializableInterface[] = [];
 
 	switch (port) {
 		case 7003:
 			responses = (
-				await receiveLobbyData({ connectionId: id, message: initialPacket })
+				await receiveLobbyData({ connectionId: id, message: packet })
 			).messages;
 			break;
 		case 8226:
@@ -128,14 +153,13 @@ async function routeInitialMessage(
 			break;
 		case 8227:
 			// Handle chat packet
-			responses = (
-				await receiveChatData({ connectionId: id, message: initialPacket })
-			).messages;
+			responses = (await receiveChatData({ connectionId: id, message: packet }))
+				.messages;
 			break;
 		case 8228:
 			// responses =Handle persona packet
 			responses = (
-				await receivePersonaData({ connectionId: id, message: initialPacket })
+				await receivePersonaData({ connectionId: id, message: packet })
 			).messages;
 			break;
 		default:

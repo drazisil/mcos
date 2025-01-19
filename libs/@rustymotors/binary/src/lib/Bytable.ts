@@ -1,19 +1,19 @@
 import { BytableBase } from "./BytableBase";
 import { BytableObject } from "./types";
+import { getServerLogger } from "rusty-motors-shared";
 
 export class Bytable extends BytableBase implements BytableObject {
 	protected name_: string = "";
 	protected value_: string | number | Buffer = "";
 
-	constructor(buffer: Buffer) {
-		super(buffer);
-	}
-
 	static fromBuffer(buffer: Buffer, offset: number) {
+		const bytable = new this();
+		
 		if (!buffer || offset < 0 || offset >= buffer.length) {
-			throw new Error("Invalid buffer or offset");
+			getServerLogger().error(`Cannot deserialize buffer with invalid offset: ${offset}`);
+			return bytable;
 		}
-		const bytable = new this(buffer.subarray(offset));
+		bytable.deserialize(buffer.subarray(offset));
 		return bytable;
 	}
 

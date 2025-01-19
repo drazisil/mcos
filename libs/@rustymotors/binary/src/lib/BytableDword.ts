@@ -13,7 +13,8 @@ export class BytableDword extends Bytable {
 
 		static override fromBuffer(buffer: Buffer, offset: number) {
 			BytableDword.validateBufferLength(buffer, 4, offset);
-			const dword = new BytableDword(buffer.subarray(offset, offset + 4));
+			const dword = new BytableDword();
+			dword.deserialize(buffer.subarray(offset, offset + 4));
 
 			return dword;
 		}

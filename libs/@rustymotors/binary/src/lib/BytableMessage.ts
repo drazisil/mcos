@@ -8,9 +8,10 @@ export const BytableFieldTypes = {
 	ZeroTerminatedString: BytableContainer,
 	Dword: BytableDword,
 	Container: BytableContainer,
+	Raw: Bytable,
 };
 export class BytableMessage extends Bytable {
-	protected header_: BytableHeader = new BytableHeader(Buffer.alloc(0));
+	protected header_: BytableHeader = new BytableHeader();
 	protected fields_: Array<BytableObject> = [];
 	protected serializeOrder_: Array<{
 		name: string;
@@ -18,7 +19,7 @@ export class BytableMessage extends Bytable {
 	}> = [];
 
 	constructor(version: 0 | 1 = 1) {
-		super(Buffer.alloc(0));
+		super();
 		this.header_.setMessageVersion(version);
 	}
 
@@ -29,20 +30,30 @@ export class BytableMessage extends Bytable {
 	}
 
 	override deserialize(buffer: Buffer) {
-		const header = BytableHeader.fromBuffer(buffer, 0);
-		this.header_.deserialize(buffer.subarray(0, header.serializeSize));
-		let offset = header.serializeSize;
+		try {
+			const header = BytableHeader.fromBuffer(buffer, this.header_.messageVersion);
+			this.header_.deserialize(buffer.subarray(0, header.serializeSize));
+			let offset = header.serializeSize;
 
-		for (const field of this.serializeOrder_) {
-			if (!(field.field in BytableFieldTypes)) {
-				throw new Error(`Unknown field type: ${field.field}`);
+			for (const field of this.serializeOrder_) {
+				if (!(field.field in BytableFieldTypes)) {
+					throw new Error(`Unknown field type: ${field.field}`);
+				}
+
+				const fieldType = BytableFieldTypes[field.field];
+				const fieldInstance = fieldType.fromBuffer(buffer, offset);
+				fieldInstance.setName(field.name);
+				this.fields_.push(fieldInstance);
+				offset += fieldInstance.serializeSize;
 			}
-
-			const fieldType = BytableFieldTypes[field.field];
-			const fieldInstance = fieldType.fromBuffer(buffer, offset);
-			fieldInstance.setName(field.name);
-			this.fields_.push(fieldInstance);
-			offset += fieldInstance.serializeSize;
+		} catch (error) {
+			const err = new Error(
+				`Error deserializing message: ${(error as Error).message}`,
+				{
+					cause: error,
+				},
+			);
+			throw err;
 		}
 	}
 
@@ -112,5 +123,9 @@ export class BytableMessage extends Bytable {
 			throw new Error(`Field ${name} not found`);
 		}
 		field.setValue(value);
+	}
+
+	setVersion(version: 0 | 1) {
+		this.header_.setMessageVersion(version);
 	}
 }
