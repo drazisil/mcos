@@ -77,6 +77,7 @@ export function initializeRouteHandlers() {
 	routeHandlers.set("/games/EA_Seattle/MotorCity/MCO", handleCastanet);
 	routeHandlers.set("/AuthLogin", handleAuthLogin);
 	routeHandlers.set("/ShardList/", handleShardList);
+	routeHandlers.set("/ticker", handleTicker);
 	routeHandlers.set("/cert", () => {
 		return {
 			headers: { "Content-Type": "octet-stream", "Content-Disposition": "attachment; filename=server.crt" },
@@ -120,6 +121,19 @@ function handleCastanet(): WebHandlerResponse {
 			[CastanetResponse.header.type]: CastanetResponse.header.value,
 		},
 		body: CastanetResponse.body,
+	};
+}
+
+/**
+ * Handles the ticker request.
+ *
+ * @returns The response headers and body for the ticker request.
+ */
+function handleTicker(): WebHandlerResponse {
+	return {
+		headers: {"Content-Type": "text/plain"},
+		body: `/color=0xFFFF00
+		Hi Mark!`
 	};
 }
 
