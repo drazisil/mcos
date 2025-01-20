@@ -127,7 +127,7 @@ let logger: pino.Logger;
 
 export function getServerLogger(name?: string): Logger {
 	if (logger) {
-		return logger;
+		return logger.child({ name });
 	}
 	const loggerName = name || "core";
 	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
