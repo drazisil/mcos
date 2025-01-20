@@ -3,6 +3,7 @@ import { BytableContainer } from "./BytableContainer";
 import { BytableDword } from "./BytableDword";
 import { BytableHeader } from "./BytableHeader";
 import { BytableObject } from "./types";
+import { getServerLogger } from "rusty-motors-shared";
 
 export const BytableFieldTypes = {
 	ZeroTerminatedString: BytableContainer,
@@ -69,7 +70,14 @@ export class BytableMessage extends Bytable {
 	override serialize() {
 		const buffer = Buffer.alloc(this.serializeSize);
 		buffer.set(this.header_.serialize(), 0);
-		let offset = this.header_.serializeSize;
+		let offset = this.header_.serializeSize;		
+
+		// It's posible that this message is only a header
+		if ( this.header_.messageVersion === 0 && this.header_.messageLength === 4) {
+			getServerLogger().warn(`Message has no fields, or no body`);
+			return buffer;
+		}
+
 		for (const field of this.fields_) {
 			buffer.set(field.serialize(), offset);
 			offset += field.serializeSize;

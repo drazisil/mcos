@@ -1,3 +1,4 @@
+import { get } from "http";
 import { BytableBase } from "./BytableBase";
 import { BytableObject } from "./types";
 import { getServerLogger } from "rusty-motors-shared";
@@ -8,6 +9,12 @@ export class Bytable extends BytableBase implements BytableObject {
 
 	static fromBuffer(buffer: Buffer, offset: number) {
 		const bytable = new this();
+
+		if  (buffer.length === 4 && offset === 4) {
+			// Some messages only consist of a id and a length
+			getServerLogger().warn(`Buffer length is 4, skipping deserialization`);
+			return bytable;
+		}
 		
 		if (!buffer || offset < 0 || offset >= buffer.length) {
 			getServerLogger().error(`Cannot deserialize buffer with invalid offset: ${offset}`);
