@@ -38,7 +38,7 @@ async function notFoundRouter({
 		console.error(`[${taggedSocket.connectionId}] Socket error: ${error}`);
 	});
 	taggedSocket.rawSocket.end();
-	log.error(
+	log.warn(
 		`[${taggedSocket.connectionId}] No router found for port ${taggedSocket.rawSocket.localPort}`,
 	);
 }
