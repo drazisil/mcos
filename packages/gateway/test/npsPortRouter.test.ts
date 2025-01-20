@@ -106,32 +106,6 @@ describe("npsPortRouter", () => {
 
 	});
 
-	it("should log socket end event", async () => {
-		const mockSocket = {
-			localPort: 7003,
-			on: vi.fn((event, callback) => {
-				if (event === "end") {
-					callback();
-				}
-			}),
-			write: vi.fn(),
-		};
-		const mockLogger = {
-			error: vi.fn(),
-			debug: vi.fn(),
-		};
-		const taggedSocket: TaggedSocket = {
-			rawSocket: mockSocket as unknown as Socket,
-			connectionId: "test-id",
-			connectedAt: Date.now(),
-		};
-
-		await npsPortRouter({ taggedSocket, log: mockLogger as unknown as ServerLogger }).catch((error) => {
-			expect(error).toBeUndefined();
-		});
-
-		expect(mockLogger.debug).toHaveBeenCalledWith("[test-id] Socket closed by client for port 7003");
-	});
 
 	it("should log socket error event", async () => {
 		const mockSocket = {

@@ -194,7 +194,7 @@ async function handleCommand({
 	const incommingRequest = message;
 
 	log.debug(
-		`Received command: ${incommingRequest._doSerialize().toString("hex")}`,
+		`[${connectionId}] Received command: ${incommingRequest._doSerialize().toString("hex")}`,
 	);
 
 	// What is the command?
@@ -257,7 +257,7 @@ export async function handleEncryptedNPSCommand({
 	});
 
 	if (response.message === null) {
-		log.debug("No response to send");
+		log.debug(`[${connectionId}] No response to send`);
 		return {
 			connectionId,
 			messages: [],
