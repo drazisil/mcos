@@ -123,7 +123,12 @@ interface Logger {
 
 type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
 
+let logger: pino.Logger;
+
 export function getServerLogger(name?: string): Logger {
+	if (logger) {
+		return logger;
+	}
 	const loggerName = name || "core";
 	const validLogLevels = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
 	const logLevel = process.env["MCO_LOG_LEVEL"] || "debug";
@@ -132,8 +137,31 @@ export function getServerLogger(name?: string): Logger {
 		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
 	}
 
-	const logger = pino({ name: loggerName });
-	logger.level = logLevel;
+	logger = pino({ 
+		name: loggerName,
+		transport: {
+			targets: [
+				{
+					target: "pino-pretty",
+					options: {
+						colorize: true,
+						translateTime: "SYS:standard",
+					},
+					level: logLevel,
+				},
+				{
+					target: "pino/file",
+					options: {
+						destination: `./logs/server.log`,
+						mkdir: true,
+						append: false
+					},
+					level: logLevel,
+				}
+			],
+		},
+		level: logLevel,
+	});
 
 	return {
 		info: logger.info.bind(logger),
