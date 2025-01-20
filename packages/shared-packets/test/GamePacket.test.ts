@@ -63,11 +63,11 @@ describe("GamePacket", () => {
 	});
 
 	it("should throw error if data is insufficient for header", () => {
-		const buffer = Buffer.alloc(5); // Less than required for header
+		const buffer = Buffer.alloc(3); // Less than required for header
 
 		const packet = new GamePacket();
 		expect(() => packet.deserialize(buffer)).toThrow(
-			"Data is too short. Expected at least 6 bytes, got 5 bytes",
+			"Data is too short. Expected at least 4 bytes, got 3 bytes",
 		);
 	});
 

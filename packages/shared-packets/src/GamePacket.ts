@@ -94,7 +94,7 @@ export class GamePacket extends BasePacket implements SerializableMessage {
 	}
 
 	override deserialize(data: Buffer): GamePacket {
-		this._assertEnoughData(data, 6);
+		this._assertEnoughData(data, 4);
 
 		const version = this.identifyVersion(data);
 		this.header.setVersion(version);
