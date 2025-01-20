@@ -57,7 +57,7 @@ export async function mcotsPortRouter({
 	});
 
 	socket.on("end", () => {
-		log.debug(`[${id}] Socket closed by client for port ${port}`);
+		// log.debug(`[${id}] Socket closed by client for port ${port}`);
 	});
 
 	socket.on("error", (error) => {

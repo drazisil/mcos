@@ -75,7 +75,7 @@ export async function npsPortRouter({
 	});
 	
 	socket.on("end", () => {
-		log.debug(`[${id}] Socket closed by client for port ${port}`);
+		// log.debug(`[${id}] Socket closed by client for port ${port}`);
 	});
 	
 	socket.on("error", (error) => {
@@ -95,7 +95,7 @@ function parseInitialMessage(data: Buffer): BytableMessage {
 
 		// There are a few messages here that need special handling due to length
 		const id = data.readUInt16BE(0);
-		if ([0x1101].includes(id)) {
+		if ([0x1101, 0x217].includes(id)) {
 			message.setVersion(0)
 		}
 		message.setSerializeOrder([{ name: "data", field: "Raw" }]);
