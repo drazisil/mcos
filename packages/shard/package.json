@@ -22,8 +22,8 @@
 		"test": "test"
 	},
 	"devDependencies": {
-		"@vitest/coverage-v8": "3.0.3",
-		"vitest": "^3.0.3"
+		"@vitest/coverage-v8": "3.0.4",
+		"vitest": "^3.0.4"
 	},
 	"dependencies": {
 		"@sentry/profiling-node": "8.51.0"
