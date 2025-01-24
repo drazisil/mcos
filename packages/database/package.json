@@ -20,7 +20,7 @@
 	"author": "",
 	"license": "AGPL-3.0",
 	"dependencies": {
-		"@types/pg": "^8.11.10",
+		"@types/pg": "^8.11.11",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.37.5"
