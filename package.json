@@ -82,7 +82,7 @@
         "@tsconfig/node20": "^20.1.4",
         "@types/bcrypt": "^5.0.2",
         "@types/chai": "5.0.1",
-        "@types/node": "^22.10.10",
+        "@types/node": "^22.12.0",
         "@types/sinon": "17.0.3",
         "@types/sinon-chai": "4.0.0",
         "@typescript-eslint/eslint-plugin": "^8.22.0",
