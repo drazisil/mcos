@@ -33,7 +33,7 @@
     "dependencies": {
         "@databases/pg": "^5.5.0",
         "@dotenvx/dotenvx": "^1.34.0",
-        "@fastify/sensible": "^6.0.2",
+        "@fastify/sensible": "^6.0.3",
         "@mikro-orm/core": "^6.4.5",
         "@mikro-orm/postgresql": "^6.4.5",
         "@mikro-orm/reflection": "^6.4.5",
