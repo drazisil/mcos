@@ -18,8 +18,8 @@ importers:
         specifier: ^1.34.0
         version: 1.34.0
       '@fastify/sensible':
-        specifier: ^6.0.2
-        version: 6.0.2
+        specifier: ^6.0.3
+        version: 6.0.3
       '@mikro-orm/core':
         specifier: ^6.4.5
         version: 6.4.5
@@ -285,8 +285,8 @@ importers:
   packages/gateway:
     dependencies:
       '@fastify/sensible':
-        specifier: ^6.0.2
-        version: 6.0.2
+        specifier: ^6.0.3
+        version: 6.0.3
       '@rustymotors/binary':
         specifier: workspace:^
         version: link:../../libs/@rustymotors/binary
@@ -304,8 +304,8 @@ importers:
   packages/lobby:
     dependencies:
       '@fastify/sensible':
-        specifier: ^6.0.2
-        version: 6.0.2
+        specifier: ^6.0.3
+        version: 6.0.3
       fastify:
         specifier: ^5.2.1
         version: 5.2.1
@@ -323,8 +323,8 @@ importers:
   packages/login:
     dependencies:
       '@fastify/sensible':
-        specifier: ^6.0.2
-        version: 6.0.2
+        specifier: ^6.0.3
+        version: 6.0.3
       '@rustymotors/binary':
         specifier: workspace:^
         version: link:../../libs/@rustymotors/binary
@@ -1731,8 +1731,8 @@ packages:
   '@fastify/proxy-addr@5.0.0':
     resolution: {integrity: sha512-37qVVA1qZ5sgH7KpHkkC4z9SK6StIsIcOmpjvMPXNb3vx2GQxhZocogVYbr2PbbeLCQxYIPDok307xEvRZOzGA==}
 
-  '@fastify/sensible@6.0.2':
-    resolution: {integrity: sha512-sva4j0CDeFKpYepjiELnaeUam3X2u3rCS2BgQettpph89XGJQlxgslWihiQN5HBE9cjc1Cl4iy6Hcu1HhhFhzA==}
+  '@fastify/sensible@6.0.3':
+    resolution: {integrity: sha512-Iyn8698hp/e5+v8SNBBruTa7UfrMEP52R16dc9jMpqSyEcPsvWFQo+R6WwHCUnJiLIsuci2ZoEZ7ilrSSCPIVg==}
 
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
@@ -8840,7 +8840,7 @@ snapshots:
       '@fastify/forwarded': 3.0.0
       ipaddr.js: 2.2.0
 
-  '@fastify/sensible@6.0.2':
+  '@fastify/sensible@6.0.3':
     dependencies:
       '@lukeed/ms': 2.0.2
       dequal: 2.0.3
