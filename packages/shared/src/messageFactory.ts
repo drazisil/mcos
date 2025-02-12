@@ -42,6 +42,10 @@ export class AbstractSerializable {
 		return this.internalBuffer;
 	}
 
+	set data(buffer: Buffer) {
+		this.internalBuffer = buffer;
+	}
+
 	/**
 	 * @param {Buffer} buffer
 	 */
@@ -71,15 +75,4 @@ export const SerializableMixin = (
 			super();
 		}
 
-		serialize() {
-			return this._doSerialize();
-		}
-
-		/**
-		 * @param {Buffer} buffer
-		 * @returns {AbstractSerializable}
-		 */
-		deserialize(buffer: Buffer): AbstractSerializable {
-			return this._doDeserialize(buffer);
-		}
 	};

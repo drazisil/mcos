@@ -331,22 +331,9 @@ importers:
       fastify:
         specifier: ^5.2.1
         version: 5.2.1
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 3.0.2
-        version: 3.0.2(vitest@3.0.2)
-      vitest:
-        specifier: ^3.0.2
-        version: 3.0.2(@types/node@22.10.7)(@vitest/ui@3.0.2)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.1)
-
-  packages/nps:
-    dependencies:
-      '@sentry/profiling-node':
-        specifier: 8.50.0
-        version: 8.50.0
-      short-unique-id:
-        specifier: ^5.2.0
-        version: 5.2.0
+      rusty-motors-personas:
+        specifier: workspace:^
+        version: link:../persona
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 3.0.2

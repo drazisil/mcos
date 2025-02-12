@@ -34,7 +34,7 @@ export class NPSHeader extends SerializableMixin(AbstractSerializable) {
 	 * @throws {Error} If the buffer is too short
 	 * @throws {Error} If the buffer is malformed
 	 */
-	override _doDeserialize(buffer: Buffer): NPSHeader {
+	deserialize(buffer: Buffer): NPSHeader {
 		if (buffer.length < this._size) {
 			throw Error(`Buffer length ${buffer.length} is too short to deserialize`);
 		}
@@ -48,7 +48,7 @@ export class NPSHeader extends SerializableMixin(AbstractSerializable) {
 		return this;
 	}
 
-	override _doSerialize() {
+	serialize() {
 		const buffer = Buffer.alloc(this._size);
 		buffer.writeInt16BE(this.id, 0);
 		buffer.writeInt16BE(this.length, 2);

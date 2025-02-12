@@ -1,3 +1,4 @@
+import { BytableMessage } from "@rustymotors/binary";
 import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { getServerLogger } from "rusty-motors-shared";
 
@@ -9,7 +10,7 @@ export async function handleTrackingPing({
 	log = defaultLogger,
 }: {
 	connectionId: string;
-	message: SerializedBufferOld;
+	message: BytableMessage;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;

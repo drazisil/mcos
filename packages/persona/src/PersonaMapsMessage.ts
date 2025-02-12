@@ -5,27 +5,27 @@ import { NPSHeader } from "rusty-motors-shared";
  *
  * This is type UserGameData
  */
-export class PersonaRecord {
-	customerId: number;
-	personaName: string;
-	serverDataId: number;
-	createDate: number;
-	lastLogin: number;
-	numberOfGames: number;
-	personaId: number;
-	isOnline: number;
-	purchaseTimestamp: number;
-	gameSerialNumber: string;
-	timeOnline: number;
-	timeInGame: number;
-	extraData: Buffer;
-	personaData: Buffer;
-	pictureData: Buffer;
-	dnd: number;
-	startedPlayingTimestamp: number;
-	hashedKey: string;
-	personaLevel: number;
-	shardId: number;
+export class PersonaRecord  {
+	customerId: number; // 4
+	personaName: string; // 33
+	serverDataId: number; // 4
+	createDate: number; // 4
+	lastLogin: number; // 4
+	numberOfGames: number; // 4
+	personaId: number; // 4
+	isOnline: number; // 2
+	purchaseTimestamp: number; // 4
+	gameSerialNumber: string; // 33
+	timeOnline: number; // 4
+	timeInGame: number; // 4
+	extraData: Buffer; // 512
+	personaData: Buffer; // 256
+	pictureData: Buffer; // 1
+	dnd: number; // 2
+	startedPlayingTimestamp: number; // 4
+	hashedKey: string; // 400
+	personaLevel: number; // 2
+	shardId: number; // 2
 	constructor() {
 		this.customerId = 0;
 		this.personaName = "";
@@ -289,7 +289,7 @@ export class PersonaMapsMessage extends NPSMessage {
 	 */
 	deserialize(buffer: Buffer): PersonaMapsMessage {
 		try {
-			this._header._doDeserialize(buffer);
+			this._header.deserialize(buffer);
 			this.setBuffer(buffer.subarray(NPSHeader.size()));
 			this.raw = buffer;
 			return this;
@@ -312,7 +312,7 @@ export class PersonaMapsMessage extends NPSMessage {
 			}
 			this._header.length = NPSHeader.size() + 2 + this._personaRecords.size();
 			const buffer = Buffer.alloc(this._header.length);
-			this._header._doSerialize().copy(buffer);
+			this._header.serialize().copy(buffer);
 
 			// Write the persona count. This is known to be correct at offset 12
 			buffer.writeUInt16BE(this._personaRecords.personaCount(), 12);

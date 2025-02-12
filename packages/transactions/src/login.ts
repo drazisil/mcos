@@ -66,7 +66,7 @@ export async function login({
 
 	const responsePacket = new OldServerMessage();
 	responsePacket._header.sequence = incomingPacket.getSequence();
-	responsePacket._doDeserialize(outgoingPacket.serialize());
+	responsePacket.deserialize(outgoingPacket.serialize());
 
 	return { connectionId, messages: [responsePacket] };
 }

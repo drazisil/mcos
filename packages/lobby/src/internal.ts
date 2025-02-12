@@ -15,13 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
-import { NPSMessage } from "rusty-motors-shared";
-import { LegacyMessage } from "rusty-motors-shared";
 import { handleEncryptedNPSCommand } from "./handlers/encryptedCommand.js";
 import { handleTrackingPing } from "./handlers/handleTrackingPing.js";
 import { _npsRequestGameConnectServer } from "./handlers/requestConnectGameServer.js";
-import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
 /**
  * Array of supported message handlers
@@ -31,7 +29,7 @@ import { getServerLogger } from "rusty-motors-shared";
  * name: string,
  * handler: (args: {
  * connectionId: string,
- * message: SerializedBufferOld,
+ * message: BytableMessage,
  * log: ServerLogger,
  * }) => Promise<{
  * connectionId: string,
@@ -43,7 +41,7 @@ export const messageHandlers: {
 	name: string;
 	handler: (args: {
 		connectionId: string;
-		message: SerializedBufferOld;
+		message: BytableMessage;
 		log?: ServerLogger;
 	}) => Promise<{
 		connectionId: string;
@@ -84,30 +82,12 @@ export async function receiveLobbyData({
 	log = getServerLogger( "lobby.receiveLobbyData" ),
 }: {
 	connectionId: string;
-	message: BufferSerializer;
+	message: BytableMessage;
 	log?: ServerLogger;
 }): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
 }> {
-	/** @type {LegacyMessage | NPSMessage} */
-	let inboundMessage: LegacyMessage | NPSMessage;
-
-	// Check data length
-	const dataLength = message.getByteSize();
-
-	if (dataLength < 4) {
-		throw Error(`Data length ${dataLength} is too short to deserialize`);
-	}
-
-	if (dataLength > 12) {
-		inboundMessage = new NPSMessage();
-	} else {
-		inboundMessage = new LegacyMessage();
-	}
-
-	inboundMessage._doDeserialize(message.serialize());
-
 	const data = message.serialize();
 	log.debug(
 		`Received Lobby packet',
@@ -117,21 +97,18 @@ export async function receiveLobbyData({
 	);
 
 	const supportedHandler = messageHandlers.find((h) => {
-		return h.opCode === inboundMessage._header.id;
+		return h.opCode === message.header.messageId;
 	});
 
 	if (typeof supportedHandler === "undefined") {
 		// We do not yet support this message code
-		throw Error(`UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`);
+		throw Error(`UNSUPPORTED_MESSAGECODE: ${message.header.messageId}`);
 	}
-
-	const buff = new SerializedBufferOld();
-	buff._doDeserialize(data);
 
 	try {
 		const result = await supportedHandler.handler({
 			connectionId,
-			message: buff,
+			message
 		});
 		log.debug(`Returning with ${result.messages.length} messages`);
 		log.debug("Leaving receiveLobbyData");

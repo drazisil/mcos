@@ -14,19 +14,15 @@ export class NPSMessage extends SerializableMixin(AbstractSerializable) {
 		this._header = new NPSHeader();
 	}
 
-	/**
-	 * @param {Buffer} buffer
-	 * @returns {NPSMessage}
-	 */
-	override _doDeserialize(buffer: Buffer): NPSMessage {
-		this._header._doDeserialize(buffer);
+	deserialize(buffer: Buffer) {
+		this._header.deserialize(buffer);
 		this.setBuffer(buffer.subarray(this._header._size));
 		return this;
 	}
 
 	serialize() {
 		const buffer = Buffer.alloc(this._header.length);
-		this._header._doSerialize().copy(buffer);
+		this._header.serialize().copy(buffer);
 		this.data.copy(buffer, this._header._size);
 		return buffer;
 	}

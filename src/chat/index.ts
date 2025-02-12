@@ -39,7 +39,8 @@ async function receiveChatData({
 	let inboundMessage: ChatMessage;
 	
 	try {
-		inboundMessage = ChatMessage.fromBuffer(message.serialize());
+		inboundMessage =  new ChatMessage();
+		inboundMessage.deserialize(message.serialize());
 	} catch (error) {
 		const err = new Error(`[${connectionId}] Error deserializing message`, {
 			cause: error,
@@ -67,7 +68,7 @@ async function receiveChatData({
 		);
 		const messages = responses.map((response) => {
 			const responseBuffer = new SerializedBufferOld();
-			responseBuffer._doDeserialize(response);
+			responseBuffer.deserialize(response);
 			return responseBuffer;
 		});
 

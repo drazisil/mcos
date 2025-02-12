@@ -61,6 +61,10 @@ export async function mcotsPortRouter({
 	});
 
 	socket.on("error", (error) => {
+		if (error.message.includes("ECONNRESET")) {
+			log.debug(`[${id}] Connection reset by client`);
+			return;
+		}
 		log.error(`[${id}] Socket error: ${error}`);
 	});
 }

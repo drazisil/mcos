@@ -1,15 +1,146 @@
 import { Bytable } from "./Bytable";
-import { BytableContainer } from "./BytableContainer";
+import { BytableBase, coerceValueToBuffer } from "./BytableBase";
+import { BytableBuffer } from "./BytableBuffer";
+import { BytableByte } from "./BytableByte";
+import { BytableContainer, BytableShortContainer } from "./BytableContainer";
+import { BytableData } from "./BytableData";
 import { BytableDword } from "./BytableDword";
 import { BytableHeader } from "./BytableHeader";
+import { BytableWord } from "./BytableWord";
 import { BytableObject } from "./types";
 import { getServerLogger } from "rusty-motors-shared";
 
+export class BytableStructure extends BytableBase implements BytableObject {
+	protected fields_: Array<BytableObject> = [];
+	protected serializeOrder_: Array<{
+		name: string;
+		field: keyof typeof BytableFieldTypes;
+	}> = [];
+	protected name_: string = "";
+
+
+
+	override deserialize(buffer: Buffer) {
+		let offset = 0;
+		for (const field of this.serializeOrder_) {
+			if (!(field.field in BytableFieldTypes)) {
+				throw new Error(`Unknown field type: ${field.field}`);
+			}
+
+			const fieldType = BytableFieldTypes[field.field];
+			const fieldInstance = new fieldType();
+			fieldInstance.setName(field.name);
+			fieldInstance.deserialize(buffer.subarray(offset));
+			this.fields_.push(fieldInstance);
+			offset += fieldInstance.serializeSize;
+		}
+	}
+
+	override get serializeSize() {
+		const fieldSizes = this.fields_.map((field) => field.serializeSize);
+		return fieldSizes.reduce((a, b) => a + b, 0);
+	}
+
+	override serialize() {
+		const buffer = Buffer.alloc(this.serializeSize);
+		let offset = 0;
+		for (const field of this.fields_) {
+			buffer.set(field.serialize(), offset);
+			offset += field.serializeSize;
+		}
+		return buffer;
+	}
+
+	get json() {
+		return {
+			name: this.name_,
+			serializeSize: this.serializeSize,
+			fields: this.fields_.map((field) => field.json),
+		};
+	}
+
+	setName(name: string) {
+		this.name_ = name;
+	}
+
+	override toString() {
+		return JSON.stringify(this.json);
+	}
+
+	setSerializeOrder(
+		serializeOrder: Array<{
+			name: string;
+			field: keyof typeof BytableFieldTypes;
+		}>,
+	) {
+		this.serializeOrder_ = serializeOrder;
+	}
+
+	getFieldValueByName(name: string) {
+		if (name === "") {
+			return undefined;
+		}
+		const field = this.fields_.find((field) => field.name === name);
+		if (!field) {
+			throw new Error(`Field ${name} not found`);
+		}
+		return field.value;
+	}
+
+	setFieldValueByName(name: string, value: string | number | Buffer) {
+		if (name === "") {
+			return;
+		}
+
+		const coercedValue = value;
+
+		const serializedFormat = this.serializeOrder_.find(
+			(field) => field.name === name,
+		);
+
+		if (!serializedFormat) {
+			throw new Error(`Field ${name} not found in serialized format`);
+		}
+
+
+		const field = this.fields_.find((field) => field.name === name);
+		if (!field) {
+			const field = new BytableFieldTypes[serializedFormat.field]();
+			field.setName(name);
+			field.setValue(coercedValue);
+
+			this.fields_.push(field);
+			return;
+		}
+
+		field.setValue(value);
+
+	}
+
+	get name(): string {
+		return this.name_;
+	}
+
+	get value(): string | number | Buffer {
+		throw new Error("This object is a container");
+	}
+
+	setValue() {
+		throw new Error("This object is a container");
+	}
+}
+
 export const BytableFieldTypes = {
 	ZeroTerminatedString: BytableContainer,
+	String: BytableContainer,
 	Dword: BytableDword,
 	Container: BytableContainer,
-	Raw: Bytable,
+	PrefixedString2: BytableShortContainer,
+	Raw: BytableData,
+	Structure: BytableStructure,
+	Boolean: BytableByte,
+	Short: BytableWord,
+	Buffer: BytableBuffer,
 };
 export class BytableMessage extends Bytable {
 	protected header_: BytableHeader = new BytableHeader();
@@ -22,31 +153,43 @@ export class BytableMessage extends Bytable {
 	constructor(version: 0 | 1 = 1) {
 		super();
 		this.header_.setMessageVersion(version);
+		this.setSerializeOrder([
+			{
+				name: "data",
+				field: "Buffer",
+			},
+		]);
 	}
 
-	static override fromBuffer(buffer: Buffer, offset: number) {
-		const message = new this(1);
-		message.deserialize(buffer.subarray(offset));
-		return message;
+
+
+	protected override deserializeFields(buffer: Buffer) {
+		let offset = 0;
+
+				// It's posible that this message is only a header
+		if (this.header_.messageVersion === 0 && this.header_.messageLength === 4) {
+			getServerLogger().warn(`deserializeFields: Message has no fields, or no body`);
+			this.fields_.push(new BytableFieldTypes.Buffer());
+		}
+
+		for (const field of this.serializeOrder_) {
+			if (!(field.field in BytableFieldTypes)) {
+				throw new Error(`Unknown field type: ${field.field}`);
+			}
+
+			const fieldType = BytableFieldTypes[field.field];
+			const fieldInstance = new fieldType();
+			fieldInstance.setName(field.name);
+			fieldInstance.deserialize(buffer.subarray(offset));
+			this.fields_.push(fieldInstance);
+			offset += fieldInstance.serializeSize;
+		}
 	}
 
 	override deserialize(buffer: Buffer) {
 		try {
-			const header = BytableHeader.fromBuffer(buffer, this.header_.messageVersion);
-			this.header_.deserialize(buffer.subarray(0, header.serializeSize));
-			let offset = header.serializeSize;
-
-			for (const field of this.serializeOrder_) {
-				if (!(field.field in BytableFieldTypes)) {
-					throw new Error(`Unknown field type: ${field.field}`);
-				}
-
-				const fieldType = BytableFieldTypes[field.field];
-				const fieldInstance = fieldType.fromBuffer(buffer, offset);
-				fieldInstance.setName(field.name);
-				this.fields_.push(fieldInstance);
-				offset += fieldInstance.serializeSize;
-			}
+			this.header_.deserialize(buffer);
+			this.deserializeFields(buffer.subarray(this.header.serializeSize));
 		} catch (error) {
 			const err = new Error(
 				`Error deserializing message: ${(error as Error).message}`,
@@ -65,23 +208,35 @@ export class BytableMessage extends Bytable {
 	override get serializeSize() {
 		const fieldSizes = this.fields_.map((field) => field.serializeSize);
 		return this.header_.serializeSize + fieldSizes.reduce((a, b) => a + b, 0);
+		// return this.align8(this.header_.serializeSize + fieldSizes.reduce((a, b) => a + b, 0));
 	}
 
-	override serialize() {
-		const buffer = Buffer.alloc(this.serializeSize);
-		buffer.set(this.header_.serialize(), 0);
-		let offset = this.header_.serializeSize;		
+	protected override serializeFields() {
+		const buffer = Buffer.alloc(
+			this.serializeSize - this.header_.serializeSize,
+		);
+		let offset = 0;
 
 		// It's posible that this message is only a header
-		if ( this.header_.messageVersion === 0 && this.header_.messageLength === 4) {
-			getServerLogger().warn(`Message has no fields, or no body`);
-			return buffer;
+		if (this.header_.messageVersion === 0 && this.header_.messageLength === 4) {
+			getServerLogger().warn(`serializeFields: Message has no fields, or no body`);
+			this.fields_.push(new BytableFieldTypes.Buffer());
 		}
 
 		for (const field of this.fields_) {
 			buffer.set(field.serialize(), offset);
 			offset += field.serializeSize;
 		}
+		return buffer;
+	}
+
+	override serialize() {
+		const buffer = Buffer.alloc(this.serializeSize);
+		this.header_.setMessageLength(this.serializeSize);
+		buffer.set(this.header_.serialize(), 0);
+
+		buffer.set(this.serializeFields(), this.header_.serializeSize);
+
 		return buffer;
 	}
 
@@ -126,14 +281,71 @@ export class BytableMessage extends Bytable {
 		if (name === "") {
 			return;
 		}
+
+		const serializedFormat = this.serializeOrder_.find(
+			(field) => field.name === name,
+		);
+
+		if (!serializedFormat) {
+			throw new Error(`Field ${name} not found in serialized format`);
+		}
+
 		const field = this.fields_.find((field) => field.name === name);
 		if (!field) {
-			throw new Error(`Field ${name} not found`);
+			const field = new BytableFieldTypes[serializedFormat.field]();
+			field.setName(name);
+			field.setValue(Buffer.from(this.toBuffer(value)));
+
+			this.fields_.push(field);
+			return;
 		}
+
+		if (!field) {
+			throw new Error(`Field ${name} not found, and could not be created`);
+		}
+
 		field.setValue(value);
 	}
 
 	setVersion(version: 0 | 1) {
 		this.header_.setMessageVersion(version);
 	}
+
+	getBody() {
+		return this.serializeFields();
+	}
+
+	setBody(buffer: Buffer) {
+		this.deserializeFields(buffer);
+	}
+
+	get data() {
+		return this.getBody();
+	}
+
+	set data(buffer: Buffer) {
+		this.setBody(buffer);
+	}
+
+	toHexString() {
+		return this.serialize().toString("hex");
+	}
 }
+
+export function createRawMessage(buffer?: Buffer) {
+	const message = new BytableMessage(0);
+	message.setSerializeOrder([
+		{
+			name: "data",
+			field: "Buffer",
+		},
+	]);
+
+	if (buffer) {
+		message.deserialize(buffer);
+	}
+
+	return message;
+}
+
+

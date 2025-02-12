@@ -34,7 +34,7 @@ export class HotkeyManager {
 				case "g":
 					this.greetUser();
 					break;
-				case "e":
+				case "x":
 					this.exit();
 					break;
 				default:
@@ -48,7 +48,7 @@ export class HotkeyManager {
 		console.log("Available hotkeys:");
 		console.log("  h - Show this help message");
 		console.log("  g - Greet the user");
-		console.log("  e - Exit the program");
+		console.log("  x - Exit the program");
 	}
 
 	private greetUser(): void {

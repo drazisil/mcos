@@ -62,7 +62,7 @@ describe("npsPortRouter", () => {
 
 
 		expect(mockSocket.write).toHaveBeenCalledWith(
-			Buffer.from([0x02, 0x30, 0x00, 0x00]),
+			Buffer.from([0x02, 0x30, 0x00, 0x04]),
 		);
 	});
 

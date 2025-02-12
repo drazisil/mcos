@@ -1,5 +1,4 @@
 import { LegacyMessage, NPSMessage, SerializedBufferOld, ServerLogger  } from "rusty-motors-shared";
-import { createGameProfile } from "rusty-motors-nps";
 import { getPersonasByPersonaId } from "../getPersonasByPersonaId.js";
 import { personaToString } from "../internal.js";
 
@@ -21,7 +20,7 @@ export async function getPersonaInfo({
 }> {
 	log.debug("getPersonaInfo...");
 	const requestPacket = new NPSMessage();
-    requestPacket._doDeserialize(message.serialize());
+    requestPacket.deserialize(message.serialize());
 
 	log.debug(
 		`LegacyMsg request object from getPersonaInfo ${requestPacket.toString()}`,
@@ -41,7 +40,7 @@ export async function getPersonaInfo({
 
 	log.debug(`Persona found: ${personaToString(persona[0])}`);
 
-    const profile = createGameProfile();
+    const profgamemessageile = createGameProfile();
 
     profile.customerId = persona[0]!.customerId;
     profile.profileId = persona[0]!.personaId;
@@ -55,12 +54,12 @@ export async function getPersonaInfo({
 	responsePacket.setBuffer(profile.serialize());
 	log.debug(
 		`LegacyMsg response object from getPersonaInfo ${responsePacket
-			._doSerialize()
+			.serialize()
 			.toString("hex")} `,
 	);
 
 	const outboundMessage = new SerializedBufferOld();
-	outboundMessage.setBuffer(responsePacket._doSerialize());
+	outboundMessage.setBuffer(responsePacket.serialize());
 
 	return {
 		connectionId,

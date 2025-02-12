@@ -15,17 +15,9 @@ export class SerializedBufferOld extends SerializableMixin(
 		super();
 	}
 
-	/**
-	 * @param {Buffer} buffer
-	 * @returns {SerializedBufferOld}
-	 */
-	override _doDeserialize(buffer: Buffer): SerializedBufferOld {
-		this.setBuffer(buffer);
-		return this;
-	}
-
-	deserialize(data: Buffer): void {
+	deserialize(data: Buffer): this {
 		this.setBuffer(data);		
+		return this;
 	}
 
 	serialize() {

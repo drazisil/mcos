@@ -5,6 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Typescript",
+            "type": "node",
+            "runtimeExecutable": "pnpx",
+            "runtimeVersion": "23.5.0",
+            "request": "launch",
+            "args": [
+                "src/server.ts"
+            ],
+            "runtimeArgs": [
+                "tsx",
+                "--import",
+                "./instrument.mjs",
+                "--openssl-legacy-provider"
+            ],
+            "cwd": "${workspaceRoot}",
+            "envFile": "${workspaceFolder}/.env",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
             "name": "Stop Prod",
             "request": "launch",
             "runtimeArgs": ["run-script", "prod:stop"],

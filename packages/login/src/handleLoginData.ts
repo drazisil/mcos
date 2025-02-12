@@ -6,6 +6,7 @@ import { messageHandlers } from "./internal.js";
 import { getServerLogger } from "rusty-motors-shared";
 import { GamePacket } from "rusty-motors-shared-packets";
 import { BytableMessage } from "@rustymotors/binary";
+import {getHandlers} from "rusty-motors-personas";
 
 const defaultLogger = getServerLogger("LoginServer");
 
@@ -38,17 +39,25 @@ export async function handleLoginData({
 
 	// The packet needs to be an NPSMessage
 	const inboundMessage = new NPSMessage();
-	inboundMessage._doDeserialize(message.serialize());
+	inboundMessage.deserialize(message.serialize());
+	let supportedHandler;
 
-	const supportedHandler = messageHandlers.find((h) => {
+	supportedHandler = messageHandlers.find((h) => {
 		return h.opCode === inboundMessage._header.id;
 	});
 
 	if (typeof supportedHandler === "undefined") {
-		// We do not yet support this message code
-		throw Error(
-			`[${connectionId}] UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`,
-		);
+		// There is a change this is a message for the persona service
+		const handlers = getHandlers();
+		supportedHandler = handlers.find((h) => {
+			return h.opCode === inboundMessage._header.id;
+		});
+
+		if (typeof supportedHandler === "undefined") {
+			throw Error(
+				`[${connectionId}] UNSUPPORTED_MESSAGECODE: ${inboundMessage._header.id}`,
+			);
+		}
 	}
 
 	try {
@@ -60,7 +69,10 @@ export async function handleLoginData({
 		log.debug(
 			`[${connectionId}] Leaving handleLoginData with ${result.messages.length} messages`,
 		);
-		return result;
+		return  {
+			connectionId,
+			messages: result.messages,
+		}
 	} catch (error) {
 		const err = Error(`[${connectionId}] Error in login service`, {
 			cause: error,

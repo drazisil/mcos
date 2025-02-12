@@ -84,18 +84,18 @@ export class GameMessageHeader
 		this.length = data.readUInt16BE(2);
 	}
 
-	private assertV1Checksum(data: Buffer): void {
-		const length = data.readUInt16BE(2);
-		const checksum = data.readUInt32BE(8);
-		if (checksum !== length) {
-			throw new Error(
-				`Checksum mismatch. Expected ${length}, got ${checksum}`,
-			);
-		}
-	}
+	// private assertV1Checksum(data: Buffer): void {
+	// 	const length = data.readUInt16BE(2);
+	// 	const checksum = data.readUInt32BE(8);
+		// if (checksum !== length) {
+		// 	throw new Error(
+		// 		`Checksum mismatch. Expected ${length}, got ${checksum}`,
+		// 	);
+		// }
+	// }
 
 	private deserializeV1(data: Buffer): void {
-		this.assertV1Checksum(data);
+		// this.assertV1Checksum(data);
 		this.id = data.readUInt16BE(0);
 		this.length = data.readUInt16BE(2);
 		// Skip version

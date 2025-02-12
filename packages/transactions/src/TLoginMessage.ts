@@ -81,7 +81,7 @@ export class TLoginMessage extends OldServerMessage {
 	 */
 	override deserialize(buffer: Buffer) {
 		let offset = 0;
-		this._header._doDeserialize(buffer);
+		this._header.deserialize(buffer);
 		offset += this._header._size;
 		this._msgNo = buffer.readUInt16LE(offset);
 		offset += 2;
@@ -99,12 +99,13 @@ export class TLoginMessage extends OldServerMessage {
 		offset += 13;
 		this._mcVersion = buffer.toString("utf8", offset, offset + 4);
 		// 40 bytes
+		return this;
 	}
 
 	override serialize() {
 		const buffer = Buffer.alloc(this._size);
 		let offset = 0;
-		buffer.copy(this._header._doSerialize(), offset);
+		buffer.copy(this._header.serialize(), offset);
 		offset += this._header._size;
 		buffer.writeUInt16LE(this._msgNo, offset);
 		offset += 2;

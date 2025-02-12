@@ -34,7 +34,7 @@ export class MiniRiffMessage extends LegacyMessage {
 			const neededSize = this.size();
 			this._header.length = neededSize + 4;
 			const buffer = Buffer.alloc(this._header.length);
-			this._header._doSerialize().copy(buffer);
+			this._header.serialize().copy(buffer);
 			let offset = this._header._size; // offset is 4
 			buffer.writeUInt16BE(this._riffList.length, offset);
 			offset += 4;

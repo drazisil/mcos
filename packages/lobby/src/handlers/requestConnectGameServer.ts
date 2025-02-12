@@ -1,5 +1,4 @@
 import { getPersonasByPersonaId } from "rusty-motors-personas";
-import { type ServiceArgs } from "rusty-motors-shared";
 import { LoginInfoMessage } from "../LoginInfoMessage.js";
 
 import {
@@ -13,9 +12,9 @@ import {
 	getEncryption,
 } from "rusty-motors-shared";
 import { SerializedBufferOld } from "rusty-motors-shared";
-import { UserInfoMessage } from "../UserInfoMessage.js";
 import { databaseManager } from "rusty-motors-database";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
 
 /**
@@ -48,7 +47,11 @@ export async function _npsRequestGameConnectServer({
 	connectionId,
 	message,
 	log = getServerLogger("handlers/_npsRequestGameConnectServer"),
-}: ServiceArgs): Promise<{
+}: {
+	connectionId: string;
+	message: BytableMessage;
+	log?: ReturnType<typeof getServerLogger>;
+}): Promise<{
 	connectionId: string;
 	messages: SerializedBufferOld[];
 }> {
@@ -58,7 +61,7 @@ export async function _npsRequestGameConnectServer({
 	// by the data payload.
 
 	const inboundMessage = new LoginInfoMessage();
-	inboundMessage.deserialize(message.data);
+	inboundMessage.deserialize(message.serialize());
 
 	log.debug(`LoginInfoMessage: ${inboundMessage.toString()}`);
 
@@ -109,10 +112,19 @@ export async function _npsRequestGameConnectServer({
 	// We have a session, we are good to go!
 	// Send the response packet
 
-	const responsePacket = new UserInfoMessage();
-	responsePacket.fromLoginInfoMessage(inboundMessage);
+	const responsePacket = new BytableMessage();
+	responsePacket.header.setMessageVersion(0);
+	responsePacket.header.setMessageId(0x120);
 
-	responsePacket._header.id = 0x120;
+	responsePacket.setSerializeOrder([
+		{ name: "userId", field: "Dword" },
+		{ name: "userName", field: "Container" },
+		{ name: "userData", field: "Buffer" },
+	])
+
+	responsePacket.setFieldValueByName("userId", inboundMessage._userId);
+	responsePacket.setFieldValueByName("userName", inboundMessage._userName);
+	responsePacket.setFieldValueByName("userData", inboundMessage._userData);
 
 	// log the packet
 	log.debug(
@@ -120,7 +132,9 @@ export async function _npsRequestGameConnectServer({
 	);
 
 	const outboundMessage = new SerializedBufferOld();
-	outboundMessage._doDeserialize(responsePacket.serialize());
+	outboundMessage.deserialize(responsePacket.serialize());
+
+	log.debug(`[${connectionId}] Returning with ${outboundMessage.toHexString()}`);
 
 	return {
 		connectionId,

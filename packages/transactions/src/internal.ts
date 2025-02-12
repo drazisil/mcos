@@ -65,7 +65,7 @@ async function processInput({
 	if (typeof result !== "undefined") {
 		// Turn this into an OldServerMessage for compatibility
 		const packet = new OldServerMessage();
-		packet._doDeserialize(inboundMessage.serialize());
+		packet.deserialize(inboundMessage.serialize());
 
 		try {
 			const responsePackets = await result.handler({
@@ -201,7 +201,7 @@ export async function receiveTransactionsData({
 	// Convert the outbound messages to SerializedBufferOld
 	const outboundMessagesSerialized = outboundMessages.map((message) => {
 		const serialized = new SerializedBufferOld();
-		serialized._doDeserialize(message.serialize());
+		serialized.deserialize(message.serialize());
 		return serialized;
 	});
 

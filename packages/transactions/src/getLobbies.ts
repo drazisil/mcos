@@ -3,6 +3,7 @@ import { EntryFeePurseMessage, PurseEntry } from "./EntryFeePurseMessage.js";
 import { LobbyInfo, LobbyMessage } from "./LobbyMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableServerMessage } from "@rustymotors/binary";
 
 const defaultLogger = getServerLogger("handlers/getLobbies");
 
@@ -20,9 +21,9 @@ async function _getLobbies({
 	defaultLogger.debug(`[${connectionId}] Sending lobbies response...`);
 
 	// Create new response packet
-	const lobbiesResponsePacket = new OldServerMessage();
-	lobbiesResponsePacket._header.sequence = packet.sequenceNumber;
-	lobbiesResponsePacket._header.flags = 8;
+	const lobbiesResponsePacket = new BytableServerMessage();
+	lobbiesResponsePacket.header.sequence = packet.sequenceNumber;
+	lobbiesResponsePacket.setFlags(8);
 
 	const lobbyResponse = new LobbyMessage();
 	lobbyResponse._msgNo = 325;
@@ -41,7 +42,7 @@ async function _getLobbies({
 	defaultLogger.debug(`[${connectionId}] Sending lobbyResponse: ${lobbyResponse.toString()}`
 	);
 
-	lobbiesResponsePacket.setBuffer(lobbyResponse.serialize());
+	lobbiesResponsePacket.setBody(lobbyResponse.serialize());
 
 	// Handle purse entries
 	const purseEntry = new PurseEntry();
@@ -63,7 +64,10 @@ async function _getLobbies({
 
 	return {
 		connectionId,
-		messages: [lobbiesResponsePacket, perseEntriesResponsePacket],
+		messages: [
+			lobbiesResponsePacket, 
+			perseEntriesResponsePacket
+		],
 	};
 }
 /**
@@ -76,11 +80,11 @@ export async function getLobbies({
 	log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const result = await _getLobbies({ connectionId, packet, log });
-	log.debug("Dumping Lobbies response packet...");
+	log.debug(`[${connectionId}] Returning with ${result.messages.length} messages`);
+	log.debug(`[${connectionId}] Leaving getLobbies`);
 	result.messages.forEach((msg) => {
-		log.debug(msg.toString());
+		log.debug(`[${connectionId}] Sending response[str]: ${msg.toString()}`);
 	});
-	log.debug(result.messages.join().toString());
 	return {
 		connectionId,
 		messages: result.messages,

@@ -24,12 +24,11 @@ export class OldServerMessage extends SerializedBufferOld implements IServerMess
 	}
 
 	/**
-	 * @deprecated
 	 * @param {Buffer} buffer
 	 * @returns {OldServerMessage}
 	 */
-	override _doDeserialize(buffer: Buffer): OldServerMessage {
-		this._header._doDeserialize(buffer);
+	override deserialize(buffer: Buffer): this {
+		this._header.deserialize(buffer);
 		this.setBuffer(buffer.subarray(this._header._size));
 		if (this.data.length > 2) {
 			this._msgNo = this.data.readInt16LE(0);
@@ -47,7 +46,7 @@ export class OldServerMessage extends SerializedBufferOld implements IServerMess
 	 */
 	override serialize() {
 		const buffer = Buffer.alloc(this._header.length + 2);
-		this._header._doSerialize().copy(buffer);
+		this._header.serialize().copy(buffer);
 		this.data.copy(buffer, this._header._size);
 		return buffer;
 	}

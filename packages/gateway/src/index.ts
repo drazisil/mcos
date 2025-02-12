@@ -42,7 +42,9 @@ export function onSocketConnection({
 	// If the local port or remote address is undefined, throw an error
 	if (localPort === undefined || remoteAddress === undefined) {
 		const s = JSON.stringify(incomingSocket);
-		throw Error("localPort or remoteAddress is undefined: " + s);
+		log.error(`localPort or remoteAddress is undefined: ${s}`);
+		incomingSocket.end();
+		return;
 	}
 
 	const socketWithId = tagSocket(
