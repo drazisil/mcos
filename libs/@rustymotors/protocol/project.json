@@ -1,0 +1,20 @@
+{
+    "name": "@rustymotors/protocol",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/@rustymotors/protocol/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/@rustymotors/protocol",
+                "tsConfig": "libs/@rustymotors/protocol/tsconfig.json",
+                "packageJson": "libs/@rustymotors/protocol/package.json",
+                "main": "libs/@rustymotors/protocol/src/index.ts",
+                "assets": ["libs/@rustymotors/protocol/*.md"]
+            }
+        }
+    }
+}

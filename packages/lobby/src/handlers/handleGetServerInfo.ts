@@ -46,15 +46,15 @@ export async function handleGetServerInfo({
 
 		outgoingGameMessage.header.setMessageId(525);
         outgoingGameMessage.setVersion(0);
-		outgoingGameMessage.setFieldValueByName("riffName", "MARK");
-		outgoingGameMessage.setFieldValueByName("commId", 17);
+		outgoingGameMessage.setFieldValueByName("riffName", "MCC01\n");
+		outgoingGameMessage.setFieldValueByName("commId", 224);
 		outgoingGameMessage.setFieldValueByName(
 			"ipAddress",
-			"71.186.155.248",
+			"71.186.155.248\n",
 		);
 		outgoingGameMessage.setFieldValueByName(
 			"port",
-			9006
+			7003
 		);
 		outgoingGameMessage.setFieldValueByName("userId", 21);
 		outgoingGameMessage.setFieldValueByName("playerCount", 1);
@@ -63,7 +63,7 @@ export async function handleGetServerInfo({
 			`[${connectionId}] Sending response[string]: ${outgoingGameMessage.toString()}`,
 		);
 		log.debug(
-			`[${connectionId}] Sending response[serialize]: ${outgoingGameMessage.serialize().toString("hex")}`,
+			`[${connectionId}] Sending response[serialize1]: ${outgoingGameMessage.serialize().toString("hex")}`,
 		);
 
 		// Build the packet
@@ -71,7 +71,12 @@ export async function handleGetServerInfo({
 		packetResult.setSerializeOrder([
 			{ name: "data", field: "Buffer" },
 		]);
+		packetResult.setVersion(0);
 		packetResult.deserialize(outgoingGameMessage.serialize());
+
+		log.debug(
+			`[${connectionId}] Sending response[serialize2]: ${packetResult.serialize().toString("hex")}`,
+		);
 
 		return {
 			connectionId,

@@ -75,7 +75,19 @@ async function encryptCmd({
 		);
 	}
 
-	const result = encryption.commandEncryption.encrypt(message.serialize());
+	let precriptedMessage = message.serialize();
+
+	log.debug(`[precripted Cmd: ${precriptedMessage.toString("hex")}`);
+	if (precriptedMessage.length % 8 !== 0) {
+		log.warn(
+			`[connectionId] Message length is not a multiple of 8, padding with 0s`,
+		);
+		const padding = Buffer.alloc(8 - (precriptedMessage.length % 8));
+		precriptedMessage = Buffer.concat([precriptedMessage, padding]);
+		log.debug(`[padded Cmd: ${precriptedMessage.toString("hex")}`);
+	}
+
+	const result = encryption.commandEncryption.encrypt(precriptedMessage);
 	updateEncryption(state, encryption).save();
 
 	log.debug(`[ciphered Cmd: ${result.toString("hex")}`);
