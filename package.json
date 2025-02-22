@@ -67,7 +67,7 @@
         "@databases/pg-migrations": "^5.0.3",
         "@databases/pg-schema-cli": "^4.4.0",
         "@databases/pg-test": "^3.1.2",
-        "@eslint/eslintrc": "^3.2.0",
+        "@eslint/eslintrc": "^3.3.0",
         "@eslint/js": "^9.20.0",
         "@nx/eslint": "20.4.6",
         "@nx/js": "20.4.6",
