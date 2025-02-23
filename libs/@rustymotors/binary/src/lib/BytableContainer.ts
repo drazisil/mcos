@@ -1,5 +1,5 @@
-import { BytableBase } from "./BytableBase";
-import { BytableObject } from "./types";
+import { BytableBase } from "./BytableBase.js";
+import { BytableObject } from "./types.js";
 
 export class BytableShortContainer extends BytableBase implements BytableObject {
 	private value_: string | number | Buffer = "";
@@ -26,8 +26,8 @@ export class BytableShortContainer extends BytableBase implements BytableObject 
 		return this.value_;
 	}
 
-	setNullTerminated(nullTerminated: boolean) {
-		this.nullTerminated = nullTerminated;
+	setNullTerminated(_nullTerminated: boolean) {
+		throw new Error("Method not implemented.");
 	}
 
 	getNullTerminated() {
@@ -98,7 +98,7 @@ export class BytableShortContainer extends BytableBase implements BytableObject 
 		} else {
 			const length = buffer.readUInt16BE(offset);
 			this.setValue(
-				buffer.subarray(offset + 4, offset + length + 2).toString("utf-8"),
+				buffer.subarray(offset + 2, offset + length + 2).toString("utf-8"),
 			);
 			this.length = length;
 		}
@@ -106,6 +106,7 @@ export class BytableShortContainer extends BytableBase implements BytableObject 
 
 	get json() {
 		return {
+			name: this.name_,
 			value: this.value_,
 			length: this.length,
 			nullTerminated: this.nullTerminated,

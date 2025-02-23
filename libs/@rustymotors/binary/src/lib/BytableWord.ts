@@ -1,4 +1,4 @@
-import { Bytable } from "./Bytable";
+import { Bytable } from "./Bytable.js";
 
 export class BytableWord extends Bytable {
 	private static validateBufferLength(

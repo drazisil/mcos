@@ -1,7 +1,7 @@
-import { Bytable } from "./Bytable";
-import { BytableFieldTypes } from "./BytableMessage";
-import { BytableServerHeader } from "./BytableServerHeader";
-import { BytableObject } from "./types";
+import { Bytable } from "./Bytable.js";
+import { BytableFieldTypes } from "./BytableMessage.js";
+import { BytableServerHeader } from "./BytableServerHeader.js";
+import { BytableObject } from "./types.js";
 
 export class BytableServerMessage extends Bytable {
 	protected header_: BytableServerHeader = new BytableServerHeader();

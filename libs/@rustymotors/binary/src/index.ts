@@ -8,3 +8,5 @@ export * from "./lib/BytableMessage.js";
 export * from "./lib/BytableData.js";
 export * from "./lib/BytableByte.js";
 export * from "./lib/BytableWord.js";
+export {deserialize, serialize, createEmptyField, serializeSize } from "./lib/Serializer.js";
+export * from "./lib/types.js";

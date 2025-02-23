@@ -1,5 +1,5 @@
-import { BytableBase } from "./BytableBase";
-import { BytableObject } from "./types";
+import { BytableBase } from "./BytableBase.js";
+import { BytableObject } from "./types.js";
 
 export class BytableByte extends BytableBase implements BytableObject {
 	protected value_: number = 0;

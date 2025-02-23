@@ -112,12 +112,12 @@ export const cloth_grey = argbToInt(255, 146, 143, 137); //grey
 export const cloth_white = argbToInt(255, 255, 255, 255); //white
 
 interface Logger {
-	info: (msg: string, obj?: unknown) => void;
-	warn: (msg: string, obj?: unknown) => void;
-	error: (msg: string, obj?: unknown) => void;
-	fatal: (msg: string, obj?: unknown) => void;
-	debug: (msg: string, obj?: unknown) => void;
-	trace: (msg: string, obj?: unknown) => void;
+	info: pino.LogFn;
+	warn: pino.LogFn;
+	error: pino.LogFn;
+	fatal: pino.LogFn;
+	debug: pino.LogFn;
+	trace: pino.LogFn;
 	child: (obj: pino.Bindings) => Logger;
 }
 
@@ -166,14 +166,8 @@ export function getServerLogger(name?: string): Logger {
 	return {
 		info: logger.info.bind(logger),
 		warn: logger.warn.bind(logger),
-		error: (msg: string, obj?: unknown) => {
-			if (obj instanceof Error) {
-				Sentry.captureException(obj);
-			} else if (obj) {
-				Sentry.captureException(new Error(msg), { extra: { context: obj } });
-			} else {
-				Sentry.captureException(new Error(msg));
-			}
+		error: (msg: unknown, obj?: any) => {
+			Sentry.captureException(msg);
 			logger.error({ msg, obj });
 		},
 		fatal: logger.fatal.bind(logger),

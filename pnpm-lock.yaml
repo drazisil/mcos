@@ -308,6 +308,9 @@ importers:
       '@rustymotors/binary':
         specifier: workspace:^
         version: link:../../libs/@rustymotors/binary
+      '@rustymotors/protocol':
+        specifier: workspace:^
+        version: link:../../libs/@rustymotors/protocol
       fastify:
         specifier: ^5.2.1
         version: 5.2.1

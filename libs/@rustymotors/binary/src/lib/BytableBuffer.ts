@@ -1,4 +1,4 @@
-import { BytableObject } from "./types";
+import { BytableObject } from "./types.js";
 
 export class BytableBuffer implements BytableObject {
 	protected name_: string = "";

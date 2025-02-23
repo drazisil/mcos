@@ -1,5 +1,5 @@
-import { BytableBase } from "./BytableBase";
-import { BytableObject } from "./types";
+import { BytableBase } from "./BytableBase.js";
+import { BytableObject } from "./types.js";
 
 export class BytableServerHeader extends BytableBase implements BytableObject {
 	// All fields are in Little Endian
@@ -47,7 +47,7 @@ export class BytableServerHeader extends BytableBase implements BytableObject {
 		return this.messageLength_;
 	}
 
-	get serializeSize() {
+	override get serializeSize() {
 		return 11;
 	}
 

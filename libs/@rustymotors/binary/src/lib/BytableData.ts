@@ -1,6 +1,6 @@
-import { BytableBase } from "./BytableBase";
-import { BytableFieldTypes  } from "./BytableMessage";
-import { BytableObject } from "./types";
+import { BytableBase } from "./BytableBase.js";
+import { BytableFieldTypes  } from "./BytableMessage.js";
+import { BytableObject } from "./types.js";
 
 export class BytableData extends BytableBase implements BytableObject {
 	protected name_ = "BytableData";

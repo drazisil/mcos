@@ -1,4 +1,4 @@
-import { Bytable } from "./Bytable";
+import { Bytable } from "./Bytable.js";
 
 export class BytableHeader extends Bytable {
 	protected messageId_: number = 0;
