@@ -20,7 +20,7 @@
 		"test": "make test",
 		"types:db": "pnpm --filter=rusty-motors-database run types:db",
 		"types": "dotenvx run -- pnpm run types:db",
-		"migrate": "pg-migrations apply --directory migrations    ",
+		"migrate": "npx dotenvx run -- pnpm pg-migrations apply --directory migrations",
 		"prepare": "husky",
 		"build": "tsc"
 	},
