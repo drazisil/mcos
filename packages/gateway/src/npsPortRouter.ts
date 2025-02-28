@@ -9,6 +9,7 @@ import { receivePersonaData } from "rusty-motors-personas";
 import { receiveLoginData } from "rusty-motors-login";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
 import { BytableMessage, createRawMessage } from "@rustymotors/binary";
+import * as Sentry from "@sentry/node";
 import { getMCOProtocolInstance } from "@rustymotors/protocol";
 
 /**
@@ -35,64 +36,64 @@ export async function npsPortRouter({
 	}
 	log.debug(`[${id}] NPS port router started for port ${port}`);
 
-	getMCOProtocolInstance().acceptIncomingSocket({
-		connectionId: id,
-		port,
-		socket,
+	// getMCOProtocolInstance().acceptIncomingSocket({
+	// 	connectionId: id,
+	// 	port,
+	// 	socket,
+	// });
+
+	// return;
+
+	if (port === 7003) {
+		// Sent ok to login packet
+		log.debug(`[${id}] Sending ok to login packet`);
+		socket.write(Buffer.from([0x02, 0x30, 0x00, 0x04]));
+	}
+
+	// Handle the socket connection here
+	socket.on("data", async (data) => {
+		try {
+			log.debug(`[${id}] Received data: ${data.toString("hex")}`);
+			const initialPacket = parseInitialMessage(data);
+			log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
+			log.debug(`[${id}] initial Packet(hex): ${initialPacket.toString()}`);
+			await routeInitialMessage(id, port, initialPacket)
+				.then((response) => {
+					// Send the response back to the client
+					log.debug(
+						`[${id}] Sending response to socket: ${response.toString("hex")}`,
+					);
+					socket.write(response);
+				})
+				.catch((error) => {
+					throw new Error(
+						`[${id}] Error routing initial nps message: ${error}`,
+						{
+							cause: error,
+						},
+					);
+				});
+		} catch (error) {
+			if (error instanceof RangeError) {
+				log.warn(`[${id}] Error parsing initial nps message: ${error}`);
+			} else {
+				Sentry.captureException(error);
+				log.error(`[${id}] Error handling data: ${error}`);
+			}
+		}
 	});
 
-	return;
+	socket.on("end", () => {
+		// log.debug(`[${id}] Socket closed by client for port ${port}`);
+	});
 
-	// if (port === 7003) {
-	// 	// Sent ok to login packet
-	// 	log.debug(`[${id}] Sending ok to login packet`);
-	// 	socket.write(Buffer.from([0x02, 0x30, 0x00, 0x04]));
-	// }
-
-	// // Handle the socket connection here
-	// socket.on("data", async (data) => {
-	// 	try {
-	// 		log.debug(`[${id}] Received data: ${data.toString("hex")}`);
-	// 		const initialPacket = parseInitialMessage(data);
-	// 		log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
-	// 		log.debug(`[${id}] initial Packet(hex): ${initialPacket.toString()}`);
-	// 		await routeInitialMessage(id, port, initialPacket)
-	// 			.then((response) => {
-	// 				// Send the response back to the client
-	// 				log.debug(
-	// 					`[${id}] Sending response to socket: ${response.toString("hex")}`,
-	// 				);
-	// 				socket.write(response);
-	// 			})
-	// 			.catch((error) => {
-	// 				throw new Error(
-	// 					`[${id}] Error routing initial nps message: ${error}`,
-	// 					{
-	// 						cause: error,
-	// 					},
-	// 				);
-	// 			});
-	// 	} catch (error) {
-	// 		if (error instanceof RangeError) {
-	// 			log.warn(`[${id}] Error parsing initial nps message: ${error}`);
-	// 		} else {
-	// 			Sentry.captureException(error);
-	// 			log.error(`[${id}] Error handling data: ${error}`);
-	// 		}
-	// 	}
-	// });
-
-	// socket.on("end", () => {
-	// 	// log.debug(`[${id}] Socket closed by client for port ${port}`);
-	// });
-
-	// socket.on("error", (error) => {
-	// 	if (error.message.includes("ECONNRESET")) {
-	// 		log.debug(`[${id}] Connection reset by client`);
-	// 		return;
-	// 	}
-	// 	log.error(`[${id}] Socket error: ${error}`);
-	// });
+	socket.on("error", (error) => {
+		if (error.message.includes("ECONNRESET")) {
+			log.debug(`[${id}] Connection reset by client`);
+			return;
+		}
+		log.error(`[${id}] Socket error: ${error}`);
+	});
 }
 
 /**

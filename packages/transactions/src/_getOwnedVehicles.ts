@@ -1,26 +1,26 @@
 import { OldServerMessage } from "rusty-motors-shared";
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { OwnedVehicle, OwnedVehiclesMessage } from "./OwnedVehiclesMessage.js";
-import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js"
+import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getServerLogger } from "rusty-motors-shared";
 
 const defaultLogger = getServerLogger("handlers/_getOwnedVehicles");
 
-const vehicleList = [
-	{
-		personId: 1,
-		vehicleId: 1,
-		brandedPartId: 113,
-	},
-];
+const vehicleList: {
+	personId: number;
+	vehicleId: number;
+	brandedPartId: number;
+}[] = [];
 
 export function getVehiclesForPerson(personId: number) {
 	return vehicleList.filter((vehicle) => vehicle.personId === personId);
 }
 
-export async function _getOwnedVehicles(
-	{ connectionId, packet, log = defaultLogger }: MessageHandlerArgs
-): Promise<MessageHandlerResult> {
+export async function _getOwnedVehicles({
+	connectionId,
+	packet,
+	log = defaultLogger,
+}: MessageHandlerArgs): Promise<MessageHandlerResult> {
 	const getOwnedVehiclesMessage = new GenericRequestMessage();
 	getOwnedVehiclesMessage.deserialize(packet.data);
 
@@ -48,4 +48,12 @@ export async function _getOwnedVehicles(
 	responsePacket.setBuffer(ownedVehiclesMessage.serialize());
 
 	return { connectionId, messages: [responsePacket] };
+}
+
+export function addVehicle(
+	personId: number,
+	vehicleId: number,
+	brandedPartId: number,
+) {
+	vehicleList.push({ personId, vehicleId, brandedPartId });
 }

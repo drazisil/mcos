@@ -44,7 +44,8 @@ export class BytableStructure extends BytableBase implements BytableObject {
 			const buffer = Buffer.alloc(this.serializeSize);
 			let offset = 0;
 			for (const field of this.fields_) {
-				buffer.set(field.serialize(), offset);
+				const fieldBuffer = field.serialize();
+				buffer.set(fieldBuffer, offset);
 				offset += field.serializeSize;
 			}
 			return buffer;

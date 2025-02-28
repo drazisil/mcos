@@ -21,9 +21,7 @@ export class BytableDword extends Bytable {
 		}
 
 		override serialize() {
-			const buffer = Buffer.alloc(4);
-			buffer.writeUInt32BE(Number(this.value), 0);
-			return buffer;
+			return this.value as Buffer;
 		}
 
 		override get json() {

@@ -2,6 +2,7 @@ import { OldServerMessage } from "rusty-motors-shared";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
+import { addVehicle } from "./_getOwnedVehicles.js";
 
 import { getServerLogger } from "rusty-motors-shared";
 
@@ -62,14 +63,15 @@ export async function _buyCarFromDealer({
 	log.debug(`[${connectionId}] Received PurchaseStockCarMessage: ${purchaseStockCarMessage.toString()}`);
 
     // TODO: Implement car purchase logic here
+    // For now, just add a new car to the player's inventory
+    addVehicle(1, 1000, 113); // personId, vehicleId, brandedPartId
+    
 
     const replyPacket = new GenericReplyMessage();
     replyPacket.msgNo = 103; // GenericReplyMessage
     replyPacket.msgReply = 142; // PurchaseStockCarMessage
     replyPacket.result.writeUInt32LE(101, 0); // MC_SUCCESS
     replyPacket.data.writeUInt32LE(1000, 0); // New car ID
-    
-
 
 	log.debug(`[${connectionId}] Sending GenericReplyMessage: ${replyPacket.toString()}`);
 
