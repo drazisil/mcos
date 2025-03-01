@@ -1,6 +1,6 @@
 import { ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import { MiniUserInfo, UserInfo } from "../UserInfoMessage.js";
+import { MiniUserInfo } from "../UserInfoMessage.js";
 import { getServerLogger } from "rusty-motors-shared";
 import { BytableMessage } from "@rustymotors/binary";
 
@@ -38,8 +38,8 @@ export async function handleGetMiniUserList({
 		channelCountRecord.writeUInt32BE(userCount, 4); // userCount
 
 		const user1 = new MiniUserInfo();
-		user1.setFieldValueByName("userId", 1);
-		user1.setFieldValueByName("userName", "Test User");
+		user1.setFieldValueByName("userId", 21);
+		user1.setFieldValueByName("userName", "Dr Brown");
 
 		log.debug(`[${connectionId}] User1: ${user1.toString()}`);
 

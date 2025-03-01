@@ -1,4 +1,4 @@
-import { OldServerMessage } from "rusty-motors-shared";
+import { fetchStateFromDatabase, findSessionByConnectionId, OldServerMessage } from "rusty-motors-shared";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { ServerPacket } from "rusty-motors-shared-packets";
 import { GenericReplyMessage } from "./GenericReplyMessage.js";
@@ -62,9 +62,15 @@ export async function _buyCarFromDealer({
 
 	log.debug(`[${connectionId}] Received PurchaseStockCarMessage: ${purchaseStockCarMessage.toString()}`);
 
+    const session = findSessionByConnectionId(fetchStateFromDatabase(), connectionId);
+    if (!session) {
+        log.error({ connectionId }, "Session not found");
+        throw new Error(`Session not found for connectionId: ${connectionId}`);
+    }
+
     // TODO: Implement car purchase logic here
     // For now, just add a new car to the player's inventory
-    addVehicle(1, 1000, 113); // personId, vehicleId, brandedPartId
+    addVehicle(session.gameId, 1000, purchaseStockCarMessage.brandedPardId, purchaseStockCarMessage.skinId);
     
 
     const replyPacket = new GenericReplyMessage();

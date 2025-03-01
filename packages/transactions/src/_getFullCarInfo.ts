@@ -3,7 +3,9 @@ import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerResult } from "./handlers.js";
 import { IServerMessage } from "rusty-motors-shared-packets";
 import { getVehicleById } from "./_getOwnedVehicles.js";
-import { Part, PartsAssemblyMessage } from "./PartsAssemblyMessage.js";
+import { Part  } from "./PartsAssemblyMessage.js";
+import { Vehicle } from "./Vehicle.js";
+import { CarInfoMessage } from "./CarInfoMessage.js";
 
 
 export async function _getFullCarInfo({
@@ -33,7 +35,7 @@ export async function _getFullCarInfo({
 	log.debug({ connectionId, carId, delta }, "Received getFullCarInfo");
 
 
-	const carInfoMessage = new PartsAssemblyMessage(carId);
+	const carInfoMessage = new CarInfoMessage(session.gameId);
 
 	const vehicle = await getVehicleById(carId);
 	if (!vehicle) {
@@ -45,6 +47,16 @@ export async function _getFullCarInfo({
 	carInfoMessage._ownerId = vehicle.personId;
 	carInfoMessage._numberOfParts = 1;
 
+	log.debug({ connectionId, carId, vehicle }, "Found vehicle");
+
+	const vehicleBody = new Vehicle();
+	vehicleBody._vehicleId = vehicle.vehicleId;
+	vehicleBody._skinId = vehicle.skinId;
+	vehicleBody._flags = 0;
+	vehicleBody._delta = delta;
+	vehicleBody._carClass = 0
+	vehicleBody._damageLength = 0
+
 	const part1 = new Part();
 	part1._partId = vehicle.vehicleId;
 	part1._parentPartId = 0;
@@ -55,7 +67,11 @@ export async function _getFullCarInfo({
 	part1._attachmentPoint = 0;
 	part1._damage = 0;
 
+	log.debug({ connectionId, carId, part1 }, "Adding part to car");
+
 	carInfoMessage._partList.push(part1);
+
+	log.debug({ connectionId, carId, carInfoMessage }, "Sending car info");
 
 	const responsePacket = new OldServerMessage();
 	responsePacket._header.sequence = packet.sequenceNumber;

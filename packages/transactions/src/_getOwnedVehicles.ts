@@ -10,6 +10,7 @@ const vehicleList: {
 	personId: number;
 	vehicleId: number;
 	brandedPartId: number;
+	skinId: number;
 }[] = [];
 
 export function getVehiclesForPerson(personId: number) {
@@ -58,6 +59,7 @@ export function addVehicle(
 	personId: number,
 	vehicleId: number,
 	brandedPartId: number,
+	skinId: number,
 ) {
-	vehicleList.push({ personId, vehicleId, brandedPartId });
+	vehicleList.push({ personId, vehicleId, brandedPartId, skinId });
 }
