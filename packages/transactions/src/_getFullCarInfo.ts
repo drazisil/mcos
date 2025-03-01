@@ -6,6 +6,7 @@ import { getVehicleById } from "./_getOwnedVehicles.js";
 import { Part  } from "./PartsAssemblyMessage.js";
 import { Vehicle } from "./Vehicle.js";
 import { CarInfoMessage } from "./CarInfoMessage.js";
+import { GenericReply } from "./GenericReplyMessage.js";
 
 
 export async function _getFullCarInfo({
@@ -70,11 +71,19 @@ export async function _getFullCarInfo({
 
 	log.debug({ connectionId, carId, carInfoMessage }, "Sending car info");
 
+	const allISFineMessage = new GenericReply();
+	allISFineMessage.msgNo = 102;
+	allISFineMessage.msgReply = getFullCarInfoMessage.msgNo;
+	const result = Buffer.alloc(4);
+	result.writeUInt32LE(146, 0);
+	allISFineMessage.result = result;
+
 	const responsePacket = new OldServerMessage();
 	responsePacket._header.sequence = packet.sequenceNumber;
 	responsePacket._header.flags = 8;
 
-	responsePacket.setBuffer(carInfoMessage.serialize());
+	// responsePacket.setBuffer(carInfoMessage.serialize());
+	responsePacket.setBuffer(allISFineMessage.serialize());
 
 	return { connectionId, messages: [responsePacket] };
 }
