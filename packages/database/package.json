@@ -14,7 +14,7 @@
 		"format": "npx @biomejs/biome format --write .",
 		"test": "vitest run --coverage",
 		"types:db": "npx @databases/pg-schema-cli --directory src/__generated__",
-        "build": "tsc"
+		"build": "tsc"
 	},
 	"keywords": [],
 	"author": "",
@@ -23,7 +23,9 @@
 		"@types/pg": "^8.11.10",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
-		"sequelize": "^6.37.5"
+		"sequelize": "^6.37.5",
+		"slonik": "^46.4.0",
+		"zod": "^3.24.2"
 	},
 	"directories": {
 		"test": "test"
