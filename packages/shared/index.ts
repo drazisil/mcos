@@ -137,7 +137,7 @@ export function getServerLogger(name?: string): Logger {
 		console.warn(`Invalid log level: ${logLevel}. Defaulting to "debug"`);
 	}
 
-	logger = pino({ 
+	logger = pino.default({ 
 		name: loggerName,
 		transport: {
 			targets: [
