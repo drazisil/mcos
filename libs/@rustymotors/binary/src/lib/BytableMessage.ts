@@ -317,6 +317,22 @@ export class BytableMessage extends Bytable {
 			return field.value;
 		}
 
+		htonl(value: number) {
+			const buffer = Buffer.alloc(4);
+			buffer.writeUInt32BE(value, 0);
+			return buffer;
+		}
+
+		coerceValue(value: string | number | Buffer) {
+			if (typeof value === "string") {
+				return Buffer.from(value);
+			}
+			if (typeof value === "number") {
+				return Buffer.from(this.htonl(value));
+			}
+			return value;
+		}
+
 		setFieldValueByName(name: string, value: string | number | Buffer) {
 			if (name === "") {
 				return;
@@ -334,7 +350,7 @@ export class BytableMessage extends Bytable {
 			if (!field) {
 				const field = new BytableFieldTypes[serializedFormat.field]();
 				field.setName(name);
-				field.setValue(Buffer.from(this.toBuffer(value)));
+				field.setValue(this.coerceValue(value));
 
 				this.fields_.push(field);
 				return;
