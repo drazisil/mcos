@@ -47,15 +47,12 @@ export async function _getFullCarInfo({
 	carInfoMessage._ownerId = vehicle.personId;
 	carInfoMessage._numberOfParts = 1;
 
-	log.debug({ connectionId, carId, vehicle }, "Found vehicle");
-
 	const vehicleBody = new Vehicle();
 	vehicleBody._vehicleId = vehicle.vehicleId;
 	vehicleBody._skinId = vehicle.skinId;
 	vehicleBody._flags = 0;
 	vehicleBody._delta = delta;
 	vehicleBody._carClass = 0
-	vehicleBody._damageLength = 0
 
 	const part1 = new Part();
 	part1._partId = vehicle.vehicleId;
@@ -65,10 +62,10 @@ export async function _getFullCarInfo({
 	part1._junkPrice = 0;
 	part1._wear = 0;
 	part1._attachmentPoint = 0;
-	part1._damage = 0;
 
 	log.debug({ connectionId, carId, part1 }, "Adding part to car");
 
+	carInfoMessage._vehicle = vehicleBody;
 	carInfoMessage._partList.push(part1);
 
 	log.debug({ connectionId, carId, carInfoMessage }, "Sending car info");

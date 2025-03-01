@@ -1,5 +1,6 @@
 import { SerializedBufferOld } from "rusty-motors-shared";
-import { Vehicle, Part } from "./Vehicle.js";
+import { Vehicle } from "./Vehicle.js";
+import { Part } from "./Part.js";
 
 
 export class CarInfoMessage extends SerializedBufferOld {
@@ -24,6 +25,7 @@ export class CarInfoMessage extends SerializedBufferOld {
     }
 
     override serialize() {
+        this._numberOfParts = this._partList.length;
         const buffer = Buffer.alloc(this.size());
         let offset = 0; // offset is 0
         buffer.writeUInt16LE(this._msgNo, offset);
