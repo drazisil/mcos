@@ -53,7 +53,7 @@ export async function _getFullCarInfo({
 	vehicleBody._skinId = vehicle.skinId;
 	vehicleBody._flags = 0;
 	vehicleBody._delta = delta;
-	vehicleBody._carClass = 0
+	vehicleBody._carClass = 3
 
 	const part1 = new Part();
 	part1._partId = vehicle.vehicleId;

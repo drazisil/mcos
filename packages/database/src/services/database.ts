@@ -83,10 +83,15 @@ export async function getSlonik(): Promise<{
     sql: ReturnType<typeof createSqlTag>;
 }> {
     if (!slonik) {
-        slonik = await createPool("postgres://user:password@localhost:5432/rm");
+        slonik = await createPool(process.env["DATABASE_URL"]!);
     }
     if (!sql) {
         sql = initSQL();
     }
+    return { slonik, sql };
+}
+
+export async function getDatabase() {
+    const { slonik, sql } = await getSlonik();
     return { slonik, sql };
 }

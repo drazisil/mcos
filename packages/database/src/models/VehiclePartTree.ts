@@ -420,15 +420,15 @@ export async function buildVehiclePartTree({
             name: 'Get skin flags',
             op: 'db.query',
             attributes: {
-                sql: 'SELECT defaultflag FROM ptskin WHERE skinid = $1',
+                sql: 'SELECT defaultflag FROM pt_skin WHERE skinid = $1',
                 db: 'postgres',
             },
         },
         async () => {
             const { slonik, sql } = await getSlonik();
-            return slonik.one(sql.typeAlias('ptSkin')`
+            return slonik.one(sql.typeAlias('pt_skin')`
         SELECT defaultflag
-        FROM ptskin
+        FROM pt_skin
         WHERE skinid = ${skinId}
     `);
         },
