@@ -16,6 +16,10 @@ export function getVehiclesForPerson(personId: number) {
 	return vehicleList.filter((vehicle) => vehicle.personId === personId);
 }
 
+export async function getVehicleById(vehicleId: number) {
+	return vehicleList.find((vehicle) => vehicle.vehicleId === vehicleId);
+}
+
 export async function _getOwnedVehicles({
 	connectionId,
 	packet,
