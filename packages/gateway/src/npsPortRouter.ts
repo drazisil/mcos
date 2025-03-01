@@ -181,15 +181,15 @@ async function routeInitialMessage(
 			).messages;
 			log.debug(`[${id}] Login Responses: ${responses.map((r) => r.serialize().toString("hex"))}`);
 			break;
-		case 8227:
-			// Handle chat packet
-			log.debug(
-				`[${id}] Passing packet to chat handler: ${packet.serialize().toString("hex")}`,
-			);
-			responses = (await receiveChatData({ connectionId: id, message: packet }))
-				.messages;
-			log.debug(`[${id}] Chat Responses: ${responses.map((r) => r.serialize().toString("hex"))}`);
-			break;
+		// case 8227:
+		// 	// Handle chat packet
+		// 	log.debug(
+		// 		`[${id}] Passing packet to chat handler: ${packet.serialize().toString("hex")}`,
+		// 	);
+		// 	responses = (await receiveChatData({ connectionId: id, message: packet }))
+		// 		.messages;
+		// 	log.debug(`[${id}] Chat Responses: ${responses.map((r) => r.serialize().toString("hex"))}`);
+		// 	break;
 		case 8228:
 			log.debug(
 				`[${id}] Passing packet to persona handler: ${packet.serialize().toString("hex")}`,

@@ -420,16 +420,16 @@ export async function buildVehiclePartTree({
             name: 'Get skin flags',
             op: 'db.query',
             attributes: {
-                sql: 'SELECT defaultflag FROM pt_skin WHERE skinid = $1',
+                sql: 'SELECT default_flag FROM pt_skin WHERE skin_id = $1',
                 db: 'postgres',
             },
         },
         async () => {
             const { slonik, sql } = await getSlonik();
-            return slonik.one(sql.typeAlias('pt_skin')`
-        SELECT defaultflag
+            return slonik.one(sql.typeAlias('ptSkin')`
+        SELECT default_flag
         FROM pt_skin
-        WHERE skinid = ${skinId}
+        WHERE skin_id = ${skinId}
     `);
         },
     );
@@ -439,28 +439,26 @@ export async function buildVehiclePartTree({
         throw new Error(`Skin with id ${skinId} does not exist`);
     }
 
-    let vehicleId = undefined;
-
     // Get the vehicle assembly from the database
     const vehicleAssembly = await Sentry.startSpan(
         {
             name: 'Get vehicle assembly',
             op: 'db.query',
             attributes: {
-                sql: 'SELECT bp.brandedpartid, bp.parttypeid, a.attachmentpointid, pt.abstractparttypeid, apt.parentabstractparttypeid FROM stockassembly a INNER JOIN brandedpart bp ON a.childbrandedpartid = bp.brandedpartid inner join parttype pt on pt.parttypeid = bp.parttypeid inner join abstractparttype apt on apt.abstractparttypeid = pt.abstractparttypeid WHERE a.parentbrandedpartid = $1',
+                sql: 'SELECT bp.branded_part_id, bp.part_type_id, a.attachment_point_id, pt.abstract_part_type_id, apt.parent_abstract_part_type_id FROM stock_assembly a INNER JOIN branded_part bp ON a.child_branded_part_id = bp.branded_part_id inner join part_type pt on pt.part_type_id = bp.part_type_id inner join abstract_part_type apt on apt.abstract_part_type_id = pt.abstract_part_type_id WHERE a.parent_branded_part_id = $1',
                 db: 'postgres',
             },
         },        
         async () => {
-            log.debug(`Getting vehicle assembly for vehicle ${vehicleId}`);
+            log.debug(`Getting vehicle assembly for vehicle with branded part id ${brandedPartId}`);
             const { slonik, sql } = await getSlonik();
             return slonik.many(sql.typeAlias('detailedPart')`
-        SELECT bp.brandedpartid, bp.parttypeid, a.attachmentpointid, pt.abstractparttypeid, apt.parentabstractparttypeid
-        FROM stockassembly a
-        INNER JOIN brandedpart bp ON a.childbrandedpartid = bp.brandedpartid
-        inner join parttype pt on pt.parttypeid = bp.parttypeid
-        inner join abstractparttype apt on apt.abstractparttypeid = pt.abstractparttypeid
-        WHERE a.parentbrandedpartid = ${brandedPartId}
+        SELECT bp.branded_part_id, bp.part_type_id, a.attachment_point_id, pt.abstract_part_type_id, apt.parent_abstract_part_type_id
+        FROM stock_assembly a
+        INNER JOIN branded_part bp ON a.child_branded_part_id = bp.branded_part_id
+        inner join part_type pt on pt.part_type_id = bp.part_type_id
+        inner join abstract_part_type apt on apt.abstract_part_type_id = pt.abstract_part_type_id
+        WHERE a.parent_branded_part_id = ${brandedPartId}
     `);
         },
     );

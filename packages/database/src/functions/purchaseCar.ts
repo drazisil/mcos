@@ -8,10 +8,10 @@ export async function purchaseCar(
     skinId: number,
     tradeInCarId: number,
 ): Promise<number> {
+try {
     getServerLogger('purchaseCar').debug(
         `Player ${playerId} is purchasing car from dealer ${dealerId} with branded part ${brandedPardId} and skin ${skinId} and trading in car ${tradeInCarId}`,
     );
-
 
     const parts = await buildVehiclePartTree({
         brandedPartId: brandedPardId,
@@ -27,4 +27,11 @@ export async function purchaseCar(
     );
 
     return 1000;
+} catch (error) {
+    getServerLogger('purchaseCar').error(
+        { error },
+        `Error purchasing car for player ${playerId}`,
+    );
+    throw error;
+}
 }
