@@ -167,22 +167,22 @@ export type NpsCommandHandler = {
 
 const npsCommandHandlers: NpsCommandHandler[] = [
 	{
-		opCode: 0x10c,
+		opCode: 0x10c, // 268
 		name: "NPS_GET_SERVER_INFO",
 		handler: handleGetServerInfo,
 	},
 	{
-		opCode: 0x128,
+		opCode: 0x128, // 296
 		name: "NPS_GET_MINI_USER_LIST",
 		handler: handleGetMiniUserList,
 	},
 	{
-		opCode: 0x30c,
+		opCode: 0x30c, // 780
 		name: "NPS_SEND_MINI_RIFF_LIST",
 		handler: handleSendMiniRiffList,
 	},
 	{
-		opCode: 0x103,
+		opCode: 0x103, // 259
 		name: "NPS_SET_MY_USER_DATA",
 		handler: _setMyUserData,
 	},
