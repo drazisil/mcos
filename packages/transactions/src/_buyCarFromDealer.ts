@@ -36,11 +36,15 @@ export async function _buyCarFromDealer({
 
     // TODO: Implement car purchase logic here
     // TODO: Get the new car ID from the database
-    const newCarId = await purchaseCar(session.gameId, purchaseStockCarMessage.dealerId, purchaseStockCarMessage.brandedPardId, purchaseStockCarMessage.skinId, purchaseStockCarMessage.tradeInCarId);
-    if (!newCarId) {
-        log.error({ connectionId }, 'Failed to purchase car');
+    const newCarId = await purchaseCar(session.gameId, purchaseStockCarMessage.dealerId, purchaseStockCarMessage.brandedPardId, purchaseStockCarMessage.skinId, purchaseStockCarMessage.tradeInCarId)
+    .then((newCarId) => {
+        log.debug({ connectionId }, 'Purchased car');
+        return newCarId;
+    })
+    .catch((error) => {
+        log.error({ connectionId, error }, 'Failed to purchase car');
         throw new Error('Failed to purchase car');
-    }
+    })
 
     log.debug(
         `[${connectionId}] Purchased car with ID: ${newCarId}`,

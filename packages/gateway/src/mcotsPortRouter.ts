@@ -6,6 +6,7 @@ import {
 import { receiveTransactionsData } from "rusty-motors-transactions";
 import * as Sentry from "@sentry/node";
 import { getServerLogger, ServerLogger } from "rusty-motors-shared";
+import { Socket } from 'net';
 
 /**
  * Handles the routing of messages for the MCOTS (Motor City Online Transaction Server) ports.
@@ -14,59 +15,102 @@ import { getServerLogger, ServerLogger } from "rusty-motors-shared";
  */
 
 export async function mcotsPortRouter({
-	taggedSocket,
-	log = getServerLogger("gateway.mcotsPortRouter"),
+    taggedSocket,
+    log = getServerLogger('gateway.mcotsPortRouter'),
 }: {
-	taggedSocket: TaggedSocket;
-	log?: ServerLogger;
+    taggedSocket: TaggedSocket;
+    log?: ServerLogger;
 }): Promise<void> {
-	const { rawSocket: socket, connectionId: id } = taggedSocket;
+    const { rawSocket: socket, connectionId: id } = taggedSocket;
 
-	const port = socket.localPort || 0;
+    const port = socket.localPort || 0;
 
-	if (port === 0) {
-		log.error(`[${id}] Local port is undefined`);
-		socket.end();
-		return;
-	}
+    if (port === 0) {
+        log.error(`[${id}] Local port is undefined`);
+        socket.end();
+        return;
+    }
 
-	log.debug(`[${id}] MCOTS port router started for port ${port}`);
+    log.debug(`[${id}] MCOTS port router started for port ${port}`);
 
-	// Handle the socket connection here
-	socket.on("data", async (data) => {
-		try {
-			log.debug(`[${id}] Received data: ${data.toString("hex")}`);
-			const initialPacket = parseInitialMessage(data);
-			log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
-			log.debug(`[${id}] initial Packet(hex): ${initialPacket.toHexString()}`);
-			await routeInitialMessage(id, port, initialPacket)
-				.then((response) => {
-					// Send the response back to the client
-					log.debug(`[${id}] Sending response: ${response.toString("hex")}`);
-					socket.write(response);
-				})
-				.catch((error) => {
-					throw new Error(`[${id}] Error routing initial mcots message: ${error}`, {
-						cause: error,
-					});
-				});
-		} catch (error) {
-			Sentry.captureException(error);
-			log.error(`[${id}] Error handling data: ${error}`);
-		}
-	});
+    // Handle the socket connection here
+    socket.on('data', async (data) => {
+        await processIncomingPackets(data, log, id, port, socket);
+    });
 
-	socket.on("end", () => {
-		// log.debug(`[${id}] Socket closed by client for port ${port}`);
-	});
+    socket.on('end', () => {
+        // log.debug(`[${id}] Socket closed by client for port ${port}`);
+    });
 
-	socket.on("error", (error) => {
-		if (error.message.includes("ECONNRESET")) {
-			log.debug(`[${id}] Connection reset by client`);
-			return;
-		}
-		log.error(`[${id}] Socket error: ${error}`);
-	});
+    socket.on('error', (error) => {
+        if (error.message.includes('ECONNRESET')) {
+            log.debug(`[${id}] Connection reset by client`);
+            return;
+        }
+        log.error(`[${id}] Socket error: ${error}`);
+    });
+}
+
+async function processIncomingPackets(
+    data: Buffer<ArrayBufferLike>,
+    log: ServerLogger,
+    id: string,
+    port: number,
+    socket: Socket,
+) {
+    try {
+        let inPackets: Buffer[] = [];
+        let inPacketsHex = data.toString('hex');
+
+        // Handle multiple packets in the same data
+        let indexOfPackageSignature = inPacketsHex.indexOf('544f4d43');
+
+        if (indexOfPackageSignature === -1) {
+            inPackets = [data];
+        } else {
+            /* Search for the package signature in the data
+             * If found, split the data into packets
+             * Each packet starts with the 2 bytes length of the packet
+             * followed by the 4 bytes package signature
+             */
+            while (indexOfPackageSignature !== -1) {
+                const startOfPacket = indexOfPackageSignature - 4;
+                const packetLength = data.readInt16BE(startOfPacket);
+				const endOfPacket = startOfPacket + packetLength;
+				const packet = data.subarray(startOfPacket, endOfPacket);
+				inPackets.push(packet);
+				indexOfPackageSignature = inPacketsHex.indexOf('544f4d43', endOfPacket);				
+            }
+
+            for (let packet of inPackets) {
+                log.debug(`[${id}] Received data: ${packet.toString('hex')}`);
+                const initialPacket = parseInitialMessage(packet);
+                log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
+                log.debug(
+                    `[${id}] initial Packet(hex): ${initialPacket.toHexString()}`,
+                );
+                await routeInitialMessage(id, port, initialPacket)
+                    .then((response) => {
+                        // Send the response back to the client
+                        log.debug(
+                            `[${id}] Sending response: ${response.toString('hex')}`,
+                        );
+                        socket.write(response);
+                    })
+                    .catch((error) => {
+                        throw new Error(
+                            `[${id}] Error routing initial mcots message: ${error}`,
+                            {
+                                cause: error,
+                            },
+                        );
+                    });
+            }
+        }
+    } catch (error) {
+        Sentry.captureException(error);
+        log.error(`[${id}] Error handling data: ${error}`);
+    }
 }
 
 function parseInitialMessage(data: Buffer): ServerPacket {

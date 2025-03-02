@@ -3,6 +3,7 @@ import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import { OwnedVehicle, OwnedVehiclesMessage } from "./OwnedVehiclesMessage.js";
 import type { MessageHandlerArgs, MessageHandlerResult } from "./handlers.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { getOwnedVehiclesForPerson } from 'rusty-motors-database';
 
 const defaultLogger = getServerLogger("handlers/_getOwnedVehicles");
 
@@ -13,46 +14,44 @@ const vehicleList: {
 	skinId: number;
 }[] = [];
 
-export function getVehiclesForPerson(personId: number) {
-	return vehicleList.filter((vehicle) => vehicle.personId === personId);
-}
+
 
 export async function getVehicleById(vehicleId: number) {
-	return vehicleList.find((vehicle) => vehicle.vehicleId === vehicleId);
+    return vehicleList.find((vehicle) => vehicle.vehicleId === vehicleId);
 }
 
 export async function _getOwnedVehicles({
-	connectionId,
-	packet,
-	log = defaultLogger,
+    connectionId,
+    packet,
+    log = defaultLogger,
 }: MessageHandlerArgs): Promise<MessageHandlerResult> {
-	const getOwnedVehiclesMessage = new GenericRequestMessage();
-	getOwnedVehiclesMessage.deserialize(packet.data);
+    const getOwnedVehiclesMessage = new GenericRequestMessage();
+    getOwnedVehiclesMessage.deserialize(packet.data);
 
-	log.debug(`Received Message: ${getOwnedVehiclesMessage.toString()}`);
+    log.debug(`Received Message: ${getOwnedVehiclesMessage.toString()}`);
 
-	const personId = getOwnedVehiclesMessage.data.readUInt32LE(0);
+    const personId = getOwnedVehiclesMessage.data.readUInt32LE(0);
 
-	const ownedVehiclesMessage = new OwnedVehiclesMessage();
+    const ownedVehiclesMessage = new OwnedVehiclesMessage();
 
-	const vehicles = getVehiclesForPerson(personId);
+    const vehicles = await getOwnedVehiclesForPerson(personId);
 
-	for (const vehicle of vehicles) {
-		const ownedVehicle = new OwnedVehicle();
-		ownedVehicle._vehicleId = vehicle.vehicleId;
-		ownedVehicle._brandedPartId = vehicle.brandedPartId;
-		ownedVehiclesMessage.addVehicle(ownedVehicle);
-	}
+    for (const vehicle of vehicles) {
+        const ownedVehicle = new OwnedVehicle();
+        ownedVehicle._vehicleId = vehicle.partId;
+        ownedVehicle._brandedPartId = vehicle.brandedPartId;
+        ownedVehiclesMessage.addVehicle(ownedVehicle);
+    }
 
-	ownedVehiclesMessage._msgNo = 173;
+    ownedVehiclesMessage._msgNo = 173;
 
-	const responsePacket = new OldServerMessage();
-	responsePacket._header.sequence = packet.sequenceNumber;
-	responsePacket._header.flags = 8;
+    const responsePacket = new OldServerMessage();
+    responsePacket._header.sequence = packet.sequenceNumber;
+    responsePacket._header.flags = 8;
 
-	responsePacket.setBuffer(ownedVehiclesMessage.serialize());
+    responsePacket.setBuffer(ownedVehiclesMessage.serialize());
 
-	return { connectionId, messages: [responsePacket] };
+    return { connectionId, messages: [responsePacket] };
 }
 
 export function addVehicle(

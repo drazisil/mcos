@@ -23,7 +23,13 @@ try {
             brandedPardId,
             skinId,
             playerId,
-        );
+        ).catch((error) => {
+            getServerLogger('purchaseCar').error(
+                { error },
+                `Error creating new car for player ${playerId}`,
+            );
+            throw error;
+        });
 
         getServerLogger('purchaseCar').debug(
             `Player ${playerId} purchased car with ID ${newCarId}`,

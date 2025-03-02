@@ -7,7 +7,7 @@ import { Part  } from "./PartsAssemblyMessage.js";
 import { Vehicle } from "./Vehicle.js";
 import { CarInfoMessage } from "./CarInfoMessage.js";
 import { GenericReply } from "./GenericReplyMessage.js";
-
+import { getVehicleAndParts } from 'rusty-motors-database';
 
 export async function _getFullCarInfo({
 		connectionId,
@@ -38,52 +38,49 @@ export async function _getFullCarInfo({
 
 	const carInfoMessage = new CarInfoMessage(session.gameId);
 
-	const vehicle = await getVehicleById(carId);
-	if (!vehicle) {
-		log.error({ connectionId, carId }, "Vehicle not found");
-		throw new Error(`Vehicle not found for carId: ${carId}`);
-	}
+	const vehicle = await getVehicleAndParts(carId);
+    if (!vehicle) {
+        log.error({ connectionId, carId }, 'Vehicle not found');
+        throw new Error(`Vehicle not found for carId: ${carId}`);
+    }
 
-	carInfoMessage._msgNo = 123;
-	carInfoMessage._ownerId = vehicle.personId;
-	carInfoMessage._numberOfParts = 1;
+    carInfoMessage._msgNo = 123;
+    carInfoMessage._ownerId = vehicle.ownerId;
 
 	const vehicleBody = new Vehicle();
 	vehicleBody._vehicleId = vehicle.vehicleId;
 	vehicleBody._skinId = vehicle.skinId;
-	vehicleBody._flags = 0;
-	vehicleBody._delta = delta;
-	vehicleBody._carClass = 3
+	vehicleBody._flags = vehicle.flags;
+    vehicleBody._delta = delta;
+    vehicleBody._carClass = vehicle.class;
 
-	const part1 = new Part();
-	part1._partId = vehicle.vehicleId;
-	part1._parentPartId = 0;
-	part1._brandedPartId = vehicle.brandedPartId;
-	part1._repairPrice = 0;
-	part1._junkPrice = 0;
-	part1._wear = 0;
-	part1._attachmentPoint = 0;
+	log.debug(
+        { connectionId, carId, partsLength: vehicle.parts.length },
+        'Adding parts to car',
+    );
 
-	log.debug({ connectionId, carId, part1 }, "Adding part to car");
+	for (const p of vehicle.parts) {
+        const part = new Part();
+        part._partId = p.partId;
+        part._parentPartId = p.parentPartId || 0;
+        part._brandedPartId = p.brandedPartId;
+        part._repairPrice = 0;
+        part._junkPrice = 0;
+        part._wear = 0;
+        part._attachmentPoint = p.attachmentPointId;
+        log.debug({ connectionId, carId, p }, 'Adding part to car');
+        carInfoMessage._partList.push(part);
+    }
 
 	carInfoMessage._vehicle = vehicleBody;
-	carInfoMessage._partList.push(part1);
 
 	log.debug({ connectionId, carId, carInfoMessage }, "Sending car info");
-
-	const allISFineMessage = new GenericReply();
-	allISFineMessage.msgNo = 102;
-	allISFineMessage.msgReply = getFullCarInfoMessage.msgNo;
-	const result = Buffer.alloc(4);
-	result.writeUInt32LE(146, 0);
-	allISFineMessage.result = result;
 
 	const responsePacket = new OldServerMessage();
 	responsePacket._header.sequence = packet.sequenceNumber;
 	responsePacket._header.flags = 8;
 
-	// responsePacket.setBuffer(carInfoMessage.serialize());
-	responsePacket.setBuffer(allISFineMessage.serialize());
+	responsePacket.setBuffer(carInfoMessage.serialize());
 
 	return { connectionId, messages: [responsePacket] };
 }
