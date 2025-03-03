@@ -114,8 +114,8 @@ export async function receiveTransactionsData({
 	const inboundMessage = new ServerPacket();
 	inboundMessage.deserialize(message.serialize());
 
-	log.debug(
-		`[${connectionId}] Received message: ${inboundMessage.toHexString()}`,
+	log.debug({connectionId, seq: inboundMessage.getSequence()},
+		`Received message: ${inboundMessage.toHexString()}`,
 	);
 
 	let decryptedMessage: ServerPacket;
@@ -131,11 +131,6 @@ export async function receiveTransactionsData({
 		if (typeof encryptionSettings === "undefined") {
 			throw Error(`[${connectionId}] Unable to locate encryption settings`);
 		}
-
-		// log the old buffer
-		log.debug(
-			`[${connectionId}] Inbound buffer: ${inboundMessage.data.toHexString()}`,
-		);
 
 		decryptedMessage = decryptMessage(
 			encryptionSettings,

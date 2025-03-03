@@ -51,6 +51,23 @@ export async function mcotsPortRouter({
     });
 }
 
+function findPackageSignatureIndices(data: Buffer): number[] {
+    const packageSignature = Buffer.from('544f4d43', 'hex');
+    const packageSignatureIndices: number[] = [];
+    let index = 0;
+    let currentIndex = 0;
+
+    while (index !== -1) {
+        index = data.indexOf(packageSignature, currentIndex);
+        if (index !== -1) {
+            packageSignatureIndices.push(index);
+            currentIndex = index + 1;
+        }
+    }
+
+    return packageSignatureIndices;
+}
+
 async function processIncomingPackets(
     data: Buffer<ArrayBufferLike>,
     log: ServerLogger,
@@ -60,52 +77,63 @@ async function processIncomingPackets(
 ) {
     try {
         let inPackets: Buffer[] = [];
-        let inPacketsHex = data.toString('hex');
 
-        // Handle multiple packets in the same data
-        let indexOfPackageSignature = inPacketsHex.indexOf('544f4d43');
+        log.debug(
+            `[${id}] Received data in processIncomingPackets: ${data.toString('hex')}`,
+        );
 
-        if (indexOfPackageSignature === -1) {
-            inPackets = [data];
-        } else {
-            /* Search for the package signature in the data
-             * If found, split the data into packets
-             * Each packet starts with the 2 bytes length of the packet
-             * followed by the 4 bytes package signature
-             */
-            while (indexOfPackageSignature !== -1) {
-                const startOfPacket = indexOfPackageSignature - 4;
-                const packetLength = data.readInt16BE(startOfPacket);
-				const endOfPacket = startOfPacket + packetLength;
-				const packet = data.subarray(startOfPacket, endOfPacket);
-				inPackets.push(packet);
-				indexOfPackageSignature = inPacketsHex.indexOf('544f4d43', endOfPacket);				
-            }
+        /* Search for the package signature in the hex string
+         * If found, split the data into packets
+         * Each packet starts with the 2 bytes (16 bits) length of the packet
+         * followed by the 4 bytes package signature
+         */
+        let indices = findPackageSignatureIndices(data);
 
-            for (let packet of inPackets) {
-                log.debug(`[${id}] Received data: ${packet.toString('hex')}`);
-                const initialPacket = parseInitialMessage(packet);
-                log.debug(`[${id}] Initial packet(str): ${initialPacket}`);
-                log.debug(
-                    `[${id}] initial Packet(hex): ${initialPacket.toHexString()}`,
-                );
-                await routeInitialMessage(id, port, initialPacket)
-                    .then((response) => {
-                        // Send the response back to the client
-                        log.debug(
-                            `[${id}] Sending response: ${response.toString('hex')}`,
-                        );
-                        socket.write(response);
-                    })
-                    .catch((error) => {
-                        throw new Error(
-                            `[${id}] Error routing initial mcots message: ${error}`,
-                            {
-                                cause: error,
-                            },
-                        );
-                    });
-            }
+        for (let indexOfPackageSignature of indices) {
+            let length = data.readUInt16LE(indexOfPackageSignature - 2);
+            let packet = data.subarray(
+                indexOfPackageSignature - 2,
+                indexOfPackageSignature + length,
+            );
+            log.debug({
+                connectionId: id,
+                port,
+                length: length,
+                lengthAction: packet.length,
+            }, `Packet(hex): ${packet.toString('hex')}`);
+            inPackets.push(packet);
+        }
+
+        log.warn(`[${id}] Received ${inPackets.length} packets`);
+
+        for (let packet of inPackets) {
+            log.debug(`[${id}] Received data: ${packet.toString('hex')}`);
+            const initialPacket = parseInitialMessage(packet);
+            log.debug(
+                {
+                    connectionId: id,
+                    port,
+                    seq: initialPacket.getSequence(),
+                    length: initialPacket.getLength(),
+                },
+                `initial Packet(hex): ${initialPacket.toHexString()}`,
+            );
+            await routeInitialMessage(id, port, initialPacket)
+                .then((response) => {
+                    // Send the response back to the client
+                    log.debug(
+                        `[${id}] Sending response: ${response.toString('hex')}`,
+                    );
+                    socket.write(response);
+                })
+                .catch((error) => {
+                    throw new Error(
+                        `[${id}] Error routing initial mcots message: ${error}`,
+                        {
+                            cause: error,
+                        },
+                    );
+                });
         }
     } catch (error) {
         Sentry.captureException(error);

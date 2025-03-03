@@ -30,7 +30,7 @@ export async function _updateCachedVehicle({
 
 	const reply = new GenericReply();
     reply.msgNo = 101;
-    reply.msgReply = 163;
+	reply.msgReply = 163;
 
 	const responsePacket = new OldServerMessage();
 	responsePacket._header.sequence = packet.sequenceNumber;
@@ -38,5 +38,5 @@ export async function _updateCachedVehicle({
 
 	responsePacket.setBuffer(reply.serialize());
 
-	return { connectionId, messages: [] };
+	return { connectionId, messages: [responsePacket] };
 }

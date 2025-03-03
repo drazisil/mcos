@@ -2,11 +2,9 @@ import { fetchStateFromDatabase, findSessionByConnectionId, getServerLogger, Old
 import { GenericRequestMessage } from "./GenericRequestMessage.js";
 import type { MessageHandlerResult } from "./handlers.js";
 import { IServerMessage } from "rusty-motors-shared-packets";
-import { getVehicleById } from "./_getOwnedVehicles.js";
 import { Part  } from "./PartsAssemblyMessage.js";
 import { Vehicle } from "./Vehicle.js";
 import { CarInfoMessage } from "./CarInfoMessage.js";
-import { GenericReply } from "./GenericReplyMessage.js";
 import { getVehicleAndParts } from 'rusty-motors-database';
 
 export async function _getFullCarInfo({
