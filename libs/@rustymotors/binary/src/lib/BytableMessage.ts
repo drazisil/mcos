@@ -246,9 +246,6 @@ export class BytableMessage extends Bytable {
 				this.header_.messageVersion === 0 &&
 				this.header_.messageLength === 4
 			) {
-				getServerLogger().warn(
-					`serializeFields: Message has no fields, or no body`,
-				);
 				this.fields_.push(new BytableFieldTypes.Buffer());
 			}
 
