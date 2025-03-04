@@ -23,7 +23,7 @@
 		"@types/pg": "^8.11.11",
 		"pg": "^8.13.3",
 		"pg-hstore": "^2.3.4",
-		"sequelize": "^6.37.5"
+		"sequelize": "^6.37.6"
 	},
 	"directories": {
 		"test": "test"
