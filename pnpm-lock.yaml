@@ -272,8 +272,8 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4
       sequelize:
-        specifier: ^6.37.5
-        version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.3)
+        specifier: ^6.37.6
+        version: 6.37.6(pg-hstore@2.3.4)(pg@8.13.3)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 3.0.7
@@ -3977,15 +3977,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@4.3.7:
-    resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
     engines: {node: '>=6.0'}
@@ -6531,8 +6522,8 @@ packages:
     resolution: {integrity: sha512-G9c0qlIWQSK29pR/5U2JF5dDQeqqHRragoyahj/Nx4KOOQ3CPPfzxnfqFPCSB7x5UgjOgnZ61nSxz+fjDpRlJg==}
     engines: {node: '>= 10.0.0'}
 
-  sequelize@6.37.5:
-    resolution: {integrity: sha512-10WA4poUb3XWnUROThqL2Apq9C2NhyV1xHPMZuybNMCucDsbbFuKg51jhmyvvAUyUqCiimwTZamc3AHhMoBr2Q==}
+  sequelize@6.37.6:
+    resolution: {integrity: sha512-4Slqjqpktofs7AVqWviFOInzP9w8ZRQDhF+DnRtm4WKIdIATpyzGgedyseP3xbgpBxapvfQcJv6CeIdZe4ZL2A==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       ibm_db: '*'
@@ -11685,10 +11676,6 @@ snapshots:
     dependencies:
       ms: 2.1.2
 
-  debug@4.3.7:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.0(supports-color@5.5.0):
     dependencies:
       ms: 2.1.3
@@ -14591,11 +14578,11 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize@6.37.5(pg-hstore@2.3.4)(pg@8.13.3):
+  sequelize@6.37.6(pg-hstore@2.3.4)(pg@8.13.3):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
-      debug: 4.3.7
+      debug: 4.4.0(supports-color@5.5.0)
       dottie: 2.0.6
       inflection: 1.13.4
       lodash: 4.17.21
