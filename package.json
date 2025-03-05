@@ -81,7 +81,7 @@
         "@tsconfig/node-lts": "^22.0.1",
         "@tsconfig/node20": "^20.1.4",
         "@types/bcrypt": "^5.0.2",
-        "@types/chai": "5.0.1",
+        "@types/chai": "5.2.0",
         "@types/node": "^22.13.9",
         "@types/sinon": "17.0.4",
         "@types/sinon-chai": "4.0.0",
