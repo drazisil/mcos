@@ -13,7 +13,8 @@ export function _MSG_STRING(messageID: number): string {
 		{ id: 122, name: "MC_PLAYER_INFO" }, // 0x7a"}
 		{ id: 141, name: "MC_STOCK_CAR_INFO" }, // 0x8d
         { id: 142, name: "MC_PURCHASE_STOCK_CAR" }, // 0x8e
-		{ id: 146, name: "MC_GET_COMPLETE_VEHICLE_INFO" }, // 0x92
+		{ id: 145, name: "MC_GET_COMPLETE_VEHICLE_INFO" }, // 0x91
+		{ id: 163, name: "MC_UPDATE_CACHED_VEHICLE" }, // 0xa3
 		{ id: 172, name: "MC_GET_OWNED_VEHICLES" }, // 0xac"}
 		{ id: 173, name: "MC_OWNED_VEHICLES_LIST" }, // 0xad"}
 		{ id: 174, name: "MC_GET_OWNED_PARTS" }, // 0xae"}

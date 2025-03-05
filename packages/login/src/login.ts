@@ -108,7 +108,10 @@ export async function login({
 	// Update the data buffer
 	const response = {
 		connectionId,
-		messages: [outboundMessage2, outboundMessage2],
+		messages: [
+			outboundMessage2, 
+			outboundMessage2
+		],
 	};
 	log.debug(
 		`[${connectionId}] Leaving login with ${response.messages.length} messages`,

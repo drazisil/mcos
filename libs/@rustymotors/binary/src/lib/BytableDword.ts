@@ -1,4 +1,4 @@
-import { Bytable } from "./Bytable";
+import { Bytable } from "./Bytable.js";
 
 export class BytableDword extends Bytable {
 		private static validateBufferLength(
@@ -11,29 +11,28 @@ export class BytableDword extends Bytable {
 			}
 		}
 
-		static override fromBuffer(buffer: Buffer, offset: number) {
-			BytableDword.validateBufferLength(buffer, 4, offset);
-			const dword = new BytableDword();
-			dword.deserialize(buffer.subarray(offset, offset + 4));
-
-			return dword;
+		override get serializeSize(): number {
+			return 4;
 		}
 
 		override deserialize(buffer: Buffer) {
 			BytableDword.validateBufferLength(buffer, 4);
-			super.deserialize(buffer.subarray(0, 4));
+			this.setValue(buffer.readUInt32BE(0));
+		}
+
+		override serialize() {
+			return this.value as Buffer;
 		}
 
 		override get json() {
 			return {
-				name: this.name,
-				value: this.buffer.getUint32(0, true),
-				valueString: Buffer.from(this.buffer.buffer).toString("utf-8"),
+				name: this.name_,
+				value: this.value,
 				serializeSize: this.serializeSize,
 			};
 		}
 
 		override toString() {
-			return this.buffer.toString();
+			return this.value.toString();
 		}
 	}

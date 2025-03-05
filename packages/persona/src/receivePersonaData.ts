@@ -7,6 +7,10 @@ import {
 import type { BufferSerializer } from "rusty-motors-shared-packets";
 import { messageHandlers } from "./internal";
 
+export function getHandlers() {
+	return messageHandlers;
+}
+
 /**
  *
  *
@@ -39,7 +43,7 @@ export async function receivePersonaData({
 
 	// The packet needs to be an NPSMessage
 	const inboundMessage = new LegacyMessage();
-	inboundMessage._doDeserialize(message.serialize());
+	inboundMessage.deserialize(message.serialize());
 
 	const supportedHandler = messageHandlers.find((h) => {
 		return h.opCode === inboundMessage._header.id;

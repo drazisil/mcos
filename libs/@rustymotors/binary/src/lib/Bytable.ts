@@ -1,43 +1,30 @@
-import { get } from "http";
-import { BytableBase } from "./BytableBase";
-import { BytableObject } from "./types";
-import { getServerLogger } from "rusty-motors-shared";
+import { BytableBase } from "./BytableBase.js";
+import { BytableObject } from "./types.js";
 
 export class Bytable extends BytableBase implements BytableObject {
 	protected name_: string = "";
 	protected value_: string | number | Buffer = "";
 
-	static fromBuffer(buffer: Buffer, offset: number) {
-		const bytable = new this();
 
-		if  (buffer.length === 4 && offset === 4) {
-			// Some messages only consist of a id and a length
-			getServerLogger().warn(`Buffer length is 4, skipping deserialization`);
-			return bytable;
-		}
-		
-		if (!buffer || offset < 0 || offset >= buffer.length) {
-			getServerLogger().error(`Cannot deserialize buffer with invalid offset: ${offset}`);
-			return bytable;
-		}
-		bytable.deserialize(buffer.subarray(offset));
-		return bytable;
-	}
-
-	override serialize() {
-		if (!this.buffer || this.buffer.byteLength === 0) {
-			throw new Error('Cannot serialize empty buffer');
-		}
-		return Buffer.from(this.buffer.buffer);
-	}
-
-	override deserialize(buffer: Buffer) {
-		if (!buffer || buffer.length === 0) {
-			throw new Error('Cannot deserialize empty buffer');
-		}
+	protected deserializeFields(buffer: Buffer) {
 		this.buffer = new DataView(Uint8Array.from(buffer).buffer);
 	}
+	
+	override deserialize(buffer: Buffer) {
+		validateBuffer(buffer, 'deserialize');
+		return this.deserializeFields(buffer);
+	}
 
+	protected serializeFields(): Buffer {
+		return Buffer.from(this.buffer.buffer);
+	}
+	
+	override serialize(): Buffer {
+		validateBuffer(this.buffer, 'serialize');
+		return this.serializeFields();
+	}
+	
+	
 	get json() {
 		return {
 			name: this.name_,
@@ -45,7 +32,7 @@ export class Bytable extends BytableBase implements BytableObject {
 		};
 	}
 
-	get serializeSize() {
+	override get serializeSize(): number {
 		return this.buffer.byteLength;
 	}
 
@@ -67,5 +54,18 @@ export class Bytable extends BytableBase implements BytableObject {
 		this.validateValue(value);
 		this.value_ = value;
 	}
+
+	override toString() {
+		return `BytableBase { name: ${this.name_}, value: ${this.value_} }`;
+	}
 }
 
+export function validateBuffer(buf: DataView<ArrayBufferLike> | ArrayBufferLike, direction: string) {
+	if (typeof buf === 'undefined') {
+		throw new Error(`Cannot ${direction} undefined buffer`);
+	}
+
+	if (buf.byteLength === 0) {
+		throw new Error(`Cannot ${direction} empty buffer`);
+	}
+}

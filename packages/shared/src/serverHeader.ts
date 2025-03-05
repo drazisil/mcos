@@ -33,7 +33,7 @@ export class serverHeader extends SerializableMixin(AbstractSerializable) {
 	 * @throws {Error} If the buffer is too short
 	 * @throws {Error} If the buffer is malformed
 	 */
-	override _doDeserialize(buffer: Buffer): serverHeader {
+	deserialize(buffer: Buffer): serverHeader {
 		if (buffer.length < this._size) {
 			throw new Error(
 				`Buffer length ${buffer.length} is too short to deserialize`,
@@ -53,7 +53,7 @@ export class serverHeader extends SerializableMixin(AbstractSerializable) {
 		return this;
 	}
 
-	override _doSerialize() {
+	serialize() {
 		const buffer = Buffer.alloc(this._size);
 		buffer.writeInt16LE(this.length, 0);
 		buffer.write(this.mcoSig, 2, 6, "utf8");

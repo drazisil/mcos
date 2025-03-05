@@ -52,7 +52,7 @@ export class NPSUserStatus extends LegacyMessage {
 		this._config = config;
 		this.log = getServerLogger("NPSUserStatus");
 		log.debug("Constructing NPSUserStatus");
-		this._header._doDeserialize(packet);
+		this._header.deserialize(packet);
 		this.sessionKey = "";
 
 		// Save the NPS opCode

@@ -32,7 +32,7 @@ export async function _selectGamePersona({
 	const requestPacket = message;
 	log.debug(
 		`LegacyMsg request object from _npsSelectGamePersona ${requestPacket
-			._doSerialize()
+			.serialize()
 			.toString("hex")}`,
 	);
 
@@ -47,12 +47,12 @@ export async function _selectGamePersona({
 	responsePacket.setBuffer(packetContent);
 	log.debug(
 		`LegacyMsg response object from _npsSelectGamePersona ${responsePacket
-			._doSerialize()
+			.serialize()
 			.toString("hex")} `,
 	);
 
 	const outboundMessage = new SerializedBufferOld();
-	outboundMessage.setBuffer(responsePacket._doSerialize());
+	outboundMessage.setBuffer(responsePacket.serialize());
 
 	return {
 		connectionId,

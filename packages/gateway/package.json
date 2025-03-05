@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@fastify/sensible": "^6.0.3",
 		"@rustymotors/binary": "workspace:^",
+		"@rustymotors/protocol": "workspace:^",
 		"fastify": "^5.2.1"
 	},
 	"directories": {

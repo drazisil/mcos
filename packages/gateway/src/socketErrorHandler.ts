@@ -13,9 +13,7 @@ import { getServerLogger, type ServerLogger } from "rusty-motors-shared";
 export function socketErrorHandler({
 	connectionId,
 	error,
-	log = getServerLogger({
-		name: "socketErrorHandler",
-	}),
+	log = getServerLogger("socketErrorHandler"),
 }: {
 	connectionId: string;
 	error: NodeJS.ErrnoException;

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import { BytableStructure } from "@rustymotors/binary";
 import { SerializedBufferOld } from "rusty-motors-shared";
 
 /**
@@ -35,7 +36,7 @@ export class LobbyMessage extends SerializedBufferOld {
 	}
 
 	override size() {
-		return 5 + this._lobbyList.length * 563;
+		return 4 + this._lobbyList.length * 561;
 	}
 
 	/**
@@ -59,7 +60,7 @@ export class LobbyMessage extends SerializedBufferOld {
 		offset += 1; // offset is 5
 		for (const lobby of this._lobbyList) {
 			lobby.serialize().copy(buffer, offset);
-			offset += lobby.size();
+			offset += lobby.serializeSize;
 		}
 		// offset is now 4 + this._lobbyList.length * 563
 		return buffer;
@@ -70,7 +71,7 @@ export class LobbyMessage extends SerializedBufferOld {
 	}
 }
 
-export class LobbyInfo extends SerializedBufferOld {
+export class LobbyInfo extends BytableStructure {
 	_lobbyId: number;
 	_raceTypeId: number;
 	_terfId: number;
@@ -259,7 +260,7 @@ export class LobbyInfo extends SerializedBufferOld {
 		return buf;
 	}
 
-	override size() {
+	override get serializeSize() {
 		return 563;
 	}
 
@@ -269,9 +270,9 @@ export class LobbyInfo extends SerializedBufferOld {
 	 * @param {Buffer} data
 	 */
 	override deserialize(data: Buffer) {
-		if (data.length !== this.size()) {
+		if (data.length !== this.serializeSize) {
 			throw Error(
-				`LobbyInfo.deserialize() expected ${this.size()} bytes but got ${
+				`LobbyInfo.deserialize() expected ${this.serializeSize} bytes but got ${
 					data.length
 				} bytes`,
 			);
@@ -472,7 +473,7 @@ export class LobbyInfo extends SerializedBufferOld {
 	}
 
 	override serialize() {
-		const buf = Buffer.alloc(this.size());
+		const buf = Buffer.alloc(this.serializeSize);
 		let offset = 0; // offset is 0
 		buf.writeUInt32LE(this._lobbyId, offset);
 		offset += 4; // offset is 4

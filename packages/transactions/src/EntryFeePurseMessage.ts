@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import { BytableStructure } from "@rustymotors/binary";
 import { SerializedBufferOld } from "rusty-motors-shared";
 
 /**
@@ -59,7 +60,7 @@ export class EntryFeePurseMessage extends SerializedBufferOld {
 		offset += 1; // offset is 5
 		for (const entry of this._purseEntries) {
 			entry.serialize().copy(buffer, offset);
-			offset += entry.size();
+			offset += entry.serializeSize
 		}
 		// offset is now 4 + this._lobbyList.length * 563
 		return buffer;
@@ -70,7 +71,7 @@ export class EntryFeePurseMessage extends SerializedBufferOld {
 	}
 }
 
-export class PurseEntry extends SerializedBufferOld {
+export class PurseEntry extends BytableStructure {
 	_entryFee: number; // 4 bytes
 	_purse: number; // 4 bytes
 	constructor() {
@@ -79,7 +80,7 @@ export class PurseEntry extends SerializedBufferOld {
 		this._purse = 0;
 	}
 
-	override size() {
+	override get serializeSize() {
 		return 8;
 	}
 
@@ -89,9 +90,9 @@ export class PurseEntry extends SerializedBufferOld {
 	 * @param {Buffer} data
 	 */
 	override deserialize(data: Buffer) {
-		if (data.length !== this.size()) {
+		if (data.length !== this.serializeSize) {
 			throw Error(
-				`PurseEntry.deserialize() expected ${this.size()} bytes but got ${
+				`PurseEntry.deserialize() expected ${this.serializeSize} bytes but got ${
 					data.length
 				} bytes`,
 			);
@@ -106,7 +107,7 @@ export class PurseEntry extends SerializedBufferOld {
 	}
 
 	override serialize() {
-		const buf = Buffer.alloc(this.size());
+		const buf = Buffer.alloc(this.serializeSize);
 		let offset = 0; // offset is 0
 		buf.writeUInt32LE(this._entryFee, offset);
 		offset += 4; // offset is 4

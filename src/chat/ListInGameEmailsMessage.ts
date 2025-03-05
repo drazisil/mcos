@@ -1,26 +1,16 @@
-import { assertLength } from "./assertLength.js";
 import { ChatMessage } from "./ChatMessage.js";
 
 export class ListInGameEmailsMessage extends ChatMessage {
-	userId: number;
-	lastEmailId: number;
+	userId = 0;
+	lastEmailId = 0;
 
-	constructor(messageId: number, messageLength: number, payload: Buffer) {
-		super(messageId, messageLength, payload);
 
-		this.userId = payload.readUInt32BE(0);
-		this.lastEmailId = payload.readUInt32BE(4);
-	}
+	override deserialize(buffer: Buffer): ChatMessage {
+		this.userId = buffer.readUInt16BE(0);
+		this.lastEmailId = buffer.readUInt16BE(4);
+		this.payload = buffer.subarray(8);
 
-	static override fromBuffer(buffer: Buffer): ListInGameEmailsMessage {
-		const messageId = buffer.readUInt16BE(0);
-		const messageLength = buffer.readUInt16BE(2);
-
-		assertLength(buffer.byteLength, messageLength);
-
-		const payload = buffer.subarray(4, 4 + messageLength);
-
-		return new ListInGameEmailsMessage(messageId, messageLength, payload);
+		return this;
 	}
 
 	override toString(): string {

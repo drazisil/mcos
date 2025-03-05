@@ -5,17 +5,17 @@ export class PartsAssemblyMessage extends SerializedBufferOld {
 	_ownerId: number;
 	_numberOfParts: number;
 	_partList: Part[];
-	constructor(owerId: number) {
+	constructor(ownerId: number) {
 		super();
 		this._msgNo = 0; // 2 bytes
-		this._ownerId = owerId; // 4 bytes
-		this._numberOfParts = 0; // 1 bytes
+		this._ownerId = ownerId; // 4 bytes
+		this._numberOfParts = 0; // 2 bytes
 		/** @type {Part[]} */
 		this._partList = []; // 34 bytes each
 	}
 
 	override size() {
-		return 7 + this._partList.length * 34;
+		return 8 + this._partList.length * 34;
 	}
 
 	override serialize() {
@@ -25,8 +25,8 @@ export class PartsAssemblyMessage extends SerializedBufferOld {
 		offset += 2; // offset is 2
 		buffer.writeUInt32LE(this._ownerId, offset);
 		offset += 4; // offset is 6
-		buffer.writeInt8(this._numberOfParts, offset);
-		offset += 1; // offset is 7
+		buffer.writeUint16LE(this._numberOfParts, offset);
+		offset += 2; // offset is 8
 		for (const part of this._partList) {
 			const partBuffer = part.serialize();
 			partBuffer.copy(buffer, offset);
@@ -46,8 +46,6 @@ export class Part extends SerializedBufferOld {
 	_wear: number; // 4 bytes
 	_attachmentPoint: number; // 1 byte
 	_damage: number; // 1 byte
-	_retailPrice: number; // 4 bytes
-	_maxWear: number; // 4 bytes
 
 	constructor() {
 		super();
@@ -59,13 +57,10 @@ export class Part extends SerializedBufferOld {
 		this._wear = 0; // 4 bytes
 		this._attachmentPoint = 0; // 1 byte
 		this._damage = 0; // 1 byte
-		this._retailPrice = 0; // 4 bytes
-		this._maxWear = 0; // 4 bytes
-		// 33 bytes total
 	}
 
 	override size() {
-		return 34;
+		return 26;
 	}
 
 	override serialize() {
@@ -87,15 +82,11 @@ export class Part extends SerializedBufferOld {
 		offset += 1; // offset is 25
 		buffer.writeUInt8(this._damage, offset);
 		offset += 1; // offset is 26
-		buffer.writeUInt32LE(this._retailPrice, offset);
-		offset += 4; // offset is 30
-		buffer.writeUInt32LE(this._maxWear, offset);
-		// offset += 4; // offset is 34
 
 		return buffer;
 	}
 
 	override toString() {
-		return `Part: partId=${this._partId} parentPartId=${this._parentPartId} brandedPartId=${this._brandedPartId} repairPrice=${this._repairPrice} junkPrice=${this._junkPrice} wear=${this._wear} attachmentPoint=${this._attachmentPoint} damage=${this._damage} retailPrice=${this._retailPrice} maxWear=${this._maxWear}`;
+		return `Part: partId=${this._partId} parentPartId=${this._parentPartId} brandedPartId=${this._brandedPartId} repairPrice=${this._repairPrice} junkPrice=${this._junkPrice} wear=${this._wear} attachmentPoint=${this._attachmentPoint} damage=${this._damage}`;
 	}
 }

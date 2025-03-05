@@ -65,7 +65,7 @@ async function processInput({
 	if (typeof result !== "undefined") {
 		// Turn this into an OldServerMessage for compatibility
 		const packet = new OldServerMessage();
-		packet._doDeserialize(inboundMessage.serialize());
+		packet.deserialize(inboundMessage.serialize());
 
 		try {
 			const responsePackets = await result.handler({
@@ -81,9 +81,8 @@ async function processInput({
 		}
 	}
 
-	throw Error(
-		`[${connectionId}] Unable to locate handler for message: ${currentMessageNo} (${currentMessageString})`,
-	);
+	log.error({ connectionId, currentMessageNo, currentMessageString}, "No handler found")
+	throw Error(`No handler found for message ${currentMessageString}(${currentMessageNo})`)
 }
 
 /**
@@ -114,8 +113,8 @@ export async function receiveTransactionsData({
 	const inboundMessage = new ServerPacket();
 	inboundMessage.deserialize(message.serialize());
 
-	log.debug(
-		`[${connectionId}] Received message: ${inboundMessage.toHexString()}`,
+	log.debug({connectionId, seq: inboundMessage.getSequence()},
+		`Received message: ${inboundMessage.toHexString()}`,
 	);
 
 	let decryptedMessage: ServerPacket;
@@ -131,11 +130,6 @@ export async function receiveTransactionsData({
 		if (typeof encryptionSettings === "undefined") {
 			throw Error(`[${connectionId}] Unable to locate encryption settings`);
 		}
-
-		// log the old buffer
-		log.debug(
-			`[${connectionId}] Inbound buffer: ${inboundMessage.data.toHexString()}`,
-		);
 
 		decryptedMessage = decryptMessage(
 			encryptionSettings,
@@ -201,7 +195,7 @@ export async function receiveTransactionsData({
 	// Convert the outbound messages to SerializedBufferOld
 	const outboundMessagesSerialized = outboundMessages.map((message) => {
 		const serialized = new SerializedBufferOld();
-		serialized._doDeserialize(message.serialize());
+		serialized.deserialize(message.serialize());
 		return serialized;
 	});
 

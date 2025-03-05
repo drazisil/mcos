@@ -36,7 +36,7 @@ export async function _gameLogout({
 	log.debug(`[${connectionId}] _npsLogoutGameUser response: ${responsePacket.toHexString()}`);
 
 	const outboundMessage = new SerializedBufferOld();
-	outboundMessage._doDeserialize(responsePacket._doSerialize());
+	outboundMessage.deserialize(responsePacket.serialize());
 
 	return {
 		connectionId,

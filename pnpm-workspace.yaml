@@ -1,4 +1,6 @@
 packages:
-  - 'packages/*'
-  - "src/*"
-  - "libs/@rustymotors/*"
+  - packages/*
+  - src/*
+  - libs/@rustymotors/*
+onlyBuiltDependencies:
+  - nx

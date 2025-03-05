@@ -1,5 +1,12 @@
-export * from "./lib/Bytable";
-export * from "./lib/BytableContainer";
-export * from "./lib/BytableDword";
-export * from "./lib/BytableHeader";
-export * from "./lib/BytableMessage";
+export * from "./lib/Bytable.js";
+export * from "./lib/BytableContainer.js";
+export * from "./lib/BytableDword.js";
+export * from "./lib/BytableServerHeader.js";
+export * from "./lib/BytableHeader.js";
+export * from "./lib/BytableServerMessage.js";
+export * from "./lib/BytableMessage.js";
+export * from "./lib/BytableData.js";
+export * from "./lib/BytableByte.js";
+export * from "./lib/BytableWord.js";
+export {deserialize, serialize, createEmptyField, serializeSize } from "./lib/Serializer.js";
+export * from "./lib/types.js";

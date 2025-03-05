@@ -1,4 +1,4 @@
-import { Bytable } from "./Bytable";
+import { Bytable } from "./Bytable.js";
 
 export class BytableHeader extends Bytable {
 	protected messageId_: number = 0;
@@ -7,13 +7,6 @@ export class BytableHeader extends Bytable {
 	protected reserved_: number = 0;
 	protected checksum_: number = 0;
 	protected data_: Buffer = Buffer.alloc(0);
-
-	static override fromBuffer(buffer: Buffer, offset: number) {
-		const header = new this();
-		header.deserialize(buffer.subarray(offset));
-
-		return header;
-	}
 
 	override get json() {
 		return {
@@ -86,20 +79,19 @@ export class BytableHeader extends Bytable {
 	}
 
 	override deserialize(buffer: Buffer) {
-		super.deserialize(buffer);
-		this.setMessageId(this.getUint16(0));
-		this.setMessageLength(this.getUint16(2));
+		this.setMessageId(buffer.readUInt16BE(0));
+		this.setMessageLength(buffer.readUInt16BE(2));
 
 		// If the length is less than 12, there is no room for the message, so we assume version 0
-		if (buffer.byteLength >= 12 && this.getUint16(4) === 257) {
+		if (buffer.byteLength >= 12 && buffer.readUInt16BE(4) === 257) {
 			this.setMessageVersion(1);
 		} else {
 			this.setMessageVersion(0);
 		}
 
 		if (this.messageVersion === 1) {
-			this.setReserved(this.getUint16(6));
-			this.setChecksum(this.getUint32(8));
+			this.setReserved(buffer.readUInt16BE(6));
+			this.setChecksum(buffer.readUInt32BE(8));
 		}
 	}
 }

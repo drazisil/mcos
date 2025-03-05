@@ -42,7 +42,7 @@ export async function validatePersonaName({
 	);
 
 	const outboundMessage = new SerializedBufferOld();
-	outboundMessage._doDeserialize(responsePacket.serialize());
+	outboundMessage.deserialize(responsePacket.serialize());
 
 	return {
 		connectionId,

@@ -31,7 +31,7 @@ export class LoginInfoMessage extends LegacyMessage {
 	 */
 	override deserialize(buffer: Buffer): this {
 		try {
-			this._header._doDeserialize(buffer);
+			this._header.deserialize(buffer);
 			let offset = this._header._size;
 			this._userId = buffer.readInt32BE(offset);
 			offset += 4;
@@ -67,7 +67,7 @@ export class LoginInfoMessage extends LegacyMessage {
 	override serialize(): Buffer {
 		try {
 			const buffer = Buffer.alloc(this._header.length);
-			this._header._doSerialize().copy(buffer);
+			this._header.serialize().copy(buffer);
 			let offset = this._header._size;
 			buffer.writeInt32BE(this._userId, offset);
 			offset += 4;

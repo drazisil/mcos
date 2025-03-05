@@ -191,7 +191,7 @@ async function getPersonaMaps({
 	const requestPacket = message;
 	log.debug(
 		`NPSMsg request object from _npsGetPersonaMaps ${requestPacket
-			._doSerialize()
+			.serialize()
 			.toString("hex")} `,
 	);
 
@@ -243,7 +243,7 @@ async function getPersonaMaps({
 		);
 
 		const outboundMessage = new SerializedBufferOld();
-		outboundMessage._doDeserialize(personaMapsMessage.serialize());
+		outboundMessage.deserialize(personaMapsMessage.serialize());
 
 		return {
 			connectionId,

@@ -1,32 +1,27 @@
-import { ServerLogger,  } from "rusty-motors-shared";
+import { LegacyMessage, ServerLogger,  } from "rusty-motors-shared";
 import { GameMessage } from "rusty-motors-shared";
-import { LegacyMessage } from "rusty-motors-shared";
 import { serializeString } from "rusty-motors-shared";
 import { channelRecordSize, channels } from "./channels.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
-const defaultLogger = getServerLogger("Lobby");
-
-// const users = [user1];
-/**
- * @param {object} args
- * @param {string} args.connectionId
- * @param {LegacyMessage} args.message
- * @param {ServerLogger} [args.log=getServerLogger({ name: "Lobby" })]
- */
 export async function handleSendMiniRiffList({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("lobby.handleSendMiniRiffList"),
 }: {
 	connectionId: string;
-	message: LegacyMessage;
+	message: BytableMessage;
 	log?: ServerLogger;
-}) {
-	log.debug("Handling NPS_SEND_MINI_RIFF_LIST");
-	log.debug(`Received command: ${message._doSerialize().toString("hex")}`);
+}): Promise<{
+	connectionId: string;
+	message: BytableMessage;
+}> {
+	log.debug("[${connectionId}] Handling NPS_SEND_MINI_RIFF_LIST");
+	log.debug(`[${connectionId}] Received command: ${message.serialize().toString("hex")}`);
 
-	const outgoingGameMessage = new GameMessage(1028);
+	const outgoingGameMessage = new LegacyMessage();
+	outgoingGameMessage.setMessageId(1028); // NPS_SEND_MINI_RIFF_LIST
 
 	const resultSize = channelRecordSize * channels.length - 12;
 
@@ -47,13 +42,16 @@ export async function handleSendMiniRiffList({
 			offset += 2;
 		}
 
-		outgoingGameMessage.setRecordData(packetContent);
+		outgoingGameMessage.setBuffer(packetContent);
 
 		// Build the packet
-		const packetResult = new LegacyMessage();
-		packetResult._doDeserialize(outgoingGameMessage.serialize());
+		const packetResult = new BytableMessage();
+		packetResult.setSerializeOrder([
+			{ name: "data", field: "Buffer" },
+		]);
+		packetResult.deserialize(outgoingGameMessage.serialize());
 
-		log.debug(`Sending response: ${packetResult.serialize().toString("hex")}`);
+		log.debug(`[${connectionId}] Sending response: ${packetResult.serialize().toString("hex")}`);
 
 		return {
 			connectionId,

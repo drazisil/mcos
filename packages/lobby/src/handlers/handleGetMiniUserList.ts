@@ -1,68 +1,72 @@
-import { GameMessage, ServerLogger } from "rusty-motors-shared";
+import { ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
-import { serializeString } from "rusty-motors-shared";
-import { UserInfo } from "../UserInfoMessage.js";
-import { channelRecordSize, channels } from "./channels.js";
+import { MiniUserInfo } from "../UserInfoMessage.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { BytableMessage } from "@rustymotors/binary";
 
-const defaultLogger = getServerLogger("Lobby");
-
-
-const user1 = new UserInfo();
-user1._userId = 1;
-user1._userName = "User 1";
-/**
- * @param {object} args
- * @param {string} args.connectionId
- * @param {LegacyMessage} args.message
- * @param {ServerLogger} [args.log=getServerLogger({ name: "Lobby" })]
- */
 
 export async function handleGetMiniUserList({
 	connectionId,
 	message,
-	log = defaultLogger,
+	log = getServerLogger("lobby.handleGetMiniUserList"),
 }: {
 	connectionId: string;
-	message: LegacyMessage;
+	message: BytableMessage;
 	log?: ServerLogger;
-}) {
-	log.debug("Handling NPS_GET_MINI_USER_LIST");
-	log.debug(`Received command: ${message._doSerialize().toString("hex")}`);
-
-	const outgoingGameMessage = new GameMessage(553);
-
-	const resultSize = channelRecordSize * channels.length - 12;
-
-	const packetContent = Buffer.alloc(resultSize);
-
-	let offset = 0;
+}): Promise<{
+	connectionId: string;
+	message: BytableMessage;
+}> {
 	try {
-		// Add the response code
-		packetContent.writeUInt32BE(17, offset);
-		offset += 4; // offset is 8
+		log.debug(`[${connectionId}] Handling NPS_GET_MINI_USER_LIST`);
+		log.debug(
+			`[${connectionId}]Received command: ${message.serialize().toString("hex")}`,
+		);
+		log.debug(
+			`[${connectionId}] Received NPS_GET_MINI_USER_LIST: ${message.toString()}`,
+		);
 
-		packetContent.writeUInt32BE(1, offset);
-		offset += 4; // offset is 12
+		const requestedCommId = message.getBody().readUInt32BE(0);
 
-		// Write the count of users
-		packetContent.writeUInt32BE(1, offset);
-		offset += 4; // offset is 16
+		log.debug(`[${connectionId}] Requested commId: ${requestedCommId}`);
 
-		// write the persona id
-		packetContent.writeUInt32BE(user1._userId, offset);
-		offset += 4; // offset is 20
+		const commId = 1;
+		const userCount = 1;
 
-		// write the persona name
-		serializeString(user1._userName, packetContent, offset);
+		const channelCountRecord = Buffer.alloc(8);
+		channelCountRecord.writeUInt32BE(commId, 0); // commId
+		channelCountRecord.writeUInt32BE(userCount, 4); // userCount
 
-		outgoingGameMessage.setRecordData(packetContent);
+		const user1 = new MiniUserInfo();
+		user1.setFieldValueByName("userId", 21);
+		user1.setFieldValueByName("userName", "Dr Brown");
 
-		// Build the packet
-		const packetResult = new LegacyMessage();
-		packetResult._doDeserialize(outgoingGameMessage.serialize());
+		log.debug(`[${connectionId}] User1: ${user1.toString()}`);
 
-		log.debug(`Sending response: ${packetResult.serialize().toString("hex")}`);
+		const realData = Buffer.concat([
+			channelCountRecord,
+			user1.serialize(),
+		]);
+
+		const align8Padding = 8 - (realData.length % 8);
+
+		const padding = Buffer.alloc(align8Padding);
+
+		const packetContent = Buffer.concat
+			([realData, padding]);
+
+		const outgoingMessage = new LegacyMessage();
+		outgoingMessage.setMessageId(553); // NPS_MINI_USER_LIST - 0x229
+		outgoingMessage.setBuffer(packetContent);
+
+		const packetResult = new BytableMessage();
+		packetResult.setSerializeOrder([
+			{ name: "data", field: "Buffer" },
+		]);
+		packetResult.deserialize(outgoingMessage.serialize());
+
+		log.debug(`[${connectionId}] Sending NPS_MINI_USER_LIST`);
+		log.debug(`[${connectionId}] Sending response: ${packetResult.serialize().toString("hex")}`);
 
 		return {
 			connectionId,
