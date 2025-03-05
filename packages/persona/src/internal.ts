@@ -1,19 +1,3 @@
-// mcos is a game server, written from scratch, for an old game
-// Copyright (C) <2017>  <Drazi Crendraven>
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as published
-// by the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 import { SerializedBufferOld, ServerLogger } from "rusty-motors-shared";
 import { LegacyMessage } from "rusty-motors-shared";
 import {
@@ -27,6 +11,7 @@ import { _selectGamePersona } from "./_selectGamePersona.js";
 import { validatePersonaName } from "./handlers/validatePersonaName.js";
 import { getPersonaInfo } from "./handlers/getPersonaInfo.js";
 import { getServerLogger } from "rusty-motors-shared";
+import { handleUnknownPersonaMessage } from "./handlers/handleUnknownPersonaMessage.js";
 
 
 /**
@@ -85,6 +70,11 @@ export const messageHandlers: {
 		opCode: 1291, // 0x50B
 		name: "Get first buddy",
 		handler: _getFirstBuddy,
+	},
+	{
+		opCode: 18245, // 0x4745
+		name: "Unknown Persona Message",
+		handler: handleUnknownPersonaMessage,
 	},
 ];
 
