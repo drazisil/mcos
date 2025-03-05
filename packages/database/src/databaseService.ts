@@ -2,7 +2,7 @@ import { hashSync } from "bcrypt";
 import { DatabaseSync } from "node:sqlite";
 import { getServerLogger } from "rusty-motors-shared";
 import type { UserRecordMini } from "rusty-motors-shared";
-import { SQL, DATABASE_PATH } from "./databaseConstrants";
+import { SQL, DATABASE_PATH } from "./databaseConstrants.js";
 
 // Database Service Interface
 export interface DatabaseService {

@@ -82,6 +82,10 @@ export async function getSlonik(): Promise<{
     slonik: DatabasePool;
     sql: ReturnType<typeof createSqlTag>;
 }> {
+    if (typeof process.env["DATABASE_URL"] === "undefined") {
+        throw Error("Please set DATABASE_URL in your env.")
+    }
+
     if (!slonik) {
         slonik = await createPool(process.env["DATABASE_URL"]!);
     }

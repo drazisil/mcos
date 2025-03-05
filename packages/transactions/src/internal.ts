@@ -81,9 +81,8 @@ async function processInput({
 		}
 	}
 
-	throw Error(
-		`[${connectionId}] Unable to locate handler for message: ${currentMessageNo} (${currentMessageString})`,
-	);
+	log.error({ connectionId, currentMessageNo, currentMessageString}, "No handler found")
+	throw Error(`No handler found for message ${currentMessageString}(${currentMessageNo})`)
 }
 
 /**

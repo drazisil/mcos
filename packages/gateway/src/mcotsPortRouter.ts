@@ -126,7 +126,7 @@ async function processIncomingPackets(
                     );
                     socket.write(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     throw new Error(
                         `[${id}] Error routing initial mcots message: ${error}`,
                         {
