@@ -62,8 +62,8 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.4",
-        "@commitlint/cli": "^19.7.1",
-        "@commitlint/config-conventional": "^19.7.1",
+        "@commitlint/cli": "^19.8.0",
+        "@commitlint/config-conventional": "^19.8.0",
         "@databases/pg-migrations": "^5.0.3",
         "@databases/pg-schema-cli": "^4.4.0",
         "@databases/pg-test": "^3.1.2",
